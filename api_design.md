@@ -22,7 +22,42 @@
 19) ดึงรายการโรงเรียนที่เป็นเจ้าของรายบุคคล
 20) แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
 21) แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน
-
+# Common Objects
+## **1.User object**
+```
+    {
+        "user_id" : number,
+        "username" : string,
+        "firstname" : string,
+        "lastname" : string,
+        "email" : string,
+        "year_of_birth" : number,
+        "description" : string,
+        "is_verified" : boolean,
+        "picture_url" : string,
+        "user_status" : string
+    }
+```
+## **2.Course object**
+```
+    {
+        "course_id" : number,
+        "school_id" : number,
+        "course_name" : string,
+        "course_description" : string,
+        "reserve_open_date" : string,
+        "reserve_close_date" : string,
+        "start_date" : string,
+        "end_date" : string,
+        "course_period" : number,
+        "course_price" : number,
+        "maximum_student" : number,
+        "reserved_student" : number,
+        "payment_method_text_url" : string,
+        "payment_method_picture_url" : string
+        "is_delete" : boolean
+    }
+```
 # Endpoint
 
 ## **1. Account**
@@ -33,7 +68,7 @@
 ### Response  	
 `200` if user exist
 ```
-    Return User object
+    Return single user object
 ```
 `404` if user not exist
 ```
@@ -144,5 +179,12 @@ else
 
 ## **3. Course**
 ## `GET` /courses/<course_ id>
-
-เดะทำต่อ
+### Response
+`200` course exist
+```
+    Return single course object
+```
+`404` course not exist
+```
+    Return message "Course not exist"
+```
