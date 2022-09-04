@@ -59,10 +59,10 @@ else
 ### 1.3 แก้ไข User 
 ### `PUT` /users/<user_id>  
 ### Request Body:  
-```json
+```
 {
 	<field> : <Update data>,
-		……
+	……
 }
 ```
 Example
