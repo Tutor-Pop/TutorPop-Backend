@@ -59,17 +59,17 @@ else
 ## `PUT` /users/<user_id>  
 ### Request Body 
 ```
-{
-	<field> : <Update data>,
-	……
-}
+    {
+        <field> : <Update data>,
+        ……
+    }
 ```
 ### Example
 ```json
-{
-	"firstname" : "hello",
-	"lastname" : "world"
-}
+    {
+        "firstname" : "hello",
+        "lastname" : "world"
+    }
 ```
 ### Response
 `200` if update correctly
