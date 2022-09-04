@@ -64,7 +64,7 @@
 ## **1. Account**
 
 ## 1.1 เรียกดูข้อมูลของ User
-## `GET` /users/<user_id>  
+### `GET` /users/<user_id>  
 ### Response  	
 `200` User exist
 ```
@@ -75,14 +75,14 @@
     Return message “User not exist”
 ```	
 ## 1.2 ลบ User
-## `DELETE` /users/<user_id>
+### `DELETE` /users/<user_id>
 ### Response
 `204`  Deleted
 ``` 
 	Return none
 ```
 ## 1.3 แก้ไข User 
-## `PUT` /users/<user_id>  
+### `PUT` /users/<user_id>  
 ### Request Body 
 ```
     {
@@ -114,7 +114,7 @@
 ```
 
 ## 1.4 เรียกดู User ทั้งหมด  
-## `GET` /users
+### `GET` /users
 
 ### Response
 
@@ -125,7 +125,7 @@
 
 ---
 ## **2. Course & School Searching**
-## `GET` /search
+### `GET` /search
 
 ### Request
 ```
@@ -159,7 +159,7 @@
 
 ## **3. Course**
 ## 3.1 ดูข้อมูลของแต่ละคอร์ส
-## `GET` /courses/<course_ id>
+### `GET` /courses/<course_ id>
 ### Response
 `200` Course exist
 ```
@@ -170,7 +170,7 @@
     Return message "Course not exist"
 ```
 ## 3.2 สร้างคอร์ส
-## `POST` /courses
+### `POST` /courses
 ### Request
 ```
     {
@@ -199,14 +199,14 @@ else
     default
 ```
 ## 3.3 ลบคอร์ส
-## `DELETE` /courses/<course_id>
+### `DELETE` /courses/<course_id>
 ### Response
 `204` deleted
 ```
     Return none
 ```
 ## 3.4 แก้ไขคอร์ส
-## `PUT` /courses/<course_id>
+### `PUT` /courses/<course_id>
 ### Request
 ```
     {
@@ -237,7 +237,7 @@ Example
     Return error messages
 ```
 ## 3.5 ดูครูทั้งหมดที่สอนในคอร์ส
-## `GET` /courses/<course_id>/teachers
+### `GET` /courses/<course_id>/teachers
 ### Response
 `200` Get successfully
 ```
