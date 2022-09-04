@@ -28,7 +28,7 @@
 ## 1. Account
 
 ### 1.1 เรียกดูข้อมูลของ User
-**GET** `/users/<user_id>`  
+### `GET` /users/<user_id>  
 
 ### Response  	
 `200` if user exist
@@ -45,7 +45,7 @@ else
 ```
 
 ### 1.2 ลบ User
-**DELETE** `/users/<user_id>`
+### `DELETE` /users/<user_id>
 ### Response:
 `204` if deleted
 ``` 
@@ -57,11 +57,11 @@ else
 ```
 
 ### 1.3 แก้ไข User 
-**PUT** `/users/<user_id>`  
+### `PUT` /users/<user_id>  
 ### Request Body:  
 ```json
 {
-	[field] : [Update data],
+	<field> : <Update data>,
 		……
 }
 ```
@@ -92,7 +92,7 @@ else
 ```
 
 ### 1.4 เรียกดู User ทั้งหมด  
-**GET** `/users`
+### `GET` /users
 
 ### Response:
 
