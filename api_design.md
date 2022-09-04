@@ -28,7 +28,7 @@
 ## 1. Account
 
 ### 1.1 เรียกดูข้อมูลของ User
-### `GET` /users/<user_id>  
+> ### `GET` /users/<user_id>  
 
 ### Response  	
 `200` if user exist
