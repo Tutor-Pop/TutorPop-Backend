@@ -43,10 +43,9 @@ else
 ```
     default
 ```
-
 ### 1.2 ลบ User
 ### `DELETE` /users/<user_id>
-### Response:
+### Response
 `204` if deleted
 ``` 
 	Return none
@@ -58,21 +57,21 @@ else
 
 ### 1.3 แก้ไข User 
 ### `PUT` /users/<user_id>  
-### Request Body:  
+### Request Body 
 ```
 {
 	<field> : <Update data>,
 	……
 }
 ```
-Example
+### Example
 ```json
 {
 	"firstname" : "hello",
 	"lastname" : "world"
 }
 ```
-### Response:
+### Response
 `200` if update correctly
 
 ```
@@ -94,7 +93,7 @@ else
 ### 1.4 เรียกดู User ทั้งหมด  
 ### `GET` /users
 
-### Response:
+### Response
 
 `200` if get all users correctly
 ```
