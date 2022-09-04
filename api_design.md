@@ -23,12 +23,12 @@
 20) แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
 21) แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน
 
-# Endpoint  
+# Endpoint
 
-## 1. Account
+## **1. Account**
 
-### 1.1 เรียกดูข้อมูลของ User
-> ### `GET` /users/<user_id>  
+## 1.1 เรียกดูข้อมูลของ User
+## `GET` /users/<user_id>  
 
 ### Response  	
 `200` if user exist
@@ -43,8 +43,8 @@ else
 ```
     default
 ```
-### 1.2 ลบ User
-### `DELETE` /users/<user_id>
+## 1.2 ลบ User
+## `DELETE` /users/<user_id>
 ### Response
 `204` if deleted
 ``` 
@@ -55,8 +55,8 @@ else
 	default
 ```
 
-### 1.3 แก้ไข User 
-### `PUT` /users/<user_id>  
+## 1.3 แก้ไข User 
+## `PUT` /users/<user_id>  
 ### Request Body 
 ```
 {
@@ -90,8 +90,8 @@ else
     Default
 ```
 
-### 1.4 เรียกดู User ทั้งหมด  
-### `GET` /users
+## 1.4 เรียกดู User ทั้งหมด  
+## `GET` /users
 
 ### Response
 
@@ -103,3 +103,46 @@ else
 ```
     Default
 ```
+
+---
+## **2. Course & School Searching**
+## `GET` /search
+
+### Request
+```
+    {
+		"search" : string,
+		"type" : string //school or course,
+		"filter" : {
+			[filter field] : string,
+			….
+		}
+	{
+```
+### Example
+```json
+    {
+		"search" : "ไสยศาสตร์เบื้องต้น",
+		"type" : "course",
+		"filter" : {
+			"tag" : "magic",
+			"max_price" : 5000
+		}	
+    }
+```
+### Response
+`200` Search successfully
+```
+    Return all match school/course objects
+```
+else
+``` 
+    default
+```
+
+---
+
+## **3. Course**
+## `GET` /courses/<course_ id>
+
+เดะทำต่อ
