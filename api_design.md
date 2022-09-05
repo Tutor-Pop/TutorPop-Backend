@@ -134,7 +134,7 @@
 ```
 ### Response
 `200` Search successfully
-```json
+```
     {
         "metadata" : {
             "count": number,
@@ -152,7 +152,7 @@
 ```
 ### Response
 `200` Search successfully
-```json
+```
     {
         "metadata" : {
             "count": number,
@@ -180,7 +180,7 @@
 ## 3.2 สร้างคอร์ส
 ### `POST` /courses
 ### Request
-```json
+```
     {
         "school_id" : number,
         "course_name" : string,
@@ -244,7 +244,7 @@ Example
 ### `GET` /courses/<course_id>/teachers
 ### Response
 `200` Get successfully
-```json
+```
     {
     	"metadata" : {
 	    "count" : number
