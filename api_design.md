@@ -125,37 +125,42 @@
 
 ---
 ## **2. Course & School Searching**
-### `GET` /search
-
-### Request
-```
-    {
-		"search" : string,
-		"type" : string //school or course,
-		"filter" : {
-			[filter field] : string,
-			.
-			.
-		}
-	{
-```
+## 2.1 search & filter courses
+### `GET` /courses?\<query paremeters>
 ### Example
-```json
-    {
-		"search" : "ไสยศาสตร์เบื้องต้น",
-		"type" : "course",
-		"filter" : {
-			"course_type" : "magic",
-			"max_price" : 5000
-		}	
-    }
+```
+    /courses?type=math&price_max=2000
 ```
 ### Response
 `200` Search successfully
 ```
-    Return all match school/course objects
+    {
+        "metadata" : {
+            "count": number,
+             "offset" : number, 
+             "limit" : number
+        },
+        "results" : [All match course objects]
+    }
 ```
-
+## 2.2 search & filter schools
+### `GET` /schools?\<query paremeters>
+### Example
+```
+    /schools?name=Hogwarts&type=Magic_school
+```
+### Response
+`200` Search successfully
+```
+    {
+        "metadata" : {
+            "count": number,
+             "offset" : number, 
+             "limit" : number
+        },
+        "results" : [All match school objects]
+    }
+```
 ---
 
 ## **3. Course**
@@ -194,10 +199,6 @@
 `201` create course successfully
 ```
     Return newly create course object
-```
-else
-```
-    default
 ```
 ## 3.3 ลบคอร์ส
 ### `DELETE` /courses/<course_id>
