@@ -207,7 +207,7 @@
 ### Response
 `204` Course deleted
 ```
-    Return deleted course object
+    Return deleted course object(which is_delate = true)
 ```
 ## 3.4 แก้ไขคอร์ส
 ### `PUT` /courses/<course_id>
