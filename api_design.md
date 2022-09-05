@@ -137,7 +137,7 @@
 ```
     {
         "metadata" : {
-            "count": number,
+             "count": number,
              "offset" : number, 
              "limit" : number
         },
@@ -155,7 +155,7 @@
 ```
     {
         "metadata" : {
-            "count": number,
+             "count": number,
              "offset" : number, 
              "limit" : number
         },
@@ -220,7 +220,7 @@
     }
 ```
 Example
-```json
+```
     {
         "course_name" : "Software Engineering",
         "end_date" : "11-11-2011"
