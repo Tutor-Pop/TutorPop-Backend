@@ -134,7 +134,8 @@
 		"type" : string //school or course,
 		"filter" : {
 			[filter field] : string,
-			….
+			.
+			.
 		}
 	{
 ```
