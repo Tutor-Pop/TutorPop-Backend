@@ -249,7 +249,7 @@ Example
         ]
     }
 ```
-** กรณีไม่มี taecher เลยจะ return list ว่าง<br>
+** กรณีไม่มี teacher เลยจะ return list ว่าง<br>
 `404` Course Not exist
 ```
     Return none
