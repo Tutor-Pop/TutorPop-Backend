@@ -244,6 +244,9 @@ Example
 `200` Get successfully
 ```
     {
+    	"metadata" : {
+	    "count" : number
+	},
         "teachers_id" : [
             <account_id>,
             .
