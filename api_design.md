@@ -144,7 +144,7 @@
 		"search" : "ไสยศาสตร์เบื้องต้น",
 		"type" : "course",
 		"filter" : {
-			"tag" : "magic",
+			"course_type" : "magic",
 			"max_price" : 5000
 		}	
     }
