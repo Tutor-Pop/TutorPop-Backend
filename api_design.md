@@ -60,7 +60,8 @@
     }
 ```
 # Endpoint 
-** รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
+- รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
+- ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
 ## **1. Account**
 
 ## 1.1 เรียกดูข้อมูลของ User
@@ -125,7 +126,7 @@
 
 ---
 ## **2. Course & School Searching**
-## 2.1 search & filter courses
+## 2.1 Search & Filter Courses
 ### `GET` /courses?\<query paremeters>
 ### Example
 ```
@@ -133,7 +134,7 @@
 ```
 ### Response
 `200` Search successfully
-```
+```json
     {
         "metadata" : {
             "count": number,
@@ -143,7 +144,7 @@
         "results" : [All match course objects]
     }
 ```
-## 2.2 search & filter schools
+## 2.2 Search & Filter Schools
 ### `GET` /schools?\<query paremeters>
 ### Example
 ```
@@ -151,7 +152,7 @@
 ```
 ### Response
 `200` Search successfully
-```
+```json
     {
         "metadata" : {
             "count": number,
@@ -165,11 +166,12 @@
 
 ## **3. Course**
 ## 3.1 ดูข้อมูลของแต่ละคอร์ส
-### `GET` /courses/<course_ id>
+### `GET` /courses/<course_ id>?\<query parameters>
+
 ### Response
 `200` Course exist
 ```
-    Return single course object
+    Return single course object that matched course_id and query parameters
 ```
 `404` Course not exist
 ```
@@ -178,7 +180,7 @@
 ## 3.2 สร้างคอร์ส
 ### `POST` /courses
 ### Request
-```
+```json
     {
         "school_id" : number,
         "course_name" : string,
@@ -203,9 +205,9 @@
 ## 3.3 ลบคอร์ส
 ### `DELETE` /courses/<course_id>
 ### Response
-`204` deleted
+`204` Course deleted
 ```
-    Return none
+    Return deleted course object
 ```
 ## 3.4 แก้ไขคอร์ส
 ### `PUT` /courses/<course_id>
@@ -218,7 +220,7 @@
     }
 ```
 Example
-```
+```json
     {
         "course_name" : "Software Engineering",
         "end_date" : "11-11-2011"
@@ -242,7 +244,7 @@ Example
 ### `GET` /courses/<course_id>/teachers
 ### Response
 `200` Get successfully
-```
+```json
     {
     	"metadata" : {
 	    "count" : number
@@ -255,7 +257,7 @@ Example
     }
 ```
 ** กรณีไม่มี teacher เลยจะ return list ว่าง<br>
-`404` Course Not exist
+`404` Course doesn't not exist
 ```
     Return none
 ```
