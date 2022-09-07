@@ -400,6 +400,53 @@ Example
 ```
     Return error messages
 ```
-## 4.5 
+## 4.5 ดูครูทั้งหมดในโรงเรียน
+### Permission : All users
+### `GET` /schools/<school_id>/teachers
+### Response
+`200` Get correctly
+```
+    {
+        teachers_id : [<account_id>, . . .]
+    }
+```
+** กรณีไม่มี teacher เลยจะ return list ว่าง<br>
+`404` schools doesn't not exist
+```
+    Return none
+```
+## 4.6 เพิ่มครูในโรงเรียน (ถ้ามีอยู่แล้วไม่มีผล)
+### Permission : Userที่loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `PUT` /schools/<school_id>/teachers 
+### Request
+```
+    //list of teachers_id that want to add
+    {
+        teachers_id : [<account_id>, . . .]    
+    }
+```
+### Response
+`200` Add correctly
+```
+    Same as GET /schools/<school_id>/teachers
+```
+## 4.6 ลบครูในโรงเรียน
+### Permission : User ที่ login แล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin 
+### `DELETE` /schools/<school_id>/terchers
+### Request 
+```
+    {
+        "teachers_id" : [<account_id>, . . .] 
+    }
+```
+### Response
+`200` update successfully
+```
+    Same as GET /schools/<school_id>/teachers
+```
+`400` invalid delete
+```
+    Return error message
+```
 
 
