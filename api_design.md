@@ -74,6 +74,15 @@
         "banner_url" : string 
     }
 ```
+## **4. Room object**
+```
+    {
+        "room_id" : number,
+        "room_name" : string,
+        "school_id" : number,
+        "maximum_seat" : number
+    }
+```
 # Endpoint 
 - รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
 - ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
@@ -448,5 +457,55 @@ Example
 ```
     Return error message
 ```
-
+## **5. Rooms**
+## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `PUT` /schools/<school_id>/rooms
+### Request
+```
+    {
+        "room_name" : string,
+        "maximum_seat" : number,
+    }
+```
+`201` Created
+```
+    Return newly created room object
+```
+`200` Update successfully
+```
+    Return updated room
+```
+## 5.2 ดูห้องเรียนในโรงเรียน
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `GET` /schools/<school_id>/rooms?\<query_parameters>
+**ถ้าไม่ใส่ ?\<query_params> คือเรียกทั้งหมด
+### Response
+`200` Get successfully
+```
+    Return rooms object that match the parameters
+```
+`404` Room does not exist
+```
+    Return none
+```
+## 5.3 ดู single room
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `GET` /schools/<school_id>/rooms/<room_id>
+`200` Get successfully
+```
+    Return single room object
+```
+`404` Room does not exist
+```
+    Return none
+```
+## 5.4 ลบห้องเรียนในโรงเรียน
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `DELETE` /schools/<school_id>/rooms/<room_id>
+### Response
+`204` Deleted
+```
+    Return none
+```
 
