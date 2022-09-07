@@ -211,6 +211,7 @@
         "school_id" : number,
         "course_name" : string,
         "type_id" : number,
+        "room_id" : number,
         "course_description" : string,
         "reserve_open_date" : string,
         "reserve_close_date" : string,
@@ -220,7 +221,7 @@
         "course_student" : number,
         "teachers_id" : [<account_id>,..],
         "payment_text" : string,
-        "payment_picture_url" : string
+        "payment_picture_url" : string,
     }
 ```
 ### Response
@@ -399,5 +400,6 @@ Example
 ```
     Return error messages
 ```
+## 4.5 
 
 
