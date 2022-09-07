@@ -69,7 +69,9 @@
         "name" : string,
         "description" : string,
         "address" : string,
-        "status" : string 
+        "status" : string,
+        "logo_url" : string,
+        "banner_url" : string 
     }
 ```
 # Endpoint 
@@ -262,10 +264,6 @@ Example
 ```
     Return error messages
 ```
-`403` No permission
-```
-    Return error messages
-```
 ## 3.5 แสดงครูทั้งหมดที่สอนในคอร์ส
 ### Permission : All users
 ### `GET` /courses/<course_id>/teachers
@@ -321,7 +319,7 @@ Example
 ```
     Return error message
 ```
-### 3.8 ลบครูที่สอนในคอร์ส
+## 3.8 ลบครูที่สอนในคอร์ส
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
 ### `DELETE` /courses/<course_id>/terchers
 ### Request 
@@ -345,5 +343,61 @@ Example
 ```
 ## **4. School**
 ## 4.1 สร้าง School
+### Permission : User ที่ login แล้วเท่านั้น หรือ System Admin
 ### `POST` /schools
+### Request
+```
+    {
+        "owner_id" : number,
+        "name" : string,
+        "description" : string,
+        "address" : string,
+        "logo_url" : string,
+        "banner_url" : string,
+        "school_type_id" : [<type_id>, . .]
+    }
+```
+### Response
+`201` Created
+```
+    Return newly created school object
+```
+## 4.2 เรียกดู single school
+### Permission : All users
+### `GET` /schools/<school_id>
+### Response
+`200` Get successfully
+```
+    Return single school object
+```
+## 4.3 ลบ School 
+### Permission : System Admin only
+### `DELETE` /schools/<school_id>
+### Response
+`204` Deleted
+```
+    Return none
+```
+## 4.4 แก้ไขข้อมูล school (ยกเว้น status)
+### Permission : Userที่loginแล้วและเป็นเจ้าของ school นั้น หรือ System Admin
+### `PUT` /schools/<school_id>
+### Request
+```
+    {
+        <update field> : <update value>,
+        .
+        .
+    
+    }
+```
+### Response
+`200` Update correctly
+```
+    Return single school object
+```
+`400`  Incorrect parameters
+```
+    Return error messages
+```
+
 
