@@ -6,23 +6,25 @@
 3. ส่งรายการ โรงเรียนหรือคอร์สตาม คำเสริชและ filter ไปที่หน้าค้นหา
 4. ดู/ลบ/แก้ไข  profile ของแต่ละ account
 5. สร้าง/ดู/ลบ/แก้ไข คอร์ส
-6. ดู/เพิ่ม/ลบ ครูที่สอนในคอร์ส
-7. สร้าง/ดู/ลบ/แก้ไข/โรงเรียน
-8. เพิ่ม/ดู/ลบ ครูในโรงเรียน
-9. ดูวันเวลาการใช้ห้องรายห้อง
-10. สร้างคำขอ
-11. ดูรายการคำขอ
-12. ยืนยัน/ปฏิเสธคำขอ
-13. จองคอร์ส
-14. ดูรายการจองทั้งหมดในแต่ละคอร์ส
-15. ยืนยัน/ปฏิเสธการจองคอร์ส
-16. ดึงรายการเรียนที่สมัครไว้ทั้งหมดรายบุคคล
-17. ดึงรายการสอนที่ต้องสอนทั้งหมดรายบุคคล
-18. ดึงวัน/เวลาที่เรียน/สอนทั้งหมดรายบุคคล
-19. ดึงรายการโรงเรียนที่เป็นสมาชิกรายบุคคล
-20. ดึงรายการโรงเรียนที่เป็นเจ้าของรายบุคคล
-21. แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
-22. แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน
+6. แสดงครูที่สอนในคอร์สหนึ่งๆทั้งหมด
+7. แสดงนักเรียนที่จองคอร์สทั้งหมด
+8. เพิ่ม/ลบ ครูที่สอนในคอร์สเรียน
+9. สร้าง/ดู/ลบ/แก้ไข/โรงเรียน
+10. เพิ่ม/ดู/ลบ ครูในโรงเรียน
+11. ดูวันเวลาการใช้ห้องรายห้อง
+12. สร้างคำขอ
+13. ดูรายการคำขอ
+14. ยืนยัน/ปฏิเสธคำขอ
+15. จองคอร์ส
+16. ดูรายการจองทั้งหมดในแต่ละคอร์ส
+17. ยืนยัน/ปฏิเสธการจองคอร์ส
+18. ดึงรายการเรียนที่สมัครไว้ทั้งหมดรายบุคคล
+19. ดึงรายการสอนที่ต้องสอนทั้งหมดรายบุคคล
+20. ดึงวัน/เวลาที่เรียน/สอนทั้งหมดรายบุคคล
+21. ดึงรายการโรงเรียนที่เป็นสมาชิกรายบุคคล
+22. ดึงรายการโรงเรียนที่เป็นเจ้าของรายบุคคล
+23. แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
+24. แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน 
 # Common Objects
 ## **1. User object**
 ```
@@ -59,12 +61,24 @@
         "is_delete" : boolean
     }
 ```
+## **3. School object**
+```
+    {
+        "school_id" : number,
+        "owner_id"  : number,
+        "name" : string,
+        "description" : string,
+        "address" : string,
+        "status" : string 
+    }
+```
 # Endpoint 
 - รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
 - ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
 ## **1. Account**
 
 ## 1.1 เรียกดูข้อมูลของ User
+### Permission : All users
 ### `GET` /users/<user_id>  
 ### Response  	
 `200` User exist
@@ -74,15 +88,32 @@
 `404` User not exist
 ```
     Return message “User not exist”
-```	
-## 1.2 ลบ User
+```
+## 1.2 เรียกดู Users ตามเงื่อนไข  
+### Permission : All users
+### `GET` /users?\<query parematers>
+### Response
+`200` Get successfully
+```
+    {
+        "metadata" : {
+             "count": number,
+             "offset" : number, 
+             "limit" : number
+        },
+        "results" : [All match school objects]
+    }
+```
+## 1.3 ลบ User
+### Permission : System admin only
 ### `DELETE` /users/<user_id>
 ### Response
 `204`  Deleted
 ``` 
 	Return none
 ```
-## 1.3 แก้ไข User 
+## 1.4 แก้ไข User 
+### Permission : Userที่ login แล้วและเป็นเจ้าของ หรือ System Admin
 ### `PUT` /users/<user_id>  
 ### Request Body 
 ```
@@ -113,20 +144,10 @@
 ```
     Return error messages
 ```
-
-## 1.4 เรียกดู User ทั้งหมด  
-### `GET` /users
-
-### Response
-
-`200` Get correctly
-```
-    Return all user objects
-```
-
 ---
 ## **2. Course & School Searching**
 ## 2.1 Search & Filter Courses
+### Permission : All users
 ### `GET` /courses?\<query paremeters>
 ### Example
 ```
@@ -145,6 +166,7 @@
     }
 ```
 ## 2.2 Search & Filter Schools
+### Permission : All users
 ### `GET` /schools?\<query paremeters>
 ### Example
 ```
@@ -166,6 +188,7 @@
 
 ## **3. Course**
 ## 3.1 ดูข้อมูลของแต่ละคอร์ส
+### Permission : All users
 ### `GET` /courses/<course_ id>?\<query parameters>
 
 ### Response
@@ -178,6 +201,7 @@
     Return message "Course not exist"
 ```
 ## 3.2 สร้างคอร์ส
+### Permission : User ที่ login แล้วและเป็นครูในโรงเรียนใดๆ
 ### `POST` /courses
 ### Request
 ```
@@ -203,6 +227,7 @@
     Return newly create course object
 ```
 ## 3.3 ลบคอร์ส
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin
 ### `DELETE` /courses/<course_id>
 ### Response
 `204` Course deleted
@@ -210,6 +235,7 @@
     Return deleted course object(which is_delate = true)
 ```
 ## 3.4 แก้ไขคอร์ส
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
 ### `PUT` /courses/<course_id>
 ### Request
 ```
@@ -240,15 +266,13 @@ Example
 ```
     Return error messages
 ```
-## 3.5 ดูครูทั้งหมดที่สอนในคอร์ส
+## 3.5 แสดงครูทั้งหมดที่สอนในคอร์ส
+### Permission : All users
 ### `GET` /courses/<course_id>/teachers
 ### Response
 `200` Get successfully
 ```
     {
-    	"metadata" : {
-	    "count" : number
-	},
         "teachers_id" : [
             <account_id>,
             .
@@ -261,3 +285,65 @@ Example
 ```
     Return none
 ```
+## 3.6 แสดงนักเรียนทั้งหมดที่จองคอร์ส
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin
+### `GET` /courses/<course_id>/students
+### Response
+`200` Get successfully
+```
+    {
+        "students_id" : [
+            <account_id>,
+            .
+            .
+        ]
+    }
+```
+## 3.7 เพิ่มครูที่สอนในคอร์ส (ถ้ามีอยู่แล้วไม่มีผล)
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
+### `PUT` /courses/<course_id>/teachers
+### Request
+```
+    {
+        "teachers_id" : [
+            <account_id>,
+            .
+            .
+        ] //list id ของ teacher ที่จะเพิ่ม
+    }
+```
+### Response
+`200` update successfully
+```
+    Same as GET /courses/<course_id>/teachers
+```
+`400` invalid update
+```
+    Return error message
+```
+### 3.8 ลบครูที่สอนในคอร์ส
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
+### `DELETE` /courses/<course_id>/terchers
+### Request 
+```
+    {
+        "teachers_id" : [
+            <account_id>,
+            .
+            .
+        ] //list id ของ teacher ที่จะลบ
+    }
+```
+### Response
+`200` update successfully
+```
+    Same as GET /courses/<course_id>/teachers
+```
+`400` invalid delete
+```
+    Return error message
+```
+## **4. School**
+## 4.1 สร้าง School
+### `POST` /schools
+
