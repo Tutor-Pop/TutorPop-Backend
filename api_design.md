@@ -84,6 +84,17 @@
         "maximum_seat" : number
     }
 ```
+## **5. Request object**
+```
+    {
+        "request_id" : number,
+        "account_id" : number,
+        "school_id" : number,
+        "document_url" : string,
+        "proof_of_payment_url" : string,
+        "request_status" : string
+    }
+```
 # Endpoint 
 - รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
 - ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
@@ -353,7 +364,7 @@ Example
     Return error message
 ```
 ## **4. School**
-## 4.1 สร้าง School
+## 4.1 สร้าง School 
 ### Permission : User ที่ login แล้วเท่านั้น หรือ System Admin
 ### `POST` /schools
 ### Request
@@ -509,5 +520,91 @@ Example
 ```
     Return none
 ```
+## 5.5 ดูเวลาการใช้ห้องรายห้อง
+### Permission :User ที่ loginแล้วและเป็นสมาชิกของโรงเรียนที่เป็นเจ้าของห้องนั้น หรือ System Admin
+### `GET` /rooms/<room_id>/usages
+### Response
+`200` Get sucessfully
+```
+    {
+        "count" : number,
+        "usages" :[
+            {"date" : string, "start_time" : string, "end_time" : string},
+            .
+            .
+            .
+        ] 
+    }
+```
+
+## **6. คำขอเปิดโรงเรียน**
+## 6.1 สร้างคำขอ(ต้องทำหลังสร้างโรงเรียนทันที)
+### Permission :User ที่ login แล้ว หรือ System Admin
+### `POST` /requests
+### Request
+```
+    {
+        "account_id" : number,
+        "school_id" : number,
+        "document_url" : string,
+        "proof_pay_ment_url" : string
+    }
+```
+### Response
+`201` Created
+```
+    Return newly created request object
+```
+## 6.2 เรียกดูคำขอเดียว
+### Permission : User ที่เป็นเจ้าของ Request นั้นๆ หรือ System admin
+### `GET` /requests/<request_id>
+### Response
+`200` Get sucessfully
+```
+    Return signle matched request
+```
+## 6.3 เรียกดูตำขอแบบใช้เงื่อนไข
+### Permission : System Admin เท่านั้น
+### `GET` /requests?\<query_parameters>
+`200` Get sucessfully
+### Response
+```
+    {
+        "count" : number,
+        "requests" : [
+            <matched request object>,
+            .
+            .
+            .
+        ]
+    }
+```
+## 6.4 ลบคำขอ
+### Permission : System Admin only
+### `DELETE` /requests/<request_id>
+`204` Deleted
+```
+    Return none
+```
+## 6.5 แก้ไขสถานะคำขอ
+### Permission : System Admin only
+### `PUT` /requests/<request_id>/request_status
+### Request
+```
+    {
+        "request_status" : string 
+    }
+```
+### Response
+`200` Update successfully
+```
+    Return updated request object
+```
+`404` request not exist
+```
+    Return none
+```
+
+
 
 
