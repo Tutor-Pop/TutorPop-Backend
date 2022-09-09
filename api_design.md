@@ -687,7 +687,7 @@ Example
         ]
     }
 ```
-### 8.2 ดึงรายการเรียนทั้งหมด(คอร์สที่จองและได้รับการยืนยันแล้ว)
+## 8.2 ดึงรายการเรียนทั้งหมด(คอร์สที่จองและได้รับการยืนยันแล้ว)
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
 ### `GET` /users/<user_id>/courses
 ### Response
@@ -702,7 +702,7 @@ Example
         ]
     }
 ```
-### 8.3 ดึงรายการสอนทั้งหมด
+## 8.3 ดึงรายการสอนทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
 ### `GET` /users/<user_id>/teachings
 ### Response
@@ -717,7 +717,7 @@ Example
         ]
     }
 ```
-### 8.4 ดึงวันเวลาที่เรียนสอนทั้งหมด
+## 8.4 ดึงวันเวลาที่เรียนสอนทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
 ### `GET` /users/<user_id>/times
 ### Response
@@ -738,7 +738,7 @@ Example
         ]
     }
 ```
-### 8.5 ดึงรายการโรงเรียนที่เป็นสมาชิกทั้งหมด
+## 8.5 ดึงรายการโรงเรียนที่เป็นสมาชิกทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
 ### `GET` /users/<user_id>/schools
 ### Response
