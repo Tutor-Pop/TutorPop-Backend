@@ -193,6 +193,15 @@
 ### Permission : All users
 ### `GET` /courses?\<query paremeters>
 ### Example
+
+### Query Parameter
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| type | STRING |None |
+| price_max |    INT   |   None |
+| offset | INT |    None |
+| limit | INT |    None |
+
 ```
     /courses?type=math&price_max=2000
 ```
