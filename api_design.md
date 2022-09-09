@@ -19,13 +19,14 @@
 - จองคอร์ส
 - ดูรายการจองทั้งหมดในแต่ละคอร์ส
 - ยืนยัน/ปฏิเสธการจองคอร์ส
+- ดึงรายการจองทั้งหมด
 - ดึงรายการเรียนที่สมัครไว้ทั้งหมดรายบุคคล
 - ดึงรายการสอนที่ต้องสอนทั้งหมดรายบุคคล
 - ดึงวัน/เวลาที่เรียน/สอนทั้งหมดรายบุคคล
 - ดึงรายการโรงเรียนที่เป็นสมาชิกรายบุคคล
 - ดึงรายการโรงเรียนที่เป็นเจ้าของรายบุคคล
-- แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
-- แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน 
+- ??แจ้งเตือนในเว็บ/เมลแก่เจ้าของคอร์สว่ามีคนจองคอร์ส
+- ??แจ้งเตือนในเว็บ/เมลเมื่อถึงเวลาเรียน 
 # Common Objects
 ## **1. User object**
 ```
@@ -93,6 +94,18 @@
         "document_url" : string,
         "proof_of_payment_url" : string,
         "request_status" : string
+    }
+```
+## **6. Reservation**
+```
+    {
+        reservation_id : number,
+        course_id : number,
+        account_id : number,
+        payment_url : string,
+        status : string,
+        reservation_datetime : string,
+        expire_datetime : string,
     }
 ```
 # Endpoint 
@@ -603,6 +616,156 @@ Example
 `404` request not exist
 ```
     Return none
+```
+## 7. **การจองคอร์ส**
+## 7.1 จองคอร์ส
+### Permission : User ที่ Login แล้ว
+### `POST` /reservations`
+## Request
+```
+    {
+        "course_id" : string,
+        "account_id" : string,
+        "payment_url" : string,
+    }
+```
+### Response
+`200` Reserve successfully
+```
+    Return newly create reservation object
+```
+## 7.2 ดูข้อมูลการจองทั้งหมดในคอร์ส
+### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin
+### `GET` /courses/<course_id>/reservations
+## Response
+`200` Get succesfully
+```
+    {
+        "reservations" : [
+            <reservation object>,
+            .
+            .
+            .
+        ]
+    }
+```
+## 7.3 เปลี่ยนสถานะการจองคอร์ส
+### Permission : User ที่ login แล้วและเป็นครูเจ้าของคอร์สนั้น
+### `PUT` /reservations/<reservation_id>/status
+## Request
+```
+    {
+        "reservation_status" : string
+    }
+```
+### Response
+`200` Updated
+```
+    Return updated reservation object
+```
+## 7.4 ลบการจองคอร์ส
+### Permission : System Admin only
+### `DELETE` /reservations/<reservation_id>
+## Response
+`204` Deleted
+```
+    Return none
+```
+## **8. Personal Management**
+## 8.1 ดึงรายการจองทั้งหมดของตนเอง
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
+### `GET` /users/<user_id>/reservations
+### Response
+`200` Get succesfully
+```
+    {
+        "reservations" : [
+            <reservation object>,
+            .
+            .
+            .
+        ]
+    }
+```
+### 8.2 ดึงรายการเรียนทั้งหมด(คอร์สที่จองและได้รับการยืนยันแล้ว)
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
+### `GET` /users/<user_id>/courses
+### Response
+`200` Get successfully
+```
+    {
+        "courses" : [
+            <course object>,
+            .
+            .
+            .
+        ]
+    }
+```
+### 8.3 ดึงรายการสอนทั้งหมด
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
+### `GET` /users/<user_id>/teachings
+### Response
+`200` Get sucessfully
+```
+    {
+        "courses" : [
+            <course object>,
+            .
+            .
+            .
+        ]
+    }
+```
+### 8.4 ดึงวันเวลาที่เรียนสอนทั้งหมด
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
+### `GET` /users/<user_id>/times
+### Response
+`200` Get successfully
+```
+    {
+        "teachings" : [
+            <study time object>,
+            .
+            .
+            .
+        ],
+        "studyings" : [
+            <study time object>,
+            .
+            .
+            .
+        ]
+    }
+```
+### 8.5 ดึงรายการโรงเรียนที่เป็นสมาชิกทั้งหมด
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
+### `GET` /users/<user_id>/schools
+### Response
+`200` Get successfully 
+```
+    {
+        "schools" : [
+            <school object>,
+            .
+            .
+            .
+        ]
+    }
+```
+## 8.6 ดีงรายการโรงเรียนที่เป็นเจ้าของทั้งหมด
+### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
+### `GET` /users/<user_id>/owners
+### Response
+```
+    {
+        "schools" : [
+            <school object>,
+            .
+            .
+            .
+        ]
+    }
 ```
 
 
