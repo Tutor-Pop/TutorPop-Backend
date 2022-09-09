@@ -108,6 +108,13 @@
         expire_datetime : string,
     }
 ```
+## **7. Study time object**
+```
+    "course_id" : number,
+    "day" : string,
+    "start_time" : string,
+    "end_time" : string
+```
 # Endpoint 
 - รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
 - ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
@@ -306,8 +313,8 @@ Example
 `200` Get successfully
 ```
     {
-        "teachers_id" : [
-            <account_id>,
+        "teachers" : [
+            <teachers>,
             .
             .
         ]
@@ -325,8 +332,8 @@ Example
 `200` Get successfully
 ```
     {
-        "students_id" : [
-            <account_id>,
+        "students" : [
+            <account object>,
             .
             .
         ]
@@ -441,7 +448,12 @@ Example
 `200` Get correctly
 ```
     {
-        teachers_id : [<account_id>, . . .]
+        "teachers" : [
+            <teacher object>, 
+            . 
+            . 
+            .
+        ]
     }
 ```
 ** กรณีไม่มี teacher เลยจะ return list ว่าง<br>
@@ -456,7 +468,12 @@ Example
 ```
     //list of teachers_id that want to add
     {
-        teachers_id : [<account_id>, . . .]    
+        "teachers" : [
+            <teacher object>,
+            . 
+            . 
+            .
+        ]    
     }
 ```
 ### Response
@@ -470,7 +487,12 @@ Example
 ### Request 
 ```
     {
-        "teachers_id" : [<account_id>, . . .] 
+        "teachers" : [
+            <teacher object>,
+            . 
+            . 
+            .
+        ] 
     }
 ```
 ### Response
@@ -508,7 +530,7 @@ Example
 ### Response
 `200` Get successfully
 ```
-    Return rooms object that match the parameters
+    Return list of rooms object that match the parameters
 ```
 `404` Room does not exist
 ```
