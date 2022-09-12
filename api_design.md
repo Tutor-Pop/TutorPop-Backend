@@ -135,6 +135,8 @@
 ## 1.2 เรียกดู Users ตามเงื่อนไข  
 ### Permission : All users
 ### `GET` /users?\<query parematers>
+### Query Parameters
+    All account object attributes except password,picture_url and description
 ### Response
 `200` Get successfully
 ```
@@ -192,9 +194,22 @@
 ## 2.1 Search & Filter Courses
 ### Permission : All users
 ### `GET` /courses?\<query paremeters>
+### Query parameters
+    - course_name 
+    - course_id
+    - school_id
+    - type
+    - course_price
+    - max_price
+    - min_price
+    - max_student
+    - start_date (yyyy-mm-dd)
+    - end_date (yyyy-mm-dd)
+    - is_deleted (default=False)
+    - course_period (in hours)
 ### Example
 ```
-    /courses?type=math&price_max=2000
+    /courses?type=math&max_price=2000
 ```
 ### Response
 `200` Search successfully
@@ -211,6 +226,11 @@
 ## 2.2 Search & Filter Schools
 ### Permission : All users
 ### `GET` /schools?\<query paremeters>
+### Query Parameters
+    - school_name
+    - school_id
+    - type
+    - address***(need revision)
 ### Example
 ```
     /schools?name=Hogwarts&type=Magic_school
@@ -527,6 +547,9 @@ Example
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `GET` /schools/<school_id>/rooms?\<query_parameters>
 **ถ้าไม่ใส่ ?\<query_params> คือเรียกทั้งหมด
+### Query Parameters
+    - max_seat
+    - available_in (yyyy-mm-dd_xx:yy_to_yyyy-mm-dd_xx:yy) **
 ### Response
 `200` Get successfully
 ```
@@ -601,6 +624,11 @@ Example
 ## 6.3 เรียกดูตำขอแบบใช้เงื่อนไข
 ### Permission : System Admin เท่านั้น
 ### `GET` /requests?\<query_parameters>
+### Query Parameters
+    - request_id
+    - account_id
+    - school_id
+    - request_status
 `200` Get sucessfully
 ### Response
 ```
