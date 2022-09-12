@@ -136,7 +136,13 @@
 ### Permission : All users
 ### `GET` /users?\<query parematers>
 ### Query Parameters
-    All account object attributes except password,picture_url and description
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| user_id | NUMBER | None |
+| is_verified | BOOLEAN | *True* |
+| user_status | STRING | None |
+| year_of_birth | NUMBER | None |
+
 ### Response
 `200` Get successfully
 ```
@@ -146,7 +152,7 @@
              "offset" : number, 
              "limit" : number
         },
-        "results" : [All match school objects]
+        "results" : [All match account objects]
     }
 ```
 ## 1.3 ลบ User
@@ -194,29 +200,22 @@
 ## 2.1 Search & Filter Courses
 ### Permission : All users
 ### `GET` /courses?\<query paremeters>
-### Query parameters
-    - course_name 
-    - course_id
-    - school_id
-    - type
-    - course_price
-    - max_price
-    - min_price
-    - max_student
-    - start_date (yyyy-mm-dd)
-    - end_date (yyyy-mm-dd)
-    - is_deleted (default=False)
-    - course_period (in hours)
-### Example
-
-### Query Parameter
+### Query Parameters
 | Query   |      Type      |  Default |
 |---------|-------------|------|
 | type | STRING |None |
-| price_max |    INT   |   None |
-| offset | INT |    None |
-| limit | INT |    None |
+| course_name | STRING | None |
+| course_id | NUMBER | None |
+| school_id| NUMBER| None|
+| max_price |    NUMBER   |   None |
+| max_student | NUMBER| None|
+| start_date | STRING | None|
+| end_date | STRING | None |
+| is_deleted | BOOLEAN | *False* |
+| offset | NUMBER |    None |
+| limit | NUMBER |    None |
 
+### Example
 ```
     /courses?type=math&max_price=2000
 ```
@@ -236,10 +235,14 @@
 ### Permission : All users
 ### `GET` /schools?\<query paremeters>
 ### Query Parameters
-    - school_name
-    - school_id
-    - type
-    - address***(need revision)
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| school_name | STRING | None |
+| school_id | NUMBER | None |
+| type | STRING | None |
+| address** | STRING | None |
+| offset | NUMBER | None |
+| limit | NUMBER | None | 
 ### Example
 ```
     /schools?name=Hogwarts&type=Magic_school
@@ -261,8 +264,7 @@
 ## **3. Course**
 ## 3.1 ดูข้อมูลของแต่ละคอร์ส
 ### Permission : All users
-### `GET` /courses/<course_ id>?\<query parameters>
-
+### `GET` /courses/<course_ id>
 ### Response
 `200` Course exist
 ```
@@ -557,8 +559,11 @@ Example
 ### `GET` /schools/<school_id>/rooms?\<query_parameters>
 **ถ้าไม่ใส่ ?\<query_params> คือเรียกทั้งหมด
 ### Query Parameters
-    - max_seat
-    - available_in (yyyy-mm-dd_xx:yy_to_yyyy-mm-dd_xx:yy) **
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| max_seat | NUMBER | None |
+| available_in | [DATETIME,DATETIME] | None |
+
 ### Response
 `200` Get successfully
 ```
@@ -634,10 +639,13 @@ Example
 ### Permission : System Admin เท่านั้น
 ### `GET` /requests?\<query_parameters>
 ### Query Parameters
-    - request_id
-    - account_id
-    - school_id
-    - request_status
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| request_id | NUMBER | None |
+| accound_id | NUMBER | None |
+| school_id | NUMBER | None |
+| request_status | STRING | None |
+
 `200` Get sucessfully
 ### Response
 ```
