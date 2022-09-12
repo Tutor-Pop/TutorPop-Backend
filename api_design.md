@@ -784,7 +784,7 @@ Example
         ]
     }
 ```
-## 8.6 ดีงรายการโรงเรียนที่เป็นเจ้าของทั้งหมด
+## 8.6 ดึงรายการโรงเรียนที่เป็นเจ้าของทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
 ### `GET` /users/<user_id>/owners
 ### Response
