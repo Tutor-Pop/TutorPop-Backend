@@ -208,6 +208,15 @@
     - is_deleted (default=False)
     - course_period (in hours)
 ### Example
+
+### Query Parameter
+| Query   |      Type      |  Default |
+|---------|-------------|------|
+| type | STRING |None |
+| price_max |    INT   |   None |
+| offset | INT |    None |
+| limit | INT |    None |
+
 ```
     /courses?type=math&max_price=2000
 ```
