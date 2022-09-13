@@ -92,3 +92,29 @@ class School(models.Model):
 #     study_date = models.DateField(blank=True,default=None)
 #     start_time = models.DateTimeField(blank=True,default=None)
 #     end_time = models.DateTimeField(blank=True,default=None)
+class OpenRequests(models.model):
+    request_id = models.AutoField(primary_key=True)
+    account = models.ForeignKey()
+    school = models.ForeignKey()
+    document_url = models.CharField(max_length=1000,default=None)
+    requese_timestamp = models.DateTimeField(default=None)
+    proof_of_payment_ur = models.CharField(max_length=1000,default=None)
+    requesst_status = models.CharField(max_length=10,default=None)
+
+class SchoolWithType(models.model):
+    type = models.ForeignKey()
+    school = models.ForeignKey()
+
+class SchoolTypes(models.model):
+    type_id = models.AutoField(primary_key=True)
+    type_name = models.CharField(max_length=50,default=None)
+
+class SchoolRooms(models.model):
+    room_id = models.AutoField(primary_key=True)
+    school = models.ForeignKey()
+    room_name = models.CharField(max_length=100,default=None)
+    maximum_seat = models.IntegerField(default=None)
+
+class RoomUsage(models.model):
+    room = models.ForeignKey()
+    course = models.ForeignKey()
