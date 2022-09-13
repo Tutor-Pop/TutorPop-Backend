@@ -39,28 +39,28 @@ class Teacher(models.Model):
 
 class Reservation(models.Model):
     id = models.AutoField(primary_key=True)
-    course_id = models.ForeignKey()
-    account_id = models.ForeignKey()
+    course = models.ForeignKey()
+    account = models.ForeignKey()
     payment_url = models.CharField(max_length=1000,blank=True,default=None)
     status = models.CharField(max_length=10,default=None)
     expire_datetime = models.DateTimeField()
     reservation_datetime = models.DateTimeField()
 
 class CourseHistory(models.Model):
-    course_id = models.ForeignKey()
-    account_id = models.ForeignKey()
+    course = models.ForeignKey()
+    account = models.ForeignKey()
 
 class CourseType(models.Model):
     type_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50,default=None)
 
 class FavCourse(models.Model):
-    account_id = models.ForeignKey()
-    course_id = models.ForeignKey()
+    account = models.ForeignKey()
+    course = models.ForeignKey()
 
 class CourseTeacher(models.Model):
-    course_id = models.ForeignKey()
-    account_id = models.ForeignKey()
+    course = models.ForeignKey()
+    account = models.ForeignKey()
 
 class Courses(models.Model):
     course_id = models.AutoField(primary_key=True)
