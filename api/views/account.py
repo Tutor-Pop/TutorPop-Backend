@@ -35,19 +35,43 @@ def register(request):
 
 @api_view([GET])
 def get_all_accounts(request):
-    result = JSONParser(Account.objects.all())
-    return Response({"count":len(result),"data":result})
+    result = JSONParser(Account.objects.filter(is_deleted=False).order_by("account_id"))
 
-@api_view([GET])
-def get_account(request,id:int):
-    try:
-        result = JSONParserOne(Account.objects.get(account_id=id))
-        return Response({"data":result})
-    except Account.DoesNotExist:
-        return Response({"message":"Account doesn't exist!"})
+    offset = 0
+    limit = len(result)
+
+    query = dict(request.query_params)
+
+    if 'offset' in query and len(query['offset']) != 0:
+        offset = int(query['offset'][0])
+    if 'limit' in query and len(query['limit']) != 0:
+        limit = int(query['limit'][0])
+    
+    total = limit - offset
+
+    return Response({"offset":offset,"limit":limit,"count":total,"data":result[offset:limit]})
+
+@api_view([GET,DELETE])
+def get_delete_account(request,id:int):
+    if request.method == GET:
+        try:
+            result = JSONParserOne(Account.objects.get(account_id=id))
+            return Response({"data":result})
+        except Account.DoesNotExist:
+            return Response({"message":"Account doesn't exist!"})
+    elif request.method == DELETE:
+        try:
+            account = Account.objects.get(account_id=id)
+            account.is_deleted = True
+            account.save()
+            return Response(f"{account.username} has been deleted!")
+        except:
+            return Response("Account not found!")
 
 @api_view([PUT])
 def change_password(request,id:int):
+    if request.data['password'] in [i.password for i in PasswordHistory.objects.filter(account_id=id)]:
+        return Response("Try another password!")
     account = Account.objects.get(account_id=id)
     account.password = request.data['password']
     account.save()
@@ -57,8 +81,9 @@ def change_password(request,id:int):
 
 @api_view([POST])
 def create_school(request,id:int):
-    account = Account.objects.filter(account_id=id)
+    account = Account.objects.get(account_id=id)
     school = School(
+        owner_id = account,
         name = request.data['name'],
         description = request.data['description'],
         address = request.data['address'],
@@ -67,5 +92,4 @@ def create_school(request,id:int):
         banner_url = request.data['banner_url']
     )
     school.save()
-    school.owner_id.set(account)
     return Response("School created successfully")
