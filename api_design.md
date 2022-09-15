@@ -99,28 +99,30 @@
 ## **6. Reservation**
 ```
     {
-        reservation_id : number,
-        course_id : number,
-        account_id : number,
-        payment_url : string,
-        status : string,
-        reservation_datetime : string,
-        expire_datetime : string,
+        "reservation_id" : number,
+        "course_id" : number,
+        "account_id" : number,
+        "payment_url" : string,
+        "status" : string,
+        "reservation_datetime" : string,
+        "expire_datetime" : string,
     }
 ```
 ## **7. Study time object**
 ```
-    "course_id" : number,
-    "day" : string,
-    "start_time" : string,
-    "end_time" : string
+    {
+        "course_id" : number,
+        "day" : string,
+        "start_time" : string,
+        "end_time" : string
+    }
 ```
 # Endpoint 
 - รูปแบบอื่นที่ไม่ได้กำหนดเฉพาะให้เป็น Response เป็น default errorทั้งหมด
 - ทุก Reponse จะมี `status code` คืนมาเป็น Field แรกทั้งหมด
 ## **1. Account**
 
-## 1.1 เรียกดูข้อมูลของ User
+## 1.1 เรียกดูข้อมูลของ Account
 ### Permission : All users
 ### `GET` /users/<user_id>  
 ### Response  	
