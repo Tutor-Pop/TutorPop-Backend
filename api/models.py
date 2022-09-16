@@ -20,12 +20,12 @@ class Account(models.Model):
     is_deleted = models.BooleanField(default=False)
 
 class PasswordHistory(models.Model):
-    account_id = models.ForeignKey(Account,on_delete=models.CASCADE)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
     password = models.CharField(max_length=128,default=None)
 
 class School(models.Model):
     school_id = models.AutoField(primary_key=True)
-    owner_id = models.ForeignKey(Account,on_delete=models.CASCADE,default=1) # เดี๋ยวต้องแก้
+    owner = models.ForeignKey(Account,on_delete=models.CASCADE,default=1) # เดี๋ยวต้องแก้
     name = models.CharField(max_length=100,default=None)
     description = models.CharField(max_length=300,default=None)
     address = models.CharField(max_length=100,default=None)
@@ -34,88 +34,88 @@ class School(models.Model):
     banner_url = models.CharField(max_length=1000,default=None)
 
 class Teacher(models.Model):
-    account_id = models.ForeignKey(Account,on_delete=models.CASCADE)
-    school_id = models.ForeignKey(School,on_delete=models.CASCADE)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
 
-# class Reservation(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     course = models.ForeignKey()
-#     account = models.ForeignKey()
-#     payment_url = models.CharField(max_length=1000,blank=True,default=None)
-#     status = models.CharField(max_length=10,default=None)
-#     expire_datetime = models.DateTimeField()
-#     reservation_datetime = models.DateTimeField()
+class Courses(models.Model):
+    course_id = models.AutoField(primary_key=True)
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
+    owner = models.ForeignKey(Account,on_delete=models.CASCADE)
+    course_name = models.CharField(max_length=100,default=None)
+    type_id = models.CharField(max_length=100,default=None)
+    course_description = models.CharField(max_length=300,default=None)
+    reserve_open_date = models.DateTimeField(default=None)
+    reserve_close_date = models.DateTimeField(default=None)
+    start_date = models.DateTimeField(default=None)
+    end_date = models.DateTimeField(default=None)
+    course_period = models.IntegerField(default=None)
+    course_price = models.FloatField(default=None)
+    maximum_student = models.IntegerField(default=None)
+    reserved_student = models.IntegerField(default=None)
+    payment_method_text = models.CharField(blank=True,max_length=1000,default=None)
+    payment_method_picture_url = models.CharField(blank=True,max_length=1000,default=None)
+    is_deleted = models.BooleanField(default=False)
 
-# class CourseHistory(models.Model):
-#     course = models.ForeignKey()
-#     account = models.ForeignKey()
+class Reservation(models.Model):
+    id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
+    payment_url = models.CharField(max_length=1000,blank=True,default=None)
+    status = models.CharField(max_length=10,default=None)
+    expire_datetime = models.DateTimeField()
+    reservation_datetime = models.DateTimeField()
 
-# class CourseType(models.Model):
-#     type_id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=50,default=None)
+class CourseHistory(models.Model):
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
 
-# class FavCourse(models.Model):
-#     account = models.ForeignKey()
-#     course = models.ForeignKey()
+class CourseType(models.Model):
+    type_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50,default=None)
 
-# class CourseTeacher(models.Model):
-#     course = models.ForeignKey()
-#     account = models.ForeignKey()
+class FavCourse(models.Model):
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
 
-# class Courses(models.Model):
-#     course_id = models.AutoField(primary_key=True)
-#     school = models.ForeignKey()
-#     owner = models.ForeignKey()
-#     course_name = models.CharField(max_length=100,default=None)
-#     type_id = models.CharField(max_length=100,default=None)
-#     course_description = models.CharField(max_length=300,default=None)
-#     reserve_open_date = models.DateTimeField(default=None)
-#     reserve_close_date = models.DateTimeField(default=None)
-#     start_date = models.DateTimeField(default=None)
-#     end_date = models.DateTimeField(default=None)
-#     course_period = models.IntegerField(default=None)
-#     course_price = models.FloatField(default=None)
-#     maximum_student = models.IntegerField(default=None)
-#     reserved_student = models.IntegerField(default=None)
-#     payment_method_text = models.CharField(blank=True,max_length=1000,default=None)
-#     payment_method_picture_url = models.CharField(blank=True,max_length=1000,default=None)
-#     is_deleted = models.BooleanField(default=False)
+class CourseTeacher(models.Model):
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
     
-# class StudyTime(models.Model):
-#     course = models.ForeignKey()
-#     day = models.CharField(max_length=3,default=None)
-#     start_time = models.DateTimeField(blank=True,default=None)
-#     end_time = models.DateTimeField(blank=True,default=None)
+class StudyTime(models.Model):
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
+    day = models.CharField(max_length=3,default=None)
+    start_time = models.DateTimeField(blank=True,default=None)
+    end_time = models.DateTimeField(blank=True,default=None)
     
-# class StudyTimeRecords(models.Model):
-#     course = models.ForeignKey()
-#     study_date = models.DateField(blank=True,default=None)
-#     start_time = models.DateTimeField(blank=True,default=None)
-#     end_time = models.DateTimeField(blank=True,default=None)
+class StudyTimeRecords(models.Model):
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)
+    study_date = models.DateField(blank=True,default=None)
+    start_time = models.DateTimeField(blank=True,default=None)
+    end_time = models.DateTimeField(blank=True,default=None)
 
-# class OpenRequests(models.model):
-#     request_id = models.AutoField(primary_key=True)
-#     account = models.ForeignKey()
-#     school = models.ForeignKey()
-#     document_url = models.CharField(max_length=1000,default=None)
-#     requese_timestamp = models.DateTimeField(default=None)
-#     proof_of_payment_ur = models.CharField(max_length=1000,default=None)
-#     requesst_status = models.CharField(max_length=10,default=None)
+class OpenRequests(models.Model):
+    request_id = models.AutoField(primary_key=True)
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
+    document_url = models.CharField(max_length=1000,default=None)
+    requese_timestamp = models.DateTimeField(default=None)
+    proof_of_payment_ur = models.CharField(max_length=1000,default=None)
+    requesst_status = models.CharField(max_length=10,default=None)
 
-# class SchoolWithType(models.model):
-#     type = models.ForeignKey()
-#     school = models.ForeignKey()
+class SchoolTypes(models.Model):
+    type_id = models.AutoField(primary_key=True)
+    type_name = models.CharField(max_length=50,default=None)
 
-# class SchoolTypes(models.model):
-#     type_id = models.AutoField(primary_key=True)
-#     type_name = models.CharField(max_length=50,default=None)
+class SchoolWithType(models.Model):
+    type = models.ForeignKey(SchoolTypes,on_delete=models.CASCADE)
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
 
-# class SchoolRooms(models.model):
-#     room_id = models.AutoField(primary_key=True)
-#     school = models.ForeignKey()
-#     room_name = models.CharField(max_length=100,default=None)
-#     maximum_seat = models.IntegerField(default=None)
+class SchoolRooms(models.Model):
+    room_id = models.AutoField(primary_key=True)
+    school = models.ForeignKey(School,on_delete=models.CASCADE)
+    room_name = models.CharField(max_length=100,default=None)
+    maximum_seat = models.IntegerField(default=None)
 
-# class RoomUsage(models.model):
-#     room = models.ForeignKey()
-#     course = models.ForeignKey()
+class RoomUsage(models.Model):
+    room = models.ForeignKey(SchoolRooms,on_delete=models.CASCADE)
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE)

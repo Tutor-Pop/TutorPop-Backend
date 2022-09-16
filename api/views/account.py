@@ -21,11 +21,11 @@ def register(request):
             description=request.data['description'],
             is_verified=request.data['is_verified'],
             profile_picture=request.data['profile_picture'],
-            user_status=request.data['user_status']
+            is_deleted=False
         )
         account.save()
         passwordHistory = PasswordHistory(
-            account_id = account,
+            account = account,
             password = request.data['password']
         )
         passwordHistory.save()
@@ -83,7 +83,7 @@ def change_password(request,id:int):
 def create_school(request,id:int):
     account = Account.objects.get(account_id=id)
     school = School(
-        owner_id = account,
+        owner = account,
         name = request.data['name'],
         description = request.data['description'],
         address = request.data['address'],
