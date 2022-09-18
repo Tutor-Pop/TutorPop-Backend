@@ -2,7 +2,7 @@ from base64 import encode
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import hashlib
-from .constants.method import GET,POST,PUT,DELETE
+from ..constants.method import GET,POST,PUT,DELETE
 
 account = {}
 cookie = {}

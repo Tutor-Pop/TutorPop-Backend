@@ -1,9 +1,8 @@
 from django.urls import path
-from . import false_views
-from .views import account
+from .views import test,account
 
 urlpatterns = [
-    path('',false_views.getData),
+    #--- 1. Account ---#
     path('register',account.register),
     path('account',account.get_all_accounts),
     path('account/<int:id>',account.get_edit_delete_account),

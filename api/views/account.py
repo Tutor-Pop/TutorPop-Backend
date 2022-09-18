@@ -1,4 +1,4 @@
-from ..constants.utility import JSONParser, JSONParserOne, passwordEncryption
+from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
