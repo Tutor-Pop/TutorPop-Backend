@@ -1,52 +1,34 @@
+from xmlrpc.client import Boolean
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
 from ..models import Account,PasswordHistory,School
-import django.db.utils
-
-@api_view([POST])
-def register(request):
-    try:
-        account = Account(
-            firstname=request.data['firstname'],
-            lastname=request.data['lastname'],
-            username=request.data['username'],
-            password=passwordEncryption(request.data['password']),
-            email=request.data['email'],
-            year_of_birth=request.data['year_of_birth'],
-            description=request.data['description'],
-            is_verified=False,
-            profile_picture="",
-            is_deleted=False
-        )
-        account.save()
-        passwordHistory = PasswordHistory(
-            account = account,
-            password = passwordEncryption(request.data['password'])
-        )
-        passwordHistory.save()
-        return Response("Registration Completed!")
-    except django.db.utils.IntegrityError:
-        return Response("Email/Username already existed!")
 
 @api_view([GET])
 def get_all_accounts(request):
-    result = JSONParser(Account.objects.filter(is_deleted=False).order_by("account_id"))
     
-    offset = 0
-    limit = len(result)
+    offset = int(request.GET.get('offset',0))
+    limit = int(request.GET.get('limit',-1))
+    user_id = int(request.GET.get('user_id',0))
+    is_verified = request.GET.get('is_verified',1) == 1
+    year_of_birth = int(request.GET.get('year_of_birth',0))
 
-    query = dict(request.query_params)
+    print(is_verified)
 
-    if 'offset' in query and len(query['offset']) != 0:
-        offset = int(query['offset'][0])
-    if 'limit' in query and len(query['limit']) != 0:
-        limit = int(query['limit'][0])
-    
+    result = JSONParser(Account.objects.filter(
+        is_deleted=False,
+        # account_id=user_id,
+        is_verified=is_verified,
+        # year_of_birth=year_of_birth
+    ).order_by("account_id"))
+
+    if limit == -1:
+        limit = len(result)
     #--- Lowerbound cannot be greater than Upperbound ---#
     if offset > limit:
         return Response({"message":"Offset value cannot be greater than limit value"})
+    
 
     
     total = limit - offset
