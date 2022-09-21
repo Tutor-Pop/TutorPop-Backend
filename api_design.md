@@ -563,7 +563,7 @@ Example
 ## **5. Rooms**
 ## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
-### `PUT` /schools/<school_id>/rooms
+### `PUT` /schools/<school_id>/rooms/<room_id>
 ### Request
 ```
     {
