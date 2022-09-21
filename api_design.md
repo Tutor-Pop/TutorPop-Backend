@@ -561,9 +561,9 @@ Example
     Return error message
 ```
 ## **5. Rooms**
-## 5.1 สร้างห้องเรียนในโรงเรียน
-### Permission : User ที่ Login แล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
-### `POST` /schools/<school_id>
+## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `PUT` /schools/<school_id>/rooms/<room_id>
 ### Request
 ```
     {
