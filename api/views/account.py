@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
 from ..models import Account,PasswordHistory,School
+from rest_framework import status
 
 @api_view([GET])
 def get_all_accounts(request):
@@ -33,7 +34,7 @@ def get_edit_delete_account(request,id:int):
             result = JSONParserOne(Account.objects.get(account_id=id))
             return Response({"data":result})
         except Account.DoesNotExist:
-            return Response({"message":"Account doesn't exist!"})
+            return Response({"message":"Account doesn't exist!"},status=status.HTTP_404_NOT_FOUND)
     elif request.method == PUT:
         try:
             account = Account.objects.get(account_id=id)
@@ -78,3 +79,5 @@ def create_school(request,id:int):
     )
     school.save()
     return Response("School created successfully")
+
+
