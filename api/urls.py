@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import auth,account,test
+from .views import auth,account,room,test
 
 urlpatterns = [
     #--- Authentication ---#
@@ -9,7 +9,10 @@ urlpatterns = [
     path('account/<int:id>',account.get_edit_delete_account),
     path('account/<int:id>/password',account.change_password),
     path('account/<int:id>/school',account.create_school),
-
+    #--- 5. Room ---#
+    path('school/<int:school_id>/room',room.get_create_update_room),
+    
+    #--- Demo ---#
     path('test',test.get_acounts),
     path('test/<int:id>/edit',test.edit_account),
 ]
