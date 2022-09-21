@@ -1,4 +1,3 @@
-from xmlrpc.client import Boolean
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -10,29 +9,21 @@ def get_all_accounts(request):
     
     offset = int(request.GET.get('offset',0))
     limit = int(request.GET.get('limit',-1))
-    user_id = int(request.GET.get('user_id',0))
-    is_verified = request.GET.get('is_verified',1) == 1
-    year_of_birth = int(request.GET.get('year_of_birth',0))
+    account_id = int(request.GET.get('account_id',-1))
+    is_verified = int(request.GET.get('is_verified',1)) == 1
+    year_of_birth = int(request.GET.get('year_of_birth',-1))
 
-    print(is_verified)
+    print("Query",offset,limit,account_id,is_verified,year_of_birth)
 
-    result = JSONParser(Account.objects.filter(
-        is_deleted=False,
-        # account_id=user_id,
-        is_verified=is_verified,
-        # year_of_birth=year_of_birth
-    ).order_by("account_id"))
+    account = Account.objects.filter(is_deleted=False,is_verified=is_verified)
 
-    if limit == -1:
-        limit = len(result)
-    #--- Lowerbound cannot be greater than Upperbound ---#
-    if offset > limit:
-        return Response({"message":"Offset value cannot be greater than limit value"})
-    
-
+    if account_id != -1:      account = account.filter(account_id=account_id)
+    if year_of_birth != -1:   account = account.filter(year_of_birth=year_of_birth)
+    if limit == -1:           limit = len(account)
+    if offset > limit:        return Response({"message":"Offset value cannot be greater than limit value"})
     
     total = limit - offset
-
+    result = JSONParser(account.order_by("account_id"))
     return Response({"offset":offset,"limit":limit,"count":total,"data":result[offset:limit]})
 
 @api_view([GET,PUT,DELETE])

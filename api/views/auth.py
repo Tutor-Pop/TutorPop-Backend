@@ -8,17 +8,18 @@ import django.db.utils
 @api_view([POST])
 def register(request):
     try:
-        ePassword = passwordEncryption(request.POST.get('password',""))
+        ePassword = passwordEncryption(request.data['password'])
+        print(request.POST.get('username',"No Name"))
         account = Account(
-            firstname = request.POST.get('firstname',""),
-            lastname = request.POST.get('lastname',""),
-            username = request.POST.get('username',""),
+            firstname = request.data["firstname"],
+            lastname = request.data["lastname"],
+            username = request.data["username"],
             password = ePassword,
-            email = request.POST.get('email',""),
-            year_of_birth = request.POST.get('year_of_birth',""),
-            description = request.POST.get('description',""),
-            is_verified = False,
+            email = request.data["email"],
+            year_of_birth = request.data["year_of_birth"],
+            description = request.data["description"],
             profile_picture = "",
+            is_verified = False,
             is_deleted = False
         )
         account.save()
