@@ -54,7 +54,7 @@
 ## **1. Account object**
 ```
     {
-        "user_id" : number,
+        "account_id" : number,
         "username" : string,
         "firstname" : string,
         "lastname" : string,
@@ -147,19 +147,19 @@
 
 ## 1.1 เรียกดูข้อมูลของ Account
 ### Permission : All users
-### `GET` /users/<user_id>  
+### `GET` /account/\<id>  
 ### Response  	
-`200` User exist
+`200` Account exist
 ```
-    Return single user object
+    Return single Account object
 ```
-`404` User not exist
+`404` Account not exist
 ```
-    Return message “User not exist”
+    Return message "Account not exist"
 ```
 ## 1.2 เรียกดู Accounts ตามเงื่อนไข  
 ### Permission : All users
-### `GET` /users?\<query parematers>
+### `GET` /accounts?\<query parematers>
 ### Query Parameters
 | Query   |      Type      |  Default |
 |---------|-------------|------|
@@ -182,15 +182,15 @@
 ```
 ## 1.3 ลบ Account
 ### Permission : System admin only
-### `DELETE` /users/<user_id>
+### `DELETE` /account/\<id>
 ### Response
 `204`  Deleted
 ``` 
 	Return none
 ```
 ## 1.4 แก้ไข Account 
-### Permission : Userที่ login แล้วและเป็นเจ้าของ หรือ System Admin
-### `PUT` /users/<user_id>  
+### Permission : User ที่ login แล้วและเป็นเจ้าของ หรือ System Admin
+### `PUT` /account/\<id> 
 ### Request Body 
 ```
     {
@@ -210,7 +210,7 @@
 `200` Update correctly
 
 ```
-    Return user object
+    Return Account object
 ```
 `400` Incorrect parameters
 ```
