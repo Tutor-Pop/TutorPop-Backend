@@ -21,18 +21,18 @@ def get_all_accounts(request):
     if account_id != -1:      account = account.filter(account_id=account_id)
     if year_of_birth != -1:   account = account.filter(year_of_birth=year_of_birth)
     if limit == -1:           limit = len(account)
-    if offset > limit:        return Response({"message":"Offset value cannot be greater than limit value"})
+    if offset > limit:        return Response({"message":"Offset value cannot be greater than limit value"},status=status.HTTP_406_NOT_ACCEPTABLE)
     
     total = limit - offset
     result = JSONParser(account.order_by("account_id"))
-    return Response({"offset":offset,"limit":limit,"count":total,"data":result[offset:limit]})
+    return Response({"offset":offset,"limit":limit,"count":total,"result":result[offset:limit]},status=status.HTTP_200_OK)
 
 @api_view([GET,PUT,DELETE])
 def get_edit_delete_account(request,id:int):
     if request.method == GET:
         try:
             result = JSONParserOne(Account.objects.get(account_id=id))
-            return Response({"data":result})
+            return Response({"result":result})
         except Account.DoesNotExist:
             return Response({"message":"Account doesn't exist!"},status=status.HTTP_404_NOT_FOUND)
     elif request.method == PUT:
@@ -42,7 +42,7 @@ def get_edit_delete_account(request,id:int):
                 if hasattr(account,data):
                     setattr(account,data,request.data[data])
             account.save()
-            return Response({"data": JSONParserOne(account)})
+            return Response({"result": JSONParserOne(account)},status=status.HTTP_200_OK)
         except:
             pass
     elif request.method == DELETE:
@@ -50,20 +50,20 @@ def get_edit_delete_account(request,id:int):
             account = Account.objects.get(account_id=id)
             account.is_deleted = True
             account.save()
-            return Response(f"{account.username} has been deleted!")
+            return Response({"result": JSONParserOne(account)},status=status.HTTP_200_OK)
         except:
-            return Response("Account not found!")
+            return Response({"message":"Account not found!"},status=status.HTTP_404_NOT_FOUND)
 
 @api_view([PUT])
 def change_password(request,id:int):
     if passwordEncryption(request.data['password']) in [i.password for i in PasswordHistory.objects.filter(account_id=id)]:
-        return Response("Try another password!")
+        return Response({'message':"Try another password!"},status=status.HTTP_406_NOT_ACCEPTABLE)
     account = Account.objects.get(account_id=id)
     account.password = passwordEncryption(request.data['password'])
     account.save()
     passwordHistory = PasswordHistory(account_id=account,password=passwordEncryption(request.data['password']))
     passwordHistory.save()
-    return Response({"message": f"{account.username} password has been changed!"})
+    return Response({"result": JSONParserOne(passwordHistory)},status=status.HTTP_200_OK)
 
 @api_view([POST])
 def create_school(request,id:int):
@@ -78,6 +78,6 @@ def create_school(request,id:int):
         banner_url = request.data['banner_url']
     )
     school.save()
-    return Response("School created successfully")
+    return Response({"message":"School created successfully","result":JSONParserOne(school)},status=status.HTTP_201_CREATED)
 
 
