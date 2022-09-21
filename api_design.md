@@ -561,9 +561,9 @@ Example
     Return error message
 ```
 ## **5. Rooms**
-## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
-### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
-### `PUT` /schools/<school_id>/rooms
+## 5.1 สร้างห้องเรียนในโรงเรียน
+### Permission : User ที่ Login แล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `POST` /schools/<school_id>
 ### Request
 ```
     {
@@ -579,7 +579,36 @@ Example
 ```
     Return updated room
 ```
-## 5.2 ดูห้องเรียนในโรงเรียน
+## 5.2 แก้ไขห้องเรียนในโรงเรียน
+### Permission : User ที่ login แล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `PUT` /schools/<school_id>/rooms/<room_id>
+### Request
+```
+    {
+        "room_name" : string,
+        "maximum_seat" : number,
+    }
+```
+`201` Created
+```
+    Return newly created room object
+```
+`200` Update successfully
+```
+    Return updated room
+```
+## 5.3 ดูข้อมูลห้องเรียน
+### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
+### `GET` /schools/<school_id>/rooms/<room_id>
+`200` Get successfully
+```
+    Return single room object
+```
+`404` Room does not exist
+```
+    Return none
+```
+## 5.4 ดูห้องเรียนในโรงเรียนทั้งหมด
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `GET` /schools/<school_id>/rooms?\<query_parameters>
 **ถ้าไม่ใส่ ?\<query_params> คือเรียกทั้งหมด
@@ -598,18 +627,8 @@ Example
 ```
     Return none
 ```
-## 5.3 ดู single room
-### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
-### `GET` /schools/<school_id>/rooms/<room_id>
-`200` Get successfully
-```
-    Return single room object
-```
-`404` Room does not exist
-```
-    Return none
-```
-## 5.4 ลบห้องเรียนในโรงเรียน
+
+## 5.5 ลบห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `DELETE` /schools/<school_id>/rooms/<room_id>
 ### Response
@@ -617,7 +636,7 @@ Example
 ```
     Return none
 ```
-## 5.5 ดูเวลาการใช้ห้องรายห้อง
+## 5.6 ดูเวลาการใช้ห้องรายห้อง
 ### Permission :User ที่ loginแล้วและเป็นสมาชิกของโรงเรียนที่เป็นเจ้าของห้องนั้น หรือ System Admin
 ### `GET` /rooms/<room_id>/usages
 ### Response
