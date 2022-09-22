@@ -664,10 +664,10 @@ Example
 ### Request
 ```
     {
-        "account_id" : number,
-        "school_id" : number,
+        "account" : number,
+        "school" : number,
         "document_url" : string,
-        "proof_pay_ment_url" : string
+        "proof_of_payment_url" : string
     }
 ```
 ### Response
@@ -716,11 +716,14 @@ Example
 ```
 ## 6.5 แก้ไขสถานะคำขอ
 ### Permission : System Admin only
-### `PUT` /requests/<request_id>/request_status
+### `PUT` /requests/<request_id>
 ### Request
 ```
     {
-        "request_status" : string 
+        "update field" : update data,
+        .
+        .
+        .
     }
 ```
 ### Response
