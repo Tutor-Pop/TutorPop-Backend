@@ -71,7 +71,9 @@
     {
         "course_id" : number,
         "school_id" : number,
+        "owner_id" : number,
         "course_name" : string,
+        "type" : string,
         "course_description" : string,
         "reserve_open_date" : string,
         "reserve_close_date" : string,
@@ -81,9 +83,9 @@
         "course_price" : number,
         "maximum_student" : number,
         "reserved_student" : number,
-        "payment_method_text_url" : string,
-        "payment_method_picture_url" : string
-        "is_delete" : boolean
+        "payment_method_text" : string,
+        "payment_method_picture_url" : string,
+        "is_deleted" : boolean
     }
 ```
 ## **3. School object**
@@ -289,7 +291,7 @@
 ## **3. Course**
 ## 3.1 ดูข้อมูลของแต่ละคอร์ส
 ### Permission : All users
-### `GET` /courses/<course_ id>
+### `GET` /schools/<school_id>/courses/<course_ id>
 ### Response
 `200` Course exist
 ```
@@ -301,13 +303,14 @@
 ```
 ## 3.2 สร้างคอร์ส
 ### Permission : User ที่ login แล้วและเป็นครูในโรงเรียนใดๆ
-### `POST` /courses
+### `POST` /schools/<school_id>/courses
 ### Request
 ```
     {
         "school_id" : number,
+        "owner_id" : number,
         "course_name" : string,
-        "type_id" : number,
+        "type" : string,
         "room_id" : number,
         "course_description" : string,
         "reserve_open_date" : string,
@@ -315,10 +318,11 @@
         "start_date" : string,
         "end_date" : string,
         "course_period" : number,
-        "course_student" : number,
+        "course_price" : number,
+        "maximum_student" : number,
         "teachers_id" : [<account_id>,..],
-        "payment_text" : string,
-        "payment_picture_url" : string,
+        "payment_method_text" : string,
+        "payment_method_picture_url" : string
     }
 ```
 ### Response
@@ -328,7 +332,7 @@
 ```
 ## 3.3 ลบคอร์ส
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin
-### `DELETE` /courses/<course_id>
+### `DELETE` /schools/<school_id>/courses/<course_id>
 ### Response
 `204` Course deleted
 ```
@@ -336,7 +340,7 @@
 ```
 ## 3.4 แก้ไขคอร์ส
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
-### `PUT` /courses/<course_id>
+### `PUT` /schools/<school_id>/courses/<course_id>
 ### Request
 ```
     {
@@ -364,7 +368,7 @@ Example
 ```
 ## 3.5 แสดงครูทั้งหมดที่สอนในคอร์ส
 ### Permission : All users
-### `GET` /courses/<course_id>/teachers
+### `GET` /schools/<school_id>/courses/<course_id>/teachers
 ### Response
 `200` Get successfully
 ```
@@ -383,7 +387,7 @@ Example
 ```
 ## 3.6 แสดงนักเรียนทั้งหมดที่จองคอร์ส
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin
-### `GET` /courses/<course_id>/students
+### `GET` /schools/<school_id>/courses/<course_id>/students
 ### Response
 `200` Get successfully
 ```
@@ -397,7 +401,7 @@ Example
 ```
 ## 3.7 เพิ่มครูที่สอนในคอร์ส (ถ้ามีอยู่แล้วไม่มีผล)
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
-### `PUT` /courses/<course_id>/teachers
+### `PUT` /schools/<school_id>/courses/<course_id>/teachers
 ### Request
 ```
     {
@@ -419,7 +423,7 @@ Example
 ```
 ## 3.8 ลบครูที่สอนในคอร์ส
 ### Permission : User ที่ login แล้วและเป็นเจ้าของคอร์สนั้น หรือ System Admin 
-### `DELETE` /courses/<course_id>/terchers
+### `DELETE` /schools/<school_id>/courses/<course_id>/terchers
 ### Request 
 ```
     {

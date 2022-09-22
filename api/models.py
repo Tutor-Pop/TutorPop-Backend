@@ -1,6 +1,8 @@
 from pyexpat import model
 from django.db import models
 
+from api.constants.choice import CourseTypeChoice
+
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50,unique=True)
@@ -37,12 +39,16 @@ class Teacher(models.Model):
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
     school = models.ForeignKey(School,on_delete=models.CASCADE)
 
+class CourseType(models.Model):
+    type_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50,default=None)
+
 class Courses(models.Model):
     course_id = models.AutoField(primary_key=True)
     school = models.ForeignKey(School,on_delete=models.CASCADE)
     owner = models.ForeignKey(Account,on_delete=models.CASCADE)
     course_name = models.CharField(max_length=100,default=None)
-    type_id = models.CharField(max_length=100,default=None)
+    type = models.CharField(max_length=10,choices=CourseTypeChoice.choices,default=CourseTypeChoice.NONE)
     course_description = models.CharField(max_length=300,default=None)
     reserve_open_date = models.DateTimeField(default=None)
     reserve_close_date = models.DateTimeField(default=None)
@@ -68,10 +74,6 @@ class Reservation(models.Model):
 class CourseHistory(models.Model):
     course = models.ForeignKey(Courses,on_delete=models.CASCADE)
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
-
-class CourseType(models.Model):
-    type_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50,default=None)
 
 class FavCourse(models.Model):
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
