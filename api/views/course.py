@@ -3,7 +3,7 @@ from ..serializers import CourseSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
-from ..models import Account,PasswordHistory, Reservation, RoomUsage,School,Courses, SchoolRooms
+from ..models import Account, CourseTeacher,PasswordHistory, Reservation, RoomUsage,School,Courses, SchoolRooms
 from rest_framework import status
 import django.db.utils
 
@@ -11,7 +11,7 @@ import django.db.utils
 def get_update_course(request,school_id:int,course_id:int):
     try:
         school = School.objects.get(school_id=school_id)
-        course = Courses.objects.get(course_id=course_id,school_id=school_id)
+        course = Courses.objects.get(course_id=course_id,school_id=school_id,is_deleted=False)
 
         if request.method == GET:
             result = JSONParserOne(course)
@@ -25,8 +25,49 @@ def get_update_course(request,school_id:int,course_id:int):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         elif request.method == DELETE:
-            pass
-           
+            course.is_deleted = True
+            course.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+            
+    except Courses.DoesNotExist:
+        return Response({"message": "Course doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+    except School.DoesNotExist:
+        return Response({"message": "School doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+
+@api_view([GET,PUT,DELETE])
+def get_update_teachers(request,school_id:int,course_id:int):
+    try:
+        school = School.objects.get(school_id=school_id)
+        course = Courses.objects.get(course_id=course_id,school_id=school_id,is_deleted=False)
+        teacher = Account.objects.filter(courseteacher__course=course_id)
+
+        if request.method == GET:
+            result = JSONParser(teacher)
+            return Response({'result':result},status=status.HTTP_200_OK)
+        
+        elif request.method == PUT:
+            for i in request.data['teacher_id']:
+                try: 
+                    courseteacher = CourseTeacher(
+                        course = course,
+                        account_id = i
+                    )
+                    courseteacher.save()
+                except:
+                    pass
+        
+            return Response({"message": "Update Successfully"},status=status.HTTP_200_OK)
+        
+        elif request.method == DELETE:
+            for i in request.data['teacher_id']:
+                try: 
+                    deletecourse = CourseTeacher.objects.get(course_id=course_id,account_id=i)
+                    deletecourse.delete()
+                except:
+                    pass
+        
+            return Response({"message": "Update Successfully"},status=status.HTTP_204_NO_CONTENT)
+            
     except Courses.DoesNotExist:
         return Response({"message": "Course doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
     except School.DoesNotExist:
@@ -36,7 +77,7 @@ def get_update_course(request,school_id:int,course_id:int):
 def get_student(request,school_id:int,course_id:int):
     try:
         school = School.objects.get(school_id=school_id)
-        course = Courses.objects.get(course_id=course_id,school_id=school_id)
+        course = Courses.objects.get(course_id=course_id,school_id=school_id,is_deleted=False)
 
         student = Account.objects.filter(reservation__course=course_id)
         return Response({"result":JSONParser(student)},status=status.HTTP_200_OK)

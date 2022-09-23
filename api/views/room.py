@@ -37,6 +37,7 @@ def get_update_room(request,school_id: int,room_id: int):
         
         elif request.method == DELETE:
             room.is_deleted = True
+            return Response(status=status.HTTP_204_OK)
         
         return Response({'result':JSONParserOne(room)},status=status.HTTP_200_OK)
 

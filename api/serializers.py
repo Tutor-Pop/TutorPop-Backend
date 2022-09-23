@@ -1,9 +1,5 @@
 from dataclasses import field
-<<<<<<< HEAD
-from .models import Courses, OpenRequests
-=======
-from .models import OpenRequests, Reservation
->>>>>>> 41d37f792694fa8557e5e68fbfbd9cd3bc7e8605
+from .models import Courses, OpenRequests ,Reservation
 from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
