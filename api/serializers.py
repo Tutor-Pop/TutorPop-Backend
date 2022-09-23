@@ -57,6 +57,8 @@ class CourseSerializer(serializers.ModelSerializer):
             'payment_method_text', instance.payment_method_text)
         instance.payment_method_picture_url = validated_data.get(
             'payment_method_picture_url', instance.payment_method_picture_url)
+        instance.save()
+        return instance
 
 
 class ReservationSerializer(serializers.ModelSerializer):
