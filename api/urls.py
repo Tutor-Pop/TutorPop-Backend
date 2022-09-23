@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import auth, account, course, room, test, request, reservation
+from .views import auth, account, course, room, test, request, reservation,personal
 
 urlpatterns = [
     #--- Authentication ---#
@@ -26,6 +26,13 @@ urlpatterns = [
          reservation.get_course_reservations),
     path('reservations/<int:resv_id>/status',
          reservation.update_reservation_status),
+    #--- 8.Personal Management ---#
+    path('accounts/<int:account_id>/reservations', personal.get_my_reserve),
+    path('accounts/<int:account_id>/courses', personal.get_reserve),
+    path('accounts/<int:account_id>/teachings', personal.get_all_teachings),
+    path('accounts/<int:account_id>/times', personal.get_times_ts),
+    path('accounts/<int:account_id>/schools', personal.get_schools_member), #สอน
+    path('accounts/<int:account_id>/owners', personal.get_schools_owner), #เจ้าของ
     #--- Demo ---#
     path('test', test.get_acounts),
     path('test/<int:id>/edit', test.edit_account),
