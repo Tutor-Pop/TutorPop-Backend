@@ -22,7 +22,10 @@ def get_create_request(request):
         if filterset.is_valid():
             queryset = filterset.qs
         serializer = RequestSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            {"count": len(serializer.data),
+             "requests": serializer.data},
+            status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
