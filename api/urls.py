@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import auth, account, course, room, test, request
+from .views import auth, account, course, room, test, request, search
 
 urlpatterns = [
     #--- Authentication ---#
@@ -9,12 +9,15 @@ urlpatterns = [
     path('account/<int:id>', account.get_edit_delete_account),
     path('account/<int:id>/password', account.change_password),
     path('account/<int:id>/school', account.create_school),
+    #--- 2.Search ---#
+    path('courses/list', search.api_course_search.as_view()),
     #--- 3. Course ---#
     # path('course/<int:course_id>',course.get_course),
     path('schools/<int:school_id>/courses', course.create_course),
-    path('schools/<int:school_id>/courses/<int:course_id>', course.get_update_course),
-    path('schools/<int:school_id>/courses/<int:course_id>/teachers', course.get_update_teachers),
-    path('schools/<int:school_id>/courses/<int:course_id>/students', course.get_student),
+    path('schools/<int:school_id>/courses/<int:course_id>',
+         course.get_update_course),
+    path('schools/<int:school_id>/courses/<int:course_id>/students',
+         course.get_student),
     #--- 5. Room ---#
     path('schools/<int:school_id>/room', room.create_room),
     path('schools/<int:school_id>/rooms', room.get_all_room_in_school),

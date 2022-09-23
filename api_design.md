@@ -176,8 +176,6 @@
     {
         "metadata" : {
              "count": number,
-             "offset" : number, 
-             "limit" : number
         },
         "results" : [All match account objects]
     }
@@ -226,7 +224,7 @@
 ## **2. Course & School Searching**
 ## 2.1 Search & Filter Courses
 ### Permission : All users
-### `GET` /courses?\<query paremeters>
+### `GET` /courses/list?\<query paremeters>
 ### Query Parameters
 | Query   |      Type      |  Default |
 |---------|-------------|------|
@@ -250,11 +248,7 @@
 `200` Search successfully
 ```
     {
-        "metadata" : {
-             "count": number,
-             "offset" : number, 
-             "limit" : number
-        },
+        "count" : number
         "results" : [All match course objects]
     }
 ```
@@ -278,11 +272,7 @@
 `200` Search successfully
 ```
     {
-        "metadata" : {
-             "count": number,
-             "offset" : number, 
-             "limit" : number
-        },
+        "count" : number,
         "results" : [All match school objects]
     }
 ```
