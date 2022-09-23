@@ -320,7 +320,6 @@
         "course_period" : number,
         "course_price" : number,
         "maximum_student" : number,
-        "teachers_id" : [<account_id>,..],
         "payment_method_text" : string,
         "payment_method_picture_url" : string
     }
