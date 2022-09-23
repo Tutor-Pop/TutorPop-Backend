@@ -1,7 +1,8 @@
 from dataclasses import field
-from .models import OpenRequests
+from .models import OpenRequests, Reservation
 from rest_framework import serializers
 from django.utils import timezone
+from datetime import timedelta
 
 
 class RequestSerializer(serializers.ModelSerializer):
@@ -24,5 +25,22 @@ class RequestSerializer(serializers.ModelSerializer):
             'proof_of_payment_url', instance.proof_of_payment_url)
         instance.request_status = validated_data(
             'requese_status', instance.request_status)
+        instance.save()
+        return instance
+
+
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        validated_data['reservation_datetime'] = timezone.now()
+        validated_data['status'] = 'Pending'
+        validated_data['expire_datetime'] = timezone.now()+timedelta(1)
+        return Reservation.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
