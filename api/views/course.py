@@ -1,16 +1,50 @@
 from ..utility import JSONParser, JSONParserOne
+from ..serializers import CourseSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
-from ..models import Account,PasswordHistory, RoomUsage,School,Courses, SchoolRooms
+from ..models import Account,PasswordHistory, Reservation, RoomUsage,School,Courses, SchoolRooms
 from rest_framework import status
 import django.db.utils
 
-# @api_view([GET])
-# def get_course(request,id:int):
-#     yob = int(request.GET.get('year_of_birth',2000))
-#     account = Account.objects.filter(is_deleted=False)
-#     return Response(JSONParser(account))
+@api_view([GET,PUT,DELETE])
+def get_update_course(request,school_id:int,course_id:int):
+    try:
+        school = School.objects.get(school_id=school_id)
+        course = Courses.objects.get(course_id=course_id,school_id=school_id)
+
+        if request.method == GET:
+            result = JSONParserOne(course)
+            return Response({'result':result},status=status.HTTP_200_OK)
+        
+        elif request.method == PUT:
+            serializer = CourseSerializer(course, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        elif request.method == DELETE:
+            pass
+           
+    except Courses.DoesNotExist:
+        return Response({"message": "Course doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+    except School.DoesNotExist:
+        return Response({"message": "School doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+    
+@api_view([GET])
+def get_student(request,school_id:int,course_id:int):
+    try:
+        school = School.objects.get(school_id=school_id)
+        course = Courses.objects.get(course_id=course_id,school_id=school_id)
+
+        student = Account.objects.filter(reservation__course=course_id)
+        return Response({"result":JSONParser(student)},status=status.HTTP_200_OK)
+           
+    except Courses.DoesNotExist:
+        return Response({"message": "Course doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+    except School.DoesNotExist:
+        return Response({"message": "School doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
 
 @api_view([POST])
 def create_course(request,school_id :int):

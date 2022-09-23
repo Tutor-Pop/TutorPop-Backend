@@ -11,7 +11,9 @@ urlpatterns = [
     path('account/<int:id>/school', account.create_school),
     #--- 3. Course ---#
     # path('course/<int:course_id>',course.get_course),
-    path('schools/<int:school_id>/course', course.create_course),
+    path('schools/<int:school_id>/courses', course.create_course),
+    path('schools/<int:school_id>/courses/<int:course_id>', course.get_update_course),
+    path('schools/<int:school_id>/courses/<int:course_id>/students', course.get_student),
     #--- 5. Room ---#
     path('schools/<int:school_id>/room', room.create_room),
     path('schools/<int:school_id>/rooms', room.get_all_room_in_school),
