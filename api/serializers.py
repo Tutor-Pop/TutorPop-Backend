@@ -1,5 +1,5 @@
 from dataclasses import field
-from .models import Courses, OpenRequests, Reservation
+from .models import Courses, OpenRequests, Reservation, School
 from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
@@ -74,5 +74,28 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
+
+class SchoolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.owner = validated_data.get(
+            'owner', instance.owner)
+        instance.name = validated_data.get(
+            'name', instance.name)
+        instance.description = validated_data.get(
+            'description', instance.description)
+        instance.address = validated_data.get(
+            'address', instance.address)
+        # instance.status = validated_data.get(
+        #     'status', instance.status)
+        instance.logo_url = validated_data.get(
+            'logo_url', instance.logo_url)
+        instance.banner_url = validated_data.get(
+            'banner_url', instance.banner_url)
         instance.save()
         return instance
