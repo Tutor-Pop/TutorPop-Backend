@@ -98,8 +98,9 @@ class FavCourse(models.Model):
 class CourseTeacher(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
     class Meta:
-        unique_together = ('course','account')
+        unique_together = ('course', 'account')
 
 
 class StudyTime(models.Model):
