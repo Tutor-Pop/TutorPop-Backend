@@ -30,7 +30,8 @@ urlpatterns = [
     #--- 6. Request ---#
     path('requests', request.get_create_request),
     path('requests/<int:req_id>', request.get_del_update_request),
+    path('requests/<int:req_id>/status', request.update_request_status),
     #--- Demo ---#
-    path('test', test.get_acounts),
-    path('test/<int:id>/edit', test.edit_account),
+    #path('test', test.get_acounts),
+    #path('test/<int:id>/edit', test.edit_account),
 ]

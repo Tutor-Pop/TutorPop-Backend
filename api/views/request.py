@@ -1,4 +1,6 @@
 from lib2to3.pgen2 import grammar
+from lib2to3.pgen2.token import OP
+from re import L
 from ..serializers import RequestSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -6,6 +8,7 @@ from ..constants.method import GET, POST, PUT, DELETE
 from ..models import OpenRequests
 from rest_framework import status
 from ..filters import RequestFilter
+from api import serializers
 
 
 @api_view(['GET', 'POST'])
@@ -46,3 +49,15 @@ def get_del_update_request(request, req_id: int):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def update_request_status(request, req_id: int):
+    try:
+        req = OpenRequests.objects.get(request_id=req_id)
+    except OpenRequests.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    req.request_status = request.data['status']
+    req.save()
+    serializer = RequestSerializer(req)
+    return Response(serializer.data)
