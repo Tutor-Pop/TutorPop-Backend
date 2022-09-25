@@ -23,8 +23,7 @@ class RequestSerializer(serializers.ModelSerializer):
             'document_url', instance.document_url)
         instance.proof_of_payment_url = validated_data(
             'proof_of_payment_url', instance.proof_of_payment_url)
-        instance.request_status = validated_data(
-            'requese_status', instance.request_status)
+        #instance.request_status = validated_data('requese_status', instance.request_status)
         instance.save()
         return instance
 
@@ -76,6 +75,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
+
 
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
