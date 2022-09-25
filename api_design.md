@@ -26,6 +26,7 @@
 - 4.5 ดูครูทั้งหมดในโรงเรียน
 - 4.6 เพิ่มครูในโรงเรียน (ถ้ามีอยู่แล้วไม่มีผล)
 - 4.7 ลบครูในโรงเรียน
+- 4.8 แก้ไขสถานะโรงเรียน
 ### 5.Room
 - 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 - 5.2 ดูห้องเรียนในโรงเรียน
@@ -37,11 +38,12 @@
 - 6.2 เรียกดูคำขออันเดียว
 - 6.3 เรียกดูคำขอแบบใช้เงื่อนไข
 - 6.4 ลบคำขอ
-- 6.5 แก้ไขสถานะคำขอ
+- 6.5 แก้ไขข้อมูลคำขอ (ยกเว้น status)
+- 6.6 แก้ไขสถานะคำขอ
 ### 7.Course Reservation
 - 7.1 การจองคอร์ส
 - 7.2 ดูข้อมูลการจองทั้งหมดในคอร์ส
-- 7.3 เปลี่ยนสถานะการจองคอร์ส
+- 7.3 แก้ไขสถานะการจองคอร์ส
 - 7.4 ลบการจองคอร์ส
 ### 8.Personal Management
 - 8.1 เรียกรายการจองทั้งหมดของตนเอง
@@ -224,25 +226,24 @@
 ## **2. Course & School Searching**
 ## 2.1 Search & Filter Courses
 ### Permission : All users
-### `GET` /courses/list?\<query paremeters>
+### `GET` /courses/search?\<query paremeters>
 ### Query Parameters
-| Query   |      Type      |  Default |
-|---------|-------------|------|
+| Query   |      Type      |  Default | Note
+|---------|-------------|------| --------|
+| search  | STRING | None | Partial match from fields(course_name, course description, school_name) |
 | type | STRING |None |
-| course_name | STRING | None |
-| course_id | NUMBER | None |
-| school_id| NUMBER| None|
-| max_price |    NUMBER   |   None |
-| max_student | NUMBER| None|
-| start_date | STRING | None|
-| end_date | STRING | None |
+| min_price | NUMBER | None | course.price >= query.min_price
+| max_price |    NUMBER   |   None | course.price <= query.max_price
+| max_student | NUMBER| None| 
+| start_date | STRING | None| course.start_date >= query.start_date |
+| end_date | STRING | None | course.end_date <= query.end_date |
 | is_deleted | BOOLEAN | *False* |
-| offset | NUMBER |    None |
-| limit | NUMBER |    None |
+| address | STRING | None |
+
 
 ### Example
 ```
-    /courses?type=math&max_price=2000
+    /courses?search=KU&type=math&max_price=2000
 ```
 ### Response
 `200` Search successfully
@@ -254,19 +255,18 @@
 ```
 ## 2.2 Search & Filter Schools
 ### Permission : All users
-### `GET` /schools?\<query paremeters>
+### `GET` /schools/search?\<query paremeters>
 ### Query Parameters
-| Query   |      Type      |  Default |
-|---------|-------------|------|
-| school_name | STRING | None |
-| school_id | NUMBER | None |
+| Query   |      Type      |  Default | Note |
+|---------|-------------|------| ----- |
+| search | STRING | None | Partial match from fields(school_name, description)
 | type | STRING | None |
-| address** | STRING | None |
-| offset | NUMBER | None |
-| limit | NUMBER | None | 
+| address | STRING | None |
+| status | STRING | OPEN | 
+
 ### Example
 ```
-    /schools?name=Hogwarts&type=Magic_school
+    /schools?search=Hogwarts&type=Magic_school
 ```
 ### Response
 `200` Search successfully
@@ -553,6 +553,21 @@ Example
 ```
     Return error message
 ```
+## 4.8 แก้ไขสถานะของโรงเรียน
+### Permission : System Admin only
+### `PUT` /schools/<school_id>/status
+### Request
+```
+    {
+        "status" : <update status>
+    }
+```
+### Response
+`200` Update correctly
+```
+    Return updated school object
+```
+`404` School not exist
 ## **5. Rooms**
 ## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
@@ -703,8 +718,8 @@ Example
 ```
     Return none
 ```
-## 6.5 แก้ไขสถานะคำขอ
-### Permission : System Admin only
+## 6.5 แก้ไขข้อมูลคำขอ(ยกเว้นสถานะคำขอ)
+### Permission : User ที่เป็นเจ้าของ คำขอนั้น
 ### `PUT` /requests/<request_id>
 ### Request
 ```
@@ -724,6 +739,21 @@ Example
 ```
     Return none
 ```
+## 6.6 แก้ไขสถานะคำขอ
+### Permission : System Admin only
+### `PUT` /requests/<request_id>/status
+### Request
+```
+    {
+        "status" : <update status>
+    }
+```
+### Response
+`200` Update correctly
+```
+    Return updated request object
+```
+`404` Request not exist
 ## 7. **Course Reservation**
 ## 7.1 จองคอร์ส
 ### Permission : User ที่ Login แล้ว
