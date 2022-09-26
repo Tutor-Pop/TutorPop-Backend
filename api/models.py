@@ -26,14 +26,15 @@ class Account(models.Model):
 
 
 class PasswordHistory(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
     password = models.CharField(max_length=128, default=None)
 
 
 class School(models.Model):
     school_id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey(
-        Account, on_delete=models.CASCADE, default=1)  # เดี๋ยวต้องแก้
+    owner_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, default=1, db_column='owner_id')  # เดี๋ยวต้องแก้
     name = models.CharField(max_length=100, default=None)
     description = models.CharField(max_length=300, default=None)
     address = models.CharField(max_length=100, default=None)
@@ -43,8 +44,10 @@ class School(models.Model):
 
 
 class Teacher(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
+    school_id = models.ForeignKey(
+        School, on_delete=models.CASCADE, db_column='school_id')
 
 
 # class CourseType(models.Model):
@@ -54,8 +57,10 @@ class Teacher(models.Model):
 
 class Courses(models.Model):
     course_id = models.AutoField(primary_key=True)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
-    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
+    school_id = models.ForeignKey(
+        School, on_delete=models.CASCADE, db_column='school_id')
+    owner_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='owner_id')
     course_name = models.CharField(max_length=100, default=None)
     type = models.CharField(
         max_length=10, choices=CourseTypeChoice.choices, default=CourseTypeChoice.NONE)
@@ -77,8 +82,10 @@ class Courses(models.Model):
 
 class Reservation(models.Model):
     id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
     payment_url = models.CharField(max_length=1000, blank=True, default=None)
     status = models.CharField(max_length=10, default=None)
     expire_datetime = models.DateTimeField()
@@ -86,32 +93,40 @@ class Reservation(models.Model):
 
 
 class CourseHistory(models.Model):
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
 
 
 class FavCourse(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
 
 
 class CourseTeacher(models.Model):
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
 
     class Meta:
-        unique_together = ('course', 'account')
+        unique_together = ('course_id', 'account_id')
 
 
 class StudyTime(models.Model):
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
     day = models.CharField(max_length=3, default=None)
     start_time = models.DateTimeField(blank=True, default=None)
     end_time = models.DateTimeField(blank=True, default=None)
 
 
 class StudyTimeRecords(models.Model):
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
     study_date = models.DateField(blank=True, default=None)
     start_time = models.DateTimeField(blank=True, default=None)
     end_time = models.DateTimeField(blank=True, default=None)
@@ -119,8 +134,10 @@ class StudyTimeRecords(models.Model):
 
 class OpenRequests(models.Model):
     request_id = models.AutoField(primary_key=True)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
+    school_id = models.ForeignKey(
+        School, on_delete=models.CASCADE, db_column='school_id')
     document_url = models.CharField(max_length=1000, default=None)
     request_timestamp = models.DateTimeField(default=None)
     proof_of_payment_url = models.CharField(max_length=1000, default=None)
@@ -133,17 +150,21 @@ class SchoolTypes(models.Model):
 
 
 class SchoolWithType(models.Model):
-    type = models.ForeignKey(SchoolTypes, on_delete=models.CASCADE)
+    type_id = models.ForeignKey(
+        SchoolTypes, on_delete=models.CASCADE, db_column='type_id')
     school = models.ForeignKey(School, on_delete=models.CASCADE)
 
 
 class SchoolRooms(models.Model):
     room_id = models.AutoField(primary_key=True)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school_id = models.ForeignKey(
+        School, on_delete=models.CASCADE, db_column='school_id')
     room_name = models.CharField(max_length=100, default=None)
     maximum_seat = models.IntegerField(default=None)
 
 
 class RoomUsage(models.Model):
-    room = models.ForeignKey(SchoolRooms, on_delete=models.CASCADE)
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    room_id = models.ForeignKey(
+        SchoolRooms, on_delete=models.CASCADE, db_column='room_id')
+    course_id = models.ForeignKey(
+        Courses, on_delete=models.CASCADE, db_column='course_id')
