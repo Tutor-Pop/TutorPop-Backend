@@ -1,5 +1,6 @@
-from dataclasses import field
-from .models import Courses, OpenRequests, Reservation, School
+from dataclasses import field, fields
+from statistics import mode
+from .models import Account, Courses, OpenRequests, Reservation, School
 from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
@@ -99,3 +100,12 @@ class SchoolSerializer(serializers.ModelSerializer):
             'banner_url', instance.banner_url)
         instance.save()
         return instance
+
+class AccountSerializer(serializers.ModelSerializer): # NOT DONE YET!
+    class Meta:
+        model = Account
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        account = Account.objects.create(**validated_data)
+        return account

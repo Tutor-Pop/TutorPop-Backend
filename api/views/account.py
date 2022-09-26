@@ -65,19 +65,4 @@ def change_password(request,id:int):
     passwordHistory.save()
     return Response({"result": JSONParserOne(passwordHistory)},status=status.HTTP_200_OK)
 
-@api_view([POST])
-def create_school(request,id:int):
-    account = Account.objects.get(account_id=id)
-    school = School(
-        owner = account,
-        name = request.data['name'],
-        description = request.data['description'],
-        address = request.data['address'],
-        status = request.data['status'],
-        logo_url = request.data['logo_url'],
-        banner_url = request.data['banner_url']
-    )
-    school.save()
-    return Response({"message":"School created successfully","result":JSONParserOne(school)},status=status.HTTP_201_CREATED)
-
 

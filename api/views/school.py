@@ -17,8 +17,18 @@ from ..serializers import SchoolSerializer
 
 @api_view([POST])
 def create_school(request,id:int):
-    # Kanon Already Done
-    pass
+    account = Account.objects.get(account_id=id)
+    school = School(
+        owner = account,
+        name = request.data['name'],
+        description = request.data['description'],
+        address = request.data['address'],
+        status = request.data['status'],
+        logo_url = request.data['logo_url'],
+        banner_url = request.data['banner_url']
+    )
+    school.save()
+    return Response({"message":"School created successfully","result":JSONParserOne(school)},status=status.HTTP_201_CREATED)
 
 @api_view([GET,PUT,DELETE])
 def get_edit_delete_school(request,school_ID:int):
