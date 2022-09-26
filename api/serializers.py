@@ -101,6 +101,22 @@ class SchoolSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def create(self, validated_data):
+        validated_data['status'] = 'Pending'
+        reqSchool = School.objects.create(**validated_data)
+        return reqSchool
+
+class SchoolStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get(
+            'status', instance.status)
+        instance.save()
+        return instance
+
 class AccountSerializer(serializers.ModelSerializer): # NOT DONE YET!
     class Meta:
         model = Account

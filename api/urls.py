@@ -19,6 +19,7 @@ urlpatterns = [
     path('schools', school.create_school),
     path('schools/<int:school_ID>', school.get_edit_delete_school),
     path('schools/<int:school_ID>/teachers', school.get_add_delete_teacher),
+    path('schools/<int:school_ID>/status',  school.edit_status_school),
     #--- 5. Room ---#
     path('schools/<int:school_id>/rooms', room.create_getall_room),
     path('schools/<int:school_id>/rooms/<int:room_id>', room.get_update_delete_room),

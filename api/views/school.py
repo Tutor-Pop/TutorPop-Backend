@@ -12,23 +12,17 @@ from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
 from ..models import Account,PasswordHistory,School,Teacher
 from rest_framework import status
-from ..serializers import SchoolSerializer
+from ..serializers import SchoolSerializer, SchoolStatusSerializer
 
 
 @api_view([POST])
-def create_school(request,id:int):
-    account = Account.objects.get(account_id=id)
-    school = School(
-        owner = account,
-        name = request.data['name'],
-        description = request.data['description'],
-        address = request.data['address'],
-        status = request.data['status'],
-        logo_url = request.data['logo_url'],
-        banner_url = request.data['banner_url']
-    )
-    school.save()
-    return Response({"message":"School created successfully","result":JSONParserOne(school)},status=status.HTTP_201_CREATED)
+def create_school(request):
+    serializer = SchoolSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 @api_view([GET,PUT,DELETE])
 def get_edit_delete_school(request,school_ID:int):
@@ -88,3 +82,14 @@ def get_add_delete_teacher(request,school_ID:int):
             return Response({"teacher":result},status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view([PUT])
+def edit_status_school(request,school_ID:int):
+    try:
+        school = School.objects.get(school_id=school_ID)
+        serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
