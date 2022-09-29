@@ -55,7 +55,7 @@ def get_add_delete_teacher(request,school_ID:int):
     if request.method == GET:
         try:
             school = School.objects.get(school_id=school_ID)
-            teacher = Teacher.objects.filter(school=school)
+            teacher = Teacher.objects.filter(school_id=school)
             account = Account.objects.filter(account_id__in=teacher)
             result = JSONParser(account)
             return Response({"data":result})
@@ -64,8 +64,10 @@ def get_add_delete_teacher(request,school_ID:int):
     elif request.method == PUT:
         try:
             teachers = request.data['teachers']
+            tmpSchool = School.objects.get(school_id=school_ID)
             for i in teachers:
-                Teacher.objects.get_or_create(account_id=i, school_id=school_ID)
+                tmpAcc = Account.objects.get(account_id=i)
+                Teacher.objects.get_or_create(account_id=tmpAcc, school_id=tmpSchool)
             all_teachers = Teacher.objects.filter(school_id=school_ID)
             result = JSONParser(all_teachers)       #แสดงผลครูทั้งหมดในโรงเรียน
             return Response({"teacher":result},status=status.HTTP_200_OK)

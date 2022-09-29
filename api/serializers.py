@@ -84,8 +84,8 @@ class SchoolSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def update(self, instance, validated_data):
-        instance.owner = validated_data.get(
-            'owner', instance.owner)
+        instance.owner_id = validated_data.get(
+            'owner_id', instance.owner_id)
         instance.name = validated_data.get(
             'name', instance.name)
         instance.description = validated_data.get(
