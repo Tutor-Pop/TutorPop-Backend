@@ -18,8 +18,6 @@ class RequestSerializer(serializers.ModelSerializer):
         return req
 
     def update(self, instance, validated_data):
-        instance.account = validated_data.get('account', instance.account)
-        instance.school = validated_data.get('school', instance.school)
         instance.document_url = validated_data(
             'document_url', instance.document_url)
         instance.proof_of_payment_url = validated_data(
@@ -106,6 +104,7 @@ class SchoolSerializer(serializers.ModelSerializer):
         reqSchool = School.objects.create(**validated_data)
         return reqSchool
 
+
 class SchoolStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
@@ -117,11 +116,12 @@ class SchoolStatusSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class AccountSerializer(serializers.ModelSerializer): # NOT DONE YET!
+
+class AccountSerializer(serializers.ModelSerializer):  # NOT DONE YET!
     class Meta:
         model = Account
         fields = '__all__'
-    
+
     def create(self, validated_data):
         account = Account.objects.create(**validated_data)
         return account
