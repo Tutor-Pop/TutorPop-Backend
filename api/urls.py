@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import auth, account, course, room, test, request, search, school
+from .views import auth, account, course, room, test, request, search, school, reservation
 
 urlpatterns = [
     #--- Authentication ---#
@@ -27,6 +27,11 @@ urlpatterns = [
     path('requests', request.get_create_request),
     path('requests/<int:req_id>', request.get_del_update_request),
     path('requests/<int:req_id>/status', request.update_request_status),
+    #--- 7.Reservation --#
+    path('reservations', reservation.CreateReserve.as_view()),
+    path('courses/<course_id>/reservations', reservation.get_course_reservations),
+    path('reservations/<resv_id>/status',reservation.update_reservation_status),
+    path('reservations/<int:resv_id>',reservation.get_del_reservation)
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),

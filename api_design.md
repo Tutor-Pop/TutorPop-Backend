@@ -119,8 +119,8 @@
         "request_id" : number,
         "account_id" : number,
         "school_id" : number,
-        "document_url" : string,
-        "proof_of_payment_url" : string,
+        "document_file" : string,
+        "paymeny_pic" : string,
         "request_status" : string
     }
 ```
@@ -764,7 +764,7 @@ Example
     {
         "course_id" : string,
         "account_id" : string,
-        "payment_url" : string,
+        "payment_pic" : string,
     }
 ```
 ### Response

@@ -3,6 +3,9 @@ from django.db import models
 
 from api.constants.choice import CourseTypeChoice
 
+def upload_payment(instance, filename):
+    return f'payments/{filename}'
+
 
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
@@ -86,7 +89,7 @@ class Reservation(models.Model):
         Courses, on_delete=models.CASCADE, db_column='course_id')
     account_id = models.ForeignKey(
         Account, on_delete=models.CASCADE, db_column='account_id')
-    payment_url = models.CharField(max_length=1000, blank=True, default=None)
+    payment_pic = models.ImageField(upload_to=upload_payment, default=None,null=True)
     status = models.CharField(max_length=10, default=None)
     expire_datetime = models.DateTimeField()
     reservation_datetime = models.DateTimeField()

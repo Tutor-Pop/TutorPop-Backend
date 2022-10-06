@@ -1,4 +1,3 @@
-from tkinter.font import ROMAN
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
