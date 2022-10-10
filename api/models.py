@@ -1,3 +1,4 @@
+from email import message
 from pyexpat import model
 from django.db import models
 
@@ -37,10 +38,14 @@ class PasswordHistory(models.Model):
 class School(models.Model):
     school_id = models.AutoField(primary_key=True)
     owner_id = models.ForeignKey(
-        Account, on_delete=models.CASCADE, default=1, db_column='owner_id')  # เดี๋ยวต้องแก้
+        Account, on_delete=models.CASCADE, default=1, db_column='owner_id')  
     name = models.CharField(max_length=100, default=None)
     description = models.CharField(max_length=300, default=None)
-    address = models.CharField(max_length=100, default=None)
+    addr_description = models.CharField(max_length=100, default=None)
+    sub_district = models.CharField(max_length=100, default=None)
+    district = models.CharField(max_length=100, default=None)
+    province = models.CharField(max_length=100, default=None)
+    postal_code = models.CharField(max_length=5, default=None)
     status = models.CharField(max_length=10, default=None)
     logo_url = models.CharField(max_length=1000, default=None)
     banner_url = models.CharField(max_length=1000, default=None)
@@ -173,3 +178,9 @@ class RoomUsage(models.Model):
         SchoolRooms, on_delete=models.CASCADE, db_column='room_id')
     course_id = models.ForeignKey(
         Courses, on_delete=models.CASCADE, db_column='course_id')
+ 
+class Notification(models.Model):
+    account_id = models.ForeignKey(
+        Account, on_delete=models.CASCADE, db_column='account_id')
+    message_noti = models.CharField(max_length=300,default=None)
+    expire_date = models.DateTimeField(blank=True, default=None)
