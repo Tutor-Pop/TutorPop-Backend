@@ -31,7 +31,8 @@ urlpatterns = [
     path('reservations', reservation.CreateReserve.as_view()),
     path('courses/<course_id>/reservations', reservation.get_course_reservations),
     path('reservations/<resv_id>/status',reservation.update_reservation_status),
-    path('reservations/<int:resv_id>',reservation.get_del_reservation)
+    path('reservations/<int:resv_id>',reservation.get_del_reservation),
+    path('reservations/<resv_id>/payment',reservation.UploadPayment.as_view()),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),

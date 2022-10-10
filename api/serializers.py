@@ -72,6 +72,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.status = validated_data.get('status', instance.status)
+        instance.payment_pic = validated_data.get('payment_pic', instance.payment_pic)
         instance.save()
         return instance
 
