@@ -37,18 +37,17 @@ class PasswordHistory(models.Model):
 
 class School(models.Model):
     school_id = models.AutoField(primary_key=True)
-    owner_id = models.ForeignKey(
-        Account, on_delete=models.CASCADE, default=1, db_column='owner_id')  
+    owner_id = models.ForeignKey(Account, on_delete=models.CASCADE, default=1, db_column='owner_id')  
     name = models.CharField(max_length=100, default=None)
     description = models.CharField(max_length=300, default=None)
-    addr_description = models.CharField(max_length=100, default=None)
-    sub_district = models.CharField(max_length=100, default=None)
-    district = models.CharField(max_length=100, default=None)
-    province = models.CharField(max_length=100, default=None)
-    postal_code = models.CharField(max_length=5, default=None)
-    status = models.CharField(max_length=10, default=None)
-    logo_url = models.CharField(max_length=1000, default=None)
-    banner_url = models.CharField(max_length=1000, default=None)
+    addr_description = models.CharField(max_length=100, default=None,blank=True,null=True)
+    sub_district = models.CharField(max_length=100, default=None,blank=True,null=True)
+    district = models.CharField(max_length=100, default=None,blank=True,null=True)
+    province = models.CharField(max_length=100, default=None,blank=True,null=True)
+    postal_code = models.CharField(max_length=5, default=None,blank=True,null=True)
+    status = models.CharField(max_length=10, default=None,blank=True,null=True)
+    logo_url = models.CharField(max_length=1000, default=None,blank=True,null=True)
+    banner_url = models.CharField(max_length=1000, default=None,blank=True,null=True)
 
 
 class Teacher(models.Model):

@@ -21,9 +21,10 @@ def create_getall_room(request,school_id:int):
         # room = SchoolRooms.objects.get(school_id=school,room_name=request.data['room_name'])
         # return Response({"message":"Room already exists!"},status=status.HTTP_409_CONFLICT)
         room = SchoolRooms(
-            school = school,
+            school_id = school,
             room_name = request.data['room_name'],
-            maximum_seat = request.data['maximum_seat']
+            maximum_seat = request.data['maximum_seat'],
+            description = request.data['description']
         )
         room.save()
         return Response({'result':JSONParserOne(room)},status=status.HTTP_201_CREATED)

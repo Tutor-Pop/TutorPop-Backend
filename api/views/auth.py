@@ -24,7 +24,7 @@ def register(request):
         )
         account.save()
         passwordHistory = PasswordHistory(
-            account = account,
+            account_id = account,
             password = ePassword
         )
         passwordHistory.save()

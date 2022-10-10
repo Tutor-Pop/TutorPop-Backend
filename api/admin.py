@@ -6,8 +6,8 @@ class AccountAdmin(admin.ModelAdmin):
     search_fields = ['username','firstname','lastname']
     list_filter = ['is_verified','is_deleted']
 
-class SchoolAdmin(admin.ModelAdmin):
-    list_display = ['school_id','owner_id','name','address']
+# class SchoolAdmin(admin.ModelAdmin):
+#     list_display = ['school_id','owner_id','name','address']
 
 admin.site.register(Account,AccountAdmin)
-admin.site.register(School,SchoolAdmin)
+# admin.site.register(School,SchoolAdmin)

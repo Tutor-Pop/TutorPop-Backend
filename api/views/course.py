@@ -76,8 +76,8 @@ def get_update_teachers(request,school_id:int,course_id:int):
 @api_view([GET])
 def get_student(request,school_id:int,course_id:int):
     try:
-        school = School.objects.get(school_id=school_id)
-        course = Courses.objects.get(course_id=course_id,school_id=school_id,is_deleted=False)
+        School.objects.get(school_id=school_id)
+        Courses.objects.get(course_id=course_id,school_id=school_id,is_deleted=False)
 
         student = Account.objects.filter(reservation__course=course_id)
         return Response({"result":JSONParser(student)},status=status.HTTP_200_OK)
