@@ -120,8 +120,8 @@
         "request_id" : number,
         "account_id" : number,
         "school_id" : number,
-        "document_file" : string,
-        "paymeny_pic" : string,
+        "document" : File,
+        "paymeny_pic" : Image,
         "request_status" : string
     }
 ```
@@ -131,7 +131,7 @@
         "reservation_id" : number,
         "course_id" : number,
         "account_id" : number,
-        "payment_url" : string,
+        "payment_pic" : Image,
         "status" : string,
         "reservation_datetime" : string,
         "expire_datetime" : string,
@@ -669,12 +669,12 @@ Example
 ### `POST` /requests
 ### Request
 ```
-    {
-        "account" : number,
-        "school" : number,
-        "document_url" : string,
-        "proof_of_payment_url" : string
-    }
+    HTML Form:
+        "account_id" : number,
+        "school_id" : number,
+        "document" : File,
+        "payment_pic" : Image
+    
 ```
 ### Response
 `201` Created
@@ -725,12 +725,12 @@ Example
 ### `PUT` /requests/<request_id>
 ### Request
 ```
-    {
+    HTML Form:
         "update field" : update data,
         .
         .
         .
-    }
+    
 ```
 ### Response
 `200` Update successfully

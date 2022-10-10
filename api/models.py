@@ -6,6 +6,9 @@ from api.constants.choice import CourseTypeChoice
 def upload_payment(instance, filename):
     return f'payments/{filename}'
 
+def upload_document(instance, filename):
+    return f'documents/{filename}'
+
 
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
@@ -141,9 +144,9 @@ class OpenRequests(models.Model):
         Account, on_delete=models.CASCADE, db_column='account_id')
     school_id = models.ForeignKey(
         School, on_delete=models.CASCADE, db_column='school_id')
-    document_url = models.CharField(max_length=1000, default=None)
+    document = models.FileField(upload_to=upload_document, default=None,null=True)
     request_timestamp = models.DateTimeField(default=None)
-    proof_of_payment_url = models.CharField(max_length=1000, default=None)
+    payment_pic = models.ImageField(upload_to=upload_payment, default=None,null=True)
     request_status = models.CharField(max_length=10, default=None)
 
 

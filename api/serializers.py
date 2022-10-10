@@ -18,10 +18,8 @@ class RequestSerializer(serializers.ModelSerializer):
         return req
 
     def update(self, instance, validated_data):
-        instance.document_url = validated_data(
-            'document_url', instance.document_url)
-        instance.proof_of_payment_url = validated_data(
-            'proof_of_payment_url', instance.proof_of_payment_url)
+        instance.document = validated_data.get('document', instance.document)
+        instance.payment_pic = validated_data.get( 'payment_pic', instance.payment_pic)
         #instance.request_status = validated_data('requese_status', instance.request_status)
         instance.save()
         return instance

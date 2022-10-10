@@ -24,7 +24,7 @@ urlpatterns = [
     path('schools/<int:school_id>/rooms', room.create_getall_room),
     path('schools/<int:school_id>/rooms/<int:room_id>', room.get_update_delete_room),
     #--- 6. Request ---#
-    path('requests', request.get_create_request),
+    path('requests', request.get_create_request.as_view()),
     path('requests/<int:req_id>', request.get_del_update_request),
     path('requests/<int:req_id>/status', request.update_request_status),
     #--- 7.Reservation --#
