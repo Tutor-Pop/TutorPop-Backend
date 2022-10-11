@@ -696,7 +696,7 @@ Example
 | Query   |      Type      |  Default |
 |---------|-------------|------|
 | request_id | NUMBER | None |
-| accound_id | NUMBER | None |
+| account_id | NUMBER | None |
 | school_id | NUMBER | None |
 | request_status | STRING | None |
 
@@ -759,14 +759,14 @@ Example
 ## 7. **Course Reservation**
 ## 7.1 จองคอร์ส
 ### Permission : User ที่ Login แล้ว
-### `POST` /reservations`
+### `POST` /reservations
 ## Request
 ```
-    {
+    HTML Form:
         "course_id" : string,
         "account_id" : string,
         "payment_pic" : string,
-    }
+    
 ```
 ### Response
 `200` Reserve successfully
