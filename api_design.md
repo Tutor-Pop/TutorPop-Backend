@@ -45,6 +45,7 @@
 - 7.2 ดูข้อมูลการจองทั้งหมดในคอร์ส
 - 7.3 แก้ไขสถานะการจองคอร์ส
 - 7.4 ลบการจองคอร์ส
+- 7.5 อัพโหลดหลักฐานการจ่ายเงินในการจอง
 ### 8.Personal Management
 - 8.1 เรียกรายการจองทั้งหมดของตนเอง
 - 8.2 เรียกรายการเรียนทั้งหมด
@@ -119,8 +120,8 @@
         "request_id" : number,
         "account_id" : number,
         "school_id" : number,
-        "document_file" : string,
-        "paymeny_pic" : string,
+        "document" : File,
+        "paymeny_pic" : Image,
         "request_status" : string
     }
 ```
@@ -130,7 +131,7 @@
         "reservation_id" : number,
         "course_id" : number,
         "account_id" : number,
-        "payment_url" : string,
+        "payment_pic" : Image,
         "status" : string,
         "reservation_datetime" : string,
         "expire_datetime" : string,
@@ -668,12 +669,12 @@ Example
 ### `POST` /requests
 ### Request
 ```
-    {
-        "account" : number,
-        "school" : number,
-        "document_url" : string,
-        "proof_of_payment_url" : string
-    }
+    HTML Form:
+        "account_id" : number,
+        "school_id" : number,
+        "document" : File,
+        "payment_pic" : Image
+    
 ```
 ### Response
 `201` Created
@@ -724,12 +725,12 @@ Example
 ### `PUT` /requests/<request_id>
 ### Request
 ```
-    {
+    HTML Form:
         "update field" : update data,
         .
         .
         .
-    }
+    
 ```
 ### Response
 `200` Update successfully
@@ -808,6 +809,31 @@ Example
 `204` Deleted
 ```
     Return none
+```
+## 7.5 อัพโหลดหลักฐานการจ่ายเงินสำหรับการจองคอร์ส
+### Permission : เจ้าของการจองนั้น
+### `PUT` /reservations/<reservation_id>/payment
+## Request
+```
+    HTML Form:
+        payment_pic : <Upload Picture>
+```
+## Response
+`200` Upload succesfully
+```
+    Return updated reservation object
+```
+`400` No Upload file
+```
+    message : Upload file not included
+```
+`401` Unautorized
+```
+    message : Unauthorized
+```
+`404` Reservation not found
+```
+    message : Reservation not found
 ```
 ## **8. Personal Management**
 ## 8.1 เรียกรายการจองทั้งหมดของตนเอง

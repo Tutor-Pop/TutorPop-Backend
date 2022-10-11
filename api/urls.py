@@ -24,14 +24,15 @@ urlpatterns = [
     path('schools/<int:school_id>/rooms', room.create_getall_room),
     path('schools/<int:school_id>/rooms/<int:room_id>', room.get_update_delete_room),
     #--- 6. Request ---#
-    path('requests', request.get_create_request),
+    path('requests', request.get_create_request.as_view()),
     path('requests/<int:req_id>', request.get_del_update_request),
     path('requests/<int:req_id>/status', request.update_request_status),
     #--- 7.Reservation --#
     path('reservations', reservation.CreateReserve.as_view()),
     path('courses/<course_id>/reservations', reservation.get_course_reservations),
     path('reservations/<resv_id>/status',reservation.update_reservation_status),
-    path('reservations/<int:resv_id>',reservation.get_del_reservation)
+    path('reservations/<int:resv_id>',reservation.get_del_reservation),
+    path('reservations/<resv_id>/payment',reservation.UploadPayment.as_view()),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),
