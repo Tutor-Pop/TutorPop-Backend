@@ -54,7 +54,10 @@
 - 8.5 เรียกรายการโรงเรียนที่เป็นสมาชิกทั้งหมด
 - 8.6 เรียกรายการโรงเรียนที่เป็นเจ้าของทั้งหมด
 ### 9. Login/Register
-# Common Objects
+### 10. Notification Message
+- 10.1 สร้าง notification message
+- 10.2 เรียก notification message ทั้งหมดของ account หนึ่งๆ
+- 10.3 เรียก notification message เฉพาะที่ยังไม่ expire ของ account หนึ่งๆ
 ## **1. Account object**
 ```
     {
@@ -144,6 +147,14 @@
         "day" : string,
         "start_time" : string,
         "end_time" : string
+    }
+```
+## **8. Notification object**
+```
+    {
+        "account_id" : number,
+        "message_noti" : string,
+        "expire_date" : string
     }
 ```
 # Endpoint 
@@ -931,7 +942,45 @@ Example
         ]
     }
 ```
-
-
+## **9. Login/Register**
+## **10. Notification message**
+## 10.1 สร้าง Notification message
+### Permission : System Admin
+### `POST` /messages
+### Request
+```
+    {
+        "account_id" : number,
+        "message_noti" : string,
+        "expire_date" : string
+    }
+```
+### Response
+`200` Created
+```
+    Return created message
+```
+## 10.2 เรียก Notification message ทั้งหมดของ account 
+### Permission : System Admin และเจ้าของ account
+### `GET` /accounts/<account_id>/messages
+### Response
+`200`
+```
+    "count" : number,
+    "messages" : {
+        <notification>,
+    }
+```
+## 10.2 เรียก Notification message เฉพาะที่ยังไม่ expire ของ account 
+### Permission : System Admin และเจ้าของ account
+### `GET` /accounts/<account_id>/messages_nxp
+### Response
+`200`
+```
+    "count" : number,
+    "messages" : {
+        <notification>,
+    }
+```
 
 
