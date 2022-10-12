@@ -213,4 +213,5 @@ class Notification(models.Model):
         Account, on_delete=models.CASCADE, db_column="account_id"
     )
     message_noti = models.CharField(max_length=300, default=None)
+    create_time = models.DateTimeField(blank=False, null=False, default=None)
     expire_date = models.DateField(blank=True, default=None)
