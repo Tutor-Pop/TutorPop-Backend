@@ -90,9 +90,17 @@ class SchoolSerializer(serializers.ModelSerializer):
         instance.owner_id = validated_data.get("owner_id", instance.owner_id)
         instance.name = validated_data.get("name", instance.name)
         instance.description = validated_data.get("description", instance.description)
-        instance.address = validated_data.get("address", instance.address)
+        instance.addr_description = validated_data.get(
+            "addr_description", instance.addr_description
+        )
         # instance.status = validated_data.get(
         #     'status', instance.status)
+        instance.sub_district = validated_data.get(
+            "sub_district", instance.sub_district
+        )
+        instance.district = validated_data.get("district", instance.district)
+        instance.province = validated_data.get("province", instance.province)
+        instance.postal_code = validated_data.get("postal_code", instance.postal_code)
         instance.logo_url = validated_data.get("logo_url", instance.logo_url)
         instance.banner_url = validated_data.get("banner_url", instance.banner_url)
         instance.save()
