@@ -27,6 +27,7 @@
 - 4.6 เพิ่มครูในโรงเรียน (ถ้ามีอยู่แล้วไม่มีผล)
 - 4.7 ลบครูในโรงเรียน
 - 4.8 แก้ไขสถานะโรงเรียน
+- 4.9 ดูคอร์สทั้งหมดในโรงเรียน
 ### 5.Room
 - 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 - 5.2 ดูห้องเรียนในโรงเรียน
@@ -582,6 +583,19 @@ Example
     Return updated school object
 ```
 `404` School not exist
+## 4.9 ดูคอร์สทั้งหมดในโรงเรียน
+### Permission : All users
+### `GET` /schools/<school_id>/courses
+### Response
+`200` Get successfully
+```
+    {
+        count : number,
+        result : [
+            <course object>,
+        ]
+    }
+```
 ## **5. Rooms**
 ## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
