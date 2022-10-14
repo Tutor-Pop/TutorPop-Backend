@@ -155,7 +155,7 @@ def create_course(request, school_id: int):
             school = School.objects.get(school_id=school_id)
         except School.DoesNotExist:
             return Response(
-                {"message": "School doesn't not exists!"},
+                {"message": "School does not exists!"},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
