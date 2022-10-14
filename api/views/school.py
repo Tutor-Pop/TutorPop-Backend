@@ -107,3 +107,14 @@ def get_all_courses(request, school_id: int):
         {"count": len(serializer.data), "result": serializer.data},
         status=status.HTTP_200_OK,
     )
+    
+@api_view([PUT])
+def edit_status_school(request,school_ID:int):
+    try:
+        school = School.objects.get(school_id=school_ID)
+        serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
