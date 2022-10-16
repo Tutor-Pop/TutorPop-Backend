@@ -64,5 +64,3 @@ def change_password(request,id:int):
     passwordHistory = PasswordHistory(account_id=account,password=passwordEncryption(request.data['password']))
     passwordHistory.save()
     return Response({"result": JSONParserOne(passwordHistory)},status=status.HTTP_200_OK)
-
-

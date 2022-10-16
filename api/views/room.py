@@ -2,7 +2,7 @@ from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
-from ..models import School,SchoolRooms
+from ..models import Courses, School,SchoolRooms
 from rest_framework import status
 
 @api_view([GET,POST])
@@ -55,3 +55,8 @@ def get_update_delete_room(request,school_id: int,room_id: int):
         return Response({"message": "Room doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
     except School.DoesNotExist:
         return Response({"message": "School doesn't not exists!"},status=status.HTTP_404_NOT_FOUND)
+
+@api_view([GET])
+def get_room_usage(request,room_id):
+    course = Courses.objects.filter(roomusage__room_id=room_id).values('course_id','start_date','end_date')
+    return Response({'usage':course},status=status.HTTP_200_OK)

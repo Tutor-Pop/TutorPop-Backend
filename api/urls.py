@@ -7,6 +7,7 @@ urlpatterns = [
     #--- 1. Account ---#
     path('accounts', account.get_all_accounts),
     path('accounts/<int:id>', account.get_edit_delete_account),
+    path('accounts/<int:id>/password', account.change_password),
     #--- 2.Search ---#
     path('courses/search', search.api_course_search.as_view()),
     path('schools/search', search.api_school_search.as_view()),
@@ -23,6 +24,7 @@ urlpatterns = [
     #--- 5. Room ---#
     path('schools/<int:school_id>/rooms', room.create_getall_room),
     path('schools/<int:school_id>/rooms/<int:room_id>', room.get_update_delete_room),
+    path('rooms/<int:room_id>/usages', room.get_room_usage),
     #--- 6. Request ---#
     path('requests', request.get_create_request.as_view()),
     path('requests/<int:req_id>', request.get_del_update_request),
