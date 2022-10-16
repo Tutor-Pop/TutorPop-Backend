@@ -1,5 +1,16 @@
 from django.urls import path
-from .views import auth, account, course, room, test, request, search, school, reservation
+from .views import (
+    auth,
+    account,
+    course,
+    room,
+    test,
+    request,
+    search,
+    school,
+    reservation,
+    notification,
+)
 
 urlpatterns = [
     #--- Authentication ---#

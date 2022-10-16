@@ -54,11 +54,17 @@ class api_school_search(ListAPIView):
     def get_queryset(self):
         queryset = School.objects.all()
         status = self.request.query_params.get("status", "OPEN")
-        address = self.request.query_params.get("address", "")
+        sub_district = self.request.query_params.get("sub_district", "")
+        district = self.request.query_params.get("district", "")
+        province = self.request.query_params.get("province", "")
         type = self.request.query_params.get("type", "")
         queryset = queryset.filter(status=status)
-        if address:
-            queryset = queryset.filter(address=address)
+        if district:
+            queryset = queryset.filter(district=district)
+        if sub_district:
+            queryset = queryset.filter(sub_district=sub_district)
+        if province:
+            queryset = queryset.filter(province=province)
         if type:
             queryset = queryset.filter(schoolwithtype__type__type_name=type)
         return queryset
