@@ -15,6 +15,8 @@ from .views import (
 urlpatterns = [
     # --- Authentication ---#
     path("register", auth.register),
+    path('hello/', auth.HelloView.as_view(), name='hello'),
+
     # --- 1. Account ---#
     path("accounts", account.get_all_accounts),
     path("accounts/<int:id>", account.get_edit_delete_account),

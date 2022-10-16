@@ -4,6 +4,17 @@ from rest_framework.decorators import api_view
 from ..constants.method import GET,POST,PUT,DELETE
 from ..models import Account,PasswordHistory,School
 import django.db.utils
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
 
 @api_view([POST])
 def register(request):
