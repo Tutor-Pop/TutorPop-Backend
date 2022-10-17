@@ -46,6 +46,10 @@ urlpatterns = [
     path('reservations/<resv_id>/status',reservation.update_reservation_status),
     path('reservations/<int:resv_id>',reservation.get_del_reservation),
     path('reservations/<resv_id>/payment',reservation.UploadPayment.as_view()),
+    #--- 10. Notification ---#
+    path('messages', notification.create_notification),
+    path('accounts/<int:account_ID>/messages', notification.get_all_notification),
+    path('accounts/<int:account_ID>/messages_nxp', notification.get_notexpire_notification),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),
