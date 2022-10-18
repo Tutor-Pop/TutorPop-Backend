@@ -13,6 +13,14 @@ def upload_document(instance, filename):
     return f"documents/{filename}"
 
 
+def upload_logo(instance, filename):
+    return f"logos/{filename}"
+
+
+def upload_banner(instance, filename):
+    return f"banners/{filename}"
+
+
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
@@ -55,8 +63,12 @@ class School(models.Model):
     province = models.CharField(max_length=100, default=None, blank=True, null=True)
     postal_code = models.CharField(max_length=5, default=None, blank=True, null=True)
     status = models.CharField(max_length=10, default=None, blank=True, null=True)
-    logo_url = models.CharField(max_length=1000, default=None, blank=True, null=True)
-    banner_url = models.CharField(max_length=1000, default=None, blank=True, null=True)
+    logo_pic = models.ImageField(
+        upload_to=upload_logo, default=None, blank=True, null=True
+    )
+    banner_pic = models.ImageField(
+        upload_to=upload_banner, default=None, blank=True, null=True
+    )
 
 
 class Teacher(models.Model):
