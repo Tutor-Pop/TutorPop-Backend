@@ -101,8 +101,8 @@ class SchoolSerializer(serializers.ModelSerializer):
         instance.district = validated_data.get("district", instance.district)
         instance.province = validated_data.get("province", instance.province)
         instance.postal_code = validated_data.get("postal_code", instance.postal_code)
-        instance.logo_url = validated_data.get("logo_url", instance.logo_url)
-        instance.banner_url = validated_data.get("banner_url", instance.banner_url)
+        instance.logo_pic = validated_data.get("logo_pic", instance.logo_pic)
+        instance.banner_pic = validated_data.get("banner_pic", instance.banner_pic)
         instance.save()
         return instance
 

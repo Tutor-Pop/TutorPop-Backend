@@ -1,19 +1,22 @@
+from functools import partial
 from ..models import Account, Courses, PasswordHistory, School, Teacher
 
 from cgitb import reset
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from ..constants.method import GET, POST, PUT, DELETE
 from ..models import Account, PasswordHistory, School, Teacher
 from rest_framework import status
 from ..serializers import SchoolSerializer, SchoolStatusSerializer, CourseSerializer
 from rest_framework.generics import ListAPIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 @api_view([POST])
+@parser_classes([MultiPartParser, FormParser])
 def create_school(request):
-    serializer = SchoolSerializer(data=request.data)
+    serializer = SchoolSerializer(data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -21,6 +24,7 @@ def create_school(request):
 
 
 @api_view([GET, PUT, DELETE])
+@parser_classes([MultiPartParser, FormParser])
 def get_edit_delete_school(request, school_ID: int):
     if request.method == GET:
         try:

@@ -57,7 +57,7 @@ class CreateReserve(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, format=None):
-        print(request.data)
+        # print(request.data)
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
