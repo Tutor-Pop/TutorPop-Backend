@@ -1,8 +1,3 @@
-from cgitb import reset
-from ..utility import JSONParser, JSONParserOne, passwordEncryption
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from ..constants.method import GET, POST, PUT, DELETE
 from ..models import Account, Courses, PasswordHistory, School, Teacher
 
 from cgitb import reset
@@ -30,7 +25,7 @@ def get_edit_delete_school(request, school_ID: int):
     if request.method == GET:
         try:
             result = JSONParserOne(School.objects.get(school_id=school_ID))
-            return Response({"data": result}, status=status.HTTP_200_OK)
+            return Response({"result": result}, status=status.HTTP_200_OK)
         except:
             return Response(
                 {"message": "School doesn't exist!"}, status=status.HTTP_404_NOT_FOUND
@@ -107,9 +102,10 @@ def get_all_courses(request, school_id: int):
         {"count": len(serializer.data), "result": serializer.data},
         status=status.HTTP_200_OK,
     )
-    
+
+
 @api_view([PUT])
-def edit_status_school(request,school_ID:int):
+def edit_status_school(request, school_ID: int):
     try:
         school = School.objects.get(school_id=school_ID)
         serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
