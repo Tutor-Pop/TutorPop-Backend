@@ -97,7 +97,6 @@ def edit_status_school(request, school_id: int):
         serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'result':serializer.data}, status=status.HTTP_200_OK)
     except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
+        return Response({'result':{}},status=status.HTTP_404_NOT_FOUND)

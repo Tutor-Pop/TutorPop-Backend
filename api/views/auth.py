@@ -28,6 +28,6 @@ def register(request):
             password = ePassword
         )
         passwordHistory.save()
-        return Response("Registration Completed!")
+        return Response({'message':"Registration Completed!",'result':JSONParserOne(account)})
     except django.db.utils.IntegrityError:
-        return Response("Email/Username already existed!")
+        return Response({'message':"Email/Username already existed!",'result': {}})
