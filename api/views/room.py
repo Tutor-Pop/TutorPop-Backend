@@ -44,6 +44,7 @@ def get_update_delete_room(request, school_id: int, room_id: int):
         elif request.method == PUT:
             room.room_name = request.data["room_name"]
             room.maximum_seat = request.data["maximum_seat"]
+            room.description = request.data["description"]
             room.save()
             return Response({"result": JSONParserOne(room)}, status=status.HTTP_200_OK)
 
