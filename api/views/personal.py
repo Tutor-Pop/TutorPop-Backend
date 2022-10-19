@@ -1,4 +1,3 @@
-from tkinter.font import ROMAN
 from unittest import result
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
@@ -14,19 +13,20 @@ def get_my_reserve(request, account_id: int):
     reservations = JSONParser(account)
     count = len(reservations)
     if count != 0:
-        return Response({'count': count, 'reservations': reservations}, status=status.HTTP_200_OK)
+        return Response(
+            {"count": count, "reservations": reservations}, status=status.HTTP_200_OK
+        )
     else:
         return Response({"message": "No reservation"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view([GET])
 def get_reserve(request, account_id: int):
-    account = Reservation.objects.filter(
-        account_id=account_id, status='Confirmed')
+    account = Reservation.objects.filter(account_id=account_id, status="Confirmed")
     courses = JSONParser(account)
     count = len(courses)
     if count != 0:
-        return Response({'count': count, 'courses': courses}, status=status.HTTP_200_OK)
+        return Response({"count": count, "courses": courses}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -37,7 +37,7 @@ def get_all_teachings(request, account_id: int):
     courses = JSONParser(teacher)
     count = len(courses)
     if count != 0:
-        return Response({'count': count, 'courses': courses}, status=status.HTTP_200_OK)
+        return Response({"count": count, "courses": courses}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Not Teachings"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -53,9 +53,11 @@ def get_schools_member(request, account_id: int):
     schools = JSONParser(teach_school)
     count = len(schools)
     if count != 0:
-        return Response({'count': count, 'schools': schools}, status=status.HTTP_200_OK)
+        return Response({"count": count, "schools": schools}, status=status.HTTP_200_OK)
     else:
-        return Response({"message": "Not teach in school"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"message": "Not teach in school"}, status=status.HTTP_404_NOT_FOUND
+        )
 
 
 @api_view([GET])
@@ -64,6 +66,6 @@ def get_schools_owner(request, account_id: int):
     schools = JSONParser(owner)
     count = len(schools)
     if count != 0:
-        return Response({'count': count, 'schools': schools}, status=status.HTTP_200_OK)
+        return Response({"count": count, "schools": schools}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Not Owner"}, status=status.HTTP_404_NOT_FOUND)

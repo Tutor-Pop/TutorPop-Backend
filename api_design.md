@@ -830,7 +830,7 @@ Example
 ## Request
 ```
     {
-        "reservation_status" : string
+        "status" : string
     }
 ```
 ### Response
