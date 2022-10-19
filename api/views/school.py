@@ -25,10 +25,10 @@ def create_school(request):
 
 @api_view([GET, PUT, DELETE])
 @parser_classes([MultiPartParser, FormParser])
-def get_edit_delete_school(request, school_ID: int):
+def get_edit_delete_school(request, school_id: int):
     if request.method == GET:
         try:
-            result = JSONParserOne(School.objects.get(school_id=school_ID))
+            result = JSONParserOne(School.objects.get(school_id=school_id))
             return Response({"result": result}, status=status.HTTP_200_OK)
         except:
             return Response(
@@ -36,7 +36,7 @@ def get_edit_delete_school(request, school_ID: int):
             )
     elif request.method == PUT:
         try:
-            school = School.objects.get(school_id=school_ID)
+            school = School.objects.get(school_id=school_id)
             serializer = SchoolSerializer(school, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
@@ -45,7 +45,7 @@ def get_edit_delete_school(request, school_ID: int):
             return Response(status=status.HTTP_400_BAD_REQUEST)
     elif request.method == DELETE:
         try:
-            school = School.objects.get(school_id=school_ID)
+            school = School.objects.get(school_id=school_id)
             school.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except:
@@ -53,25 +53,25 @@ def get_edit_delete_school(request, school_ID: int):
 
 
 @api_view([GET, PUT, DELETE])
-def get_add_delete_teacher(request, school_ID: int):
+def get_add_delete_teacher(request, school_id: int):
     # ต้องแยกประเภทไหมว่าหาอะไรไม่เจอ
     if request.method == GET:
         try:
-            school = School.objects.get(school_id=school_ID)
-            teacher = Teacher.objects.filter(school_id=school)
-            account = Account.objects.filter(account_id__in=teacher)
+            school = School.objects.get(school_id=school_id)
+            account = Account.objects.filter(teacher__school_id=school_id)
             result = JSONParser(account)
             return Response({"teachers": result})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
     elif request.method == PUT:
         try:
             teachers = request.data["teachers"]
-            tmpSchool = School.objects.get(school_id=school_ID)
+            tmpSchool = School.objects.get(school_id=school_id)
             for i in teachers:
                 tmpAcc = Account.objects.get(account_id=i)
                 Teacher.objects.get_or_create(account_id=tmpAcc, school_id=tmpSchool)
-            all_teachers = Teacher.objects.filter(school_id=school_ID)
+            all_teachers = Teacher.objects.filter(school_id=school_id)
             result = JSONParser(all_teachers)  # แสดงผลครูทั้งหมดในโรงเรียน
             return Response({"teachers": result}, status=status.HTTP_200_OK)
         except:
@@ -83,8 +83,8 @@ def get_add_delete_teacher(request, school_ID: int):
         try:
             teachers = request.data["teachers"]
             for i in teachers:
-                Teacher.objects.filter(account_id=i, school_id=school_ID).delete()
-            all_teachers = Teacher.objects.filter(school_id=school_ID)
+                Teacher.objects.filter(account_id=i, school_id=school_id).delete()
+            all_teachers = Teacher.objects.filter(school_id=school_id)
             result = JSONParser(all_teachers)  # แสดงผลครูทั้งหมดในโรงเรียน
             return Response({"teachers": result}, status=status.HTTP_200_OK)
         except:
@@ -109,12 +109,13 @@ def get_all_courses(request, school_id: int):
 
 
 @api_view([PUT])
-def edit_status_school(request, school_ID: int):
+def edit_status_school(request, school_id: int):
     try:
-        school = School.objects.get(school_id=school_ID)
+        school = School.objects.get(school_id=school_id)
         serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
