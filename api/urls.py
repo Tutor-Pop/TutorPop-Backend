@@ -10,6 +10,7 @@ from .views import (
     school,
     reservation,
     notification,
+    personal
 )
 
 urlpatterns = [
@@ -47,10 +48,17 @@ urlpatterns = [
     path('reservations/<resv_id>/status',reservation.update_reservation_status),
     path('reservations/<int:resv_id>',reservation.get_del_reservation),
     path('reservations/<resv_id>/payment',reservation.UploadPayment.as_view()),
+    #--- 8. Personal ---#
+    path('users/<int:account_id>/reservations', personal.get_my_reserve),
+    path('users/<int:account_id>/courses', personal.get_reserve),
+    path('users/<int:account_id>/teachings', personal.get_all_teachings),
+    path('users/<int:account_id>/times', personal.get_times_ts),
+    path('users/<int:account_id>/schools', personal.get_schools_member),
+    path('/users/<int:user_id>/owners', personal.get_schools_owner),
     #--- 10. Notification ---#
     path('messages', notification.create_notification),
-    path('accounts/<int:account_ID>/messages', notification.get_all_notification),
-    path('accounts/<int:account_ID>/messages_nxp', notification.get_notexpire_notification),
+    path('accounts/<int:account_id>/messages', notification.get_all_notification),
+    path('accounts/<int:account_id>/messages_nxp', notification.get_notexpire_notification),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),
