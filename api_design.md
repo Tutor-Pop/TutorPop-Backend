@@ -157,6 +157,16 @@
         "message_noti" : string,
         "create_time" : string,
         "expire_date" : string
+        }
+```
+
+## **9. Study time record object**
+```
+    {
+        "course_id" : number,
+        "study_date" : string,
+        "start_time" : string,
+        "end_time" : string
     }
 ```
 # Endpoint 
@@ -327,6 +337,8 @@
         "maximum_student" : number,
         "payment_method_text" : string,
         "payment_method_picture_url" : string
+        "study_time" : [<study time object>,...],
+        "study_time_record" : [<study time record object>,...]
     }
 ```
 ### Response

@@ -27,6 +27,7 @@ urlpatterns = [
     path('schools/<int:school_id>/courses', course.create_course),
     path('schools/<int:school_id>/courses/<int:course_id>',course.get_update_course),
     path('schools/<int:school_id>/courses/<int:course_id>/students',course.get_student),
+    path('schools/<int:school_id>/courses/<int:course_id>/teachers',course.get_update_teachers),
     #--- 4. School ---#
     path('schools', school.create_school),
     path('schools/<int:school_id>', school.get_edit_delete_school),

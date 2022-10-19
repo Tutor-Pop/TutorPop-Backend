@@ -162,8 +162,8 @@ class StudyTime(models.Model):
         Courses, on_delete=models.CASCADE, db_column="course_id"
     )
     day = models.CharField(max_length=3, default=None)
-    start_time = models.DateTimeField(blank=True, default=None)
-    end_time = models.DateTimeField(blank=True, default=None)
+    start_time = models.TimeField(blank=True, default=None)
+    end_time = models.TimeField(blank=True, default=None)
 
 
 class StudyTimeRecords(models.Model):
@@ -171,8 +171,8 @@ class StudyTimeRecords(models.Model):
         Courses, on_delete=models.CASCADE, db_column="course_id"
     )
     study_date = models.DateField(blank=True, default=None)
-    start_time = models.DateTimeField(blank=True, default=None)
-    end_time = models.DateTimeField(blank=True, default=None)
+    start_time = models.TimeField(blank=True, default=None)
+    end_time = models.TimeField(blank=True, default=None)
 
 
 class OpenRequests(models.Model):

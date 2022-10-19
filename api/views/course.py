@@ -12,6 +12,8 @@ from ..models import (
     School,
     Courses,
     SchoolRooms,
+    StudyTime,
+    StudyTimeRecords
 )
 from rest_framework import status
 import datetime
@@ -59,7 +61,7 @@ def get_update_teachers(request, school_id: int, course_id: int):
         course = Courses.objects.get(
             course_id=course_id, school_id=school_id, is_deleted=False
         )
-        teacher = Account.objects.filter(courseteacher__course=course_id)
+        teacher = Account.objects.filter(courseteacher__course_id=course_id)
 
         if request.method == GET:
             result = JSONParser(teacher)
@@ -68,7 +70,9 @@ def get_update_teachers(request, school_id: int, course_id: int):
         elif request.method == PUT:
             for i in request.data["teacher_id"]:
                 try:
-                    courseteacher = CourseTeacher(course=course, account_id=i)
+                    account = Account.objects.get(account_id=i)
+                    courseteacher = CourseTeacher(
+                        account_id=account,course_id=course)
                     courseteacher.save()
                 except:
                     pass
@@ -107,7 +111,7 @@ def get_student(request, school_id: int, course_id: int):
         School.objects.get(school_id=school_id)
         Courses.objects.get(course_id=course_id, school_id=school_id, is_deleted=False)
 
-        student = Account.objects.filter(reservation__course=course_id)
+        student = Account.objects.filter(reservation__course_id=course_id)
         return Response({"result": JSONParser(student)}, status=status.HTTP_200_OK)
 
     except Courses.DoesNotExist:
@@ -144,12 +148,34 @@ def create_course(request, school_id: int):
             payment_method_picture_url=request.data["payment_method_picture_url"],
         )
         course.save()
+
         roomusage = RoomUsage(room_id=room, course_id=course)
         roomusage.save()
+
+        
+        for i in request.data["study_time"]:
+            study_time = StudyTime(
+                course_id = course,
+                day = i["day"],
+                start_time = i["start_time"],
+                end_time = i["end_time"]
+            )
+            study_time.save()
+    
+        for i in request.data['study_time_record']:
+            study_time_record = StudyTimeRecords(
+                course_id = course,
+                study_date = i["study_date"],
+                start_time = i["start_time"],
+                end_time = i["end_time"]
+            )
+            study_time_record.save()
+
         return Response(
             {"message": "Course created successfully", "result": JSONParserOne(course)},
             status=status.HTTP_201_CREATED,
         )
+
     if request.method == GET:
         try:
             school = School.objects.get(school_id=school_id)
