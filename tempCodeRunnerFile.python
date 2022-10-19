@@ -1,5 +1,0 @@
-n=0
-name = ['Kanon','Tul','Boss','Tong','Mix']
-for i in name:
-	n+=1
-print(n)
