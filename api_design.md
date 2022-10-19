@@ -453,15 +453,14 @@ Example
 ### `POST` /schools
 ### Request
 ```
-    {
+    HTML Form:
         "owner_id" : number,
         "name" : string,
         "description" : string,
         "address" : string,
-        "logo_url" : string,
-        "banner_url" : string,
+        "logo_pix" : File,
+        "banner_pic" : File,
         "school_type_id" : [<type_id>, . .]
-    }
 ```
 ### Response
 `201` Created
@@ -489,12 +488,11 @@ Example
 ### `PUT` /schools/<school_id>
 ### Request
 ```
-    {
+    HTML Form:
         <update field> : <update value>,
         .
         .
     
-    }
 ```
 ### Response
 `200` Update correctly
