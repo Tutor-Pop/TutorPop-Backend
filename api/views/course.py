@@ -125,7 +125,7 @@ def get_student(request, school_id: int, course_id: int):
 
 
 @api_view([POST, GET])
-def create_course(request, school_id: int):
+def create_getall_course(request, school_id: int):
     if request.method == POST:
         school = School.objects.get(school_id=school_id)
         room = SchoolRooms.objects.get(room_id=request.data["room_id"])

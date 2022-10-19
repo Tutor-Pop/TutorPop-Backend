@@ -90,24 +90,6 @@ def get_add_delete_teacher(request, school_id: int):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view([GET])
-def get_all_courses(request, school_id: int):
-    try:
-        school = School.objects.get(school_id=school_id)
-    except School.DoesNotExist:
-        return Response(
-            {"message": "School doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
-        )
-
-    all_courses = Courses.objects.filter(school_id=school_id)
-    serializer = CourseSerializer(all_courses, many=True)
-    return Response(
-        {"count": len(serializer.data), "result": serializer.data},
-        status=status.HTTP_200_OK,
-    )
-
-
 @api_view([PUT])
 def edit_status_school(request, school_id: int):
     try:
