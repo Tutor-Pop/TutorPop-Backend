@@ -24,7 +24,7 @@ urlpatterns = [
     path('courses/search', search.api_course_search.as_view()),
     path('schools/search', search.api_school_search.as_view()),
     #--- 3. Course ---#
-    path('schools/<int:school_id>/courses', course.create_course),
+    path('schools/<int:school_id>/courses', course.create_getall_course),
     path('schools/<int:school_id>/courses/<int:course_id>',course.get_update_course),
     path('schools/<int:school_id>/courses/<int:course_id>/students',course.get_student),
     path('schools/<int:school_id>/courses/<int:course_id>/teachers',course.get_update_teachers),
