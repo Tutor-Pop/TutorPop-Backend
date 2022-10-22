@@ -6,7 +6,7 @@ from ..models import Courses, School, SchoolRooms
 from rest_framework import status
 
 
-@api_view([GET, POST])
+@api_view([GET, POST, DELETE])
 def create_getall_room(request, school_id: int):
     if request.method == GET:
         school = School.objects.get(school_id=school_id)
@@ -30,6 +30,27 @@ def create_getall_room(request, school_id: int):
         )
         room.save()
         return Response({"result": JSONParserOne(room)}, status=status.HTTP_201_CREATED)
+    elif request.method == DELETE:
+        try:
+            school = School.objects.get(school_id=school_id)
+        except School.DoesNotExist:
+            return Response(
+                {"message": "School does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        rooms_id = request.data["rooms_id"]
+        ids = ""
+        for room_id in rooms_id:
+            try:
+                room = SchoolRooms.objects.get(room_id=room_id)
+            except SchoolRooms.DoesNotExist:
+                ids += str(room_id)
+                ids += ","
+                continue
+            room.delete()
+        return Response(
+            {"message": f"Deleted (except rooms with id {ids}. Rooms do not exist)"},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 @api_view([GET, PUT, DELETE])

@@ -33,7 +33,8 @@
 - 5.2 ดูห้องเรียนในโรงเรียน
 - 5.3 ดูข้อมูล Single room
 - 5.4 ลบห้องเรียนในโรงเรียน
-- 5.5 ดูเวลาการใช้ห้องรายห้อง
+- 5.5 ลบห้องหลายห้องในโรงเรียน
+- 5.6 ดูเวลาการใช้ห้องรายห้อง
 ### 6.Open Request
 - 6.1 สร้างคำขอ
 - 6.2 เรียกดูคำขออันเดียว
@@ -615,6 +616,7 @@ Example
     {
         "room_name" : string,
         "maximum_seat" : number,
+        "description" : string
     }
 ```
 `201` Created
@@ -625,25 +627,7 @@ Example
 ```
     Return updated room
 ```
-## 5.2 แก้ไขห้องเรียนในโรงเรียน
-### Permission : User ที่ login แล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
-### `PUT` /schools/<school_id>/rooms/<room_id>
-### Request
-```
-    {
-        "room_name" : string,
-        "maximum_seat" : number,
-    }
-```
-`201` Created
-```
-    Return newly created room object
-```
-`200` Update successfully
-```
-    Return updated room
-```
-## 5.3 ดูข้อมูลห้องเรียน
+## 5.2 ดูข้อมูลห้องเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `GET` /schools/<school_id>/rooms/<room_id>
 `200` Get successfully
@@ -654,7 +638,7 @@ Example
 ```
     Return none
 ```
-## 5.4 ดูห้องเรียนในโรงเรียนทั้งหมด
+## 5.3 ดูห้องเรียนในโรงเรียนทั้งหมด
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `GET` /schools/<school_id>/rooms?\<query_parameters>
 **ถ้าไม่ใส่ ?\<query_params> คือเรียกทั้งหมด
@@ -674,7 +658,7 @@ Example
     Return none
 ```
 
-## 5.5 ลบห้องเรียนในโรงเรียน
+## 5.4 ลบห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
 ### `DELETE` /schools/<school_id>/rooms/<room_id>
 ### Response
@@ -682,6 +666,24 @@ Example
 ```
     Return none
 ```
+## 5.5 ลบห้องหลายห้องในโรงเรียน
+### Permission : เจ้าของ School
+### `DELETE` /schools/<school_id>/rooms
+### Request
+```
+    {
+        "rooms_id" : [
+            room_id1,
+            room_id2,
+            ...
+        ]
+    }
+```
+### Response
+`204` Deleted
+```
+    Return none
+``` 
 ## 5.6 ดูเวลาการใช้ห้องรายห้อง
 ### Permission :User ที่ loginแล้วและเป็นสมาชิกของโรงเรียนที่เป็นเจ้าของห้องนั้น หรือ System Admin
 ### `GET` /rooms/<room_id>/usages
