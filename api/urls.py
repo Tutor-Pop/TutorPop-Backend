@@ -16,6 +16,7 @@ from .views import (
 urlpatterns = [
     #--- Authentication ---#
     path('register', auth.register),
+    # login already
     #--- 1. Account ---#
     path('accounts', account.get_all_accounts),
     path('accounts/<int:id>', account.get_edit_delete_account),
@@ -47,13 +48,13 @@ urlpatterns = [
     path('reservations/<resv_id>/status',reservation.update_reservation_status),
     path('reservations/<int:resv_id>',reservation.get_del_reservation),
     path('reservations/<resv_id>/payment',reservation.UploadPayment.as_view()),
-    # --- 8. Personal ---#
-    path("users/<int:account_id>/reservations", personal.get_my_reserve),
-    path("users/<int:account_id>/courses", personal.get_reserve),
-    path("users/<int:account_id>/teachings", personal.get_all_teachings),
-    path("users/<int:account_id>/times", personal.get_times_ts),
-    path("users/<int:account_id>/schools", personal.get_schools_member),
-    path("users/<int:user_id>/owners", personal.get_schools_owner),
+    #--- 8. Personal ---#
+    path('accounts/<int:account_id>/reservations', personal.get_my_reserve),
+    path('accounts/<int:account_id>/courses', personal.get_reserve),
+    path('accounts/<int:account_id>/teachings', personal.get_all_teachings),
+    path('accounts/<int:account_id>/times', personal.get_times_ts),
+    path('accounts/<int:account_id>/schools', personal.get_schools_member),
+    path('accounts/<int:account_id>/owners', personal.get_schools_owner),
     #--- 10. Notification ---#
     path('messages', notification.create_notification),
     path('accounts/<int:account_ID>/messages', notification.get_all_notification),

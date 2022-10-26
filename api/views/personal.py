@@ -33,7 +33,7 @@ def get_reserve(request, account_id: int):
 
 @api_view([GET])
 def get_all_teachings(request, account_id: int):
-    teacher = Courses.objects.filter(courseteacher__account=account_id)
+    teacher = Courses.objects.filter(courseteacher__account_id=account_id)
     courses = JSONParser(teacher)
     count = len(courses)
     if count != 0:
