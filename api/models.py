@@ -39,6 +39,8 @@ class Account(models.Model):
     is_verified = models.BooleanField(default=False)
     profile_picture = models.CharField(max_length=1000, blank=True, default=None)
     is_deleted = models.BooleanField(default=False)
+    token = models.CharField(max_length=256,null=True,default=None)
+    token_expire = models.IntegerField(null=True,default=None)
 
 
 class PasswordHistory(models.Model):

@@ -16,6 +16,9 @@ from .views import (
 urlpatterns = [
     #--- Authentication ---#
     path('register', auth.register),
+    path('login', auth.login),
+    path('logout', auth.logout),
+    path('verify', auth.get_authorization),
     # login already
     #--- 1. Account ---#
     path('accounts', account.get_all_accounts),

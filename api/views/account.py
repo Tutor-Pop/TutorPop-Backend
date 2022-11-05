@@ -43,8 +43,8 @@ def get_edit_delete_account(request,id:int):
                     setattr(account,data,request.data[data])
             account.save()
             return Response({"result": JSONParserOne(account)},status=status.HTTP_200_OK)
-        except:
-            pass
+        except Exception as e:
+            return Response({"message":e},status=status.HTTP_406_NOT_ACCEPTABLE)
     elif request.method == DELETE:
         try:
             account = Account.objects.get(account_id=id)
