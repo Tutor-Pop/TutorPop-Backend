@@ -1,9 +1,11 @@
 from unittest import result
+
+from django.forms import model_to_dict
 from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import Reservation, CourseTeacher, Courses, School, Teacher
+from ..models import Reservation, CourseTeacher, Courses, School, StudyTime, Teacher
 from rest_framework import status
 
 
@@ -44,7 +46,9 @@ def get_all_teachings(request, account_id: int):
 
 @api_view([GET])
 def get_times_ts(request, account_id: int):
-    return Response({"message": "ทำไม่เป็น T^T"}, status=status.HTTP_404_NOT_FOUND)
+    studytime = StudyTime(account__account_id=account_id)
+
+    return Response(model_to_dict(studytime), status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view([GET])
