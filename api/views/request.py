@@ -49,7 +49,7 @@ def get_del_update_request(request, req_id: int):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "GET":
         serializer = RequestSerializer(req)
-        return Response(serializer.data)
+        return Response({'result':serializer.data})
     elif request.method == "DELETE":
         req.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -57,7 +57,7 @@ def get_del_update_request(request, req_id: int):
         serializer = RequestSerializer(req, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'result':serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
