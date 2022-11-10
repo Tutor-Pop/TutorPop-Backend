@@ -39,8 +39,8 @@ class Account(models.Model):
     is_verified = models.BooleanField(default=False)
     profile_picture = models.CharField(max_length=1000, blank=True, default=None)
     is_deleted = models.BooleanField(default=False)
-    token = models.CharField(max_length=256,null=True,default=None)
-    token_expire = models.IntegerField(null=True,default=None)
+    token = models.CharField(max_length=256, null=True, default=None)
+    token_expire = models.IntegerField(null=True, default=None)
 
 
 class PasswordHistory(models.Model):
@@ -188,7 +188,7 @@ class OpenRequests(models.Model):
     document = models.FileField(upload_to=upload_document, default=None, null=True)
     request_timestamp = models.DateTimeField(default=None)
     payment_pic = models.ImageField(upload_to=upload_payment, default=None, null=True)
-    request_status = models.CharField(max_length=10, default=None)
+    request_status = models.CharField(max_length=30, default=None)
 
 
 class SchoolTypes(models.Model):

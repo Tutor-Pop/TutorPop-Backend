@@ -13,15 +13,17 @@ class RequestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data["request_timestamp"] = timezone.now()
-        validated_data["request_status"] = "Pending"
+        validated_data["request_status"] = "DocsPending"
         req = OpenRequests.objects.create(**validated_data)
         return req
 
     def update(self, instance, validated_data):
         instance.document = validated_data.get("document", instance.document)
         instance.payment_pic = validated_data.get("payment_pic", instance.payment_pic)
-        # instance.request_status = validated_data('requese_status', instance.request_status)
-        instance.save()
+        instance.request_status = validated_data.get(
+            "request_status", instance.request_status
+        )
+        # instance.save()
         return instance
 
 

@@ -42,6 +42,7 @@
 - 6.4 ลบคำขอ
 - 6.5 แก้ไขข้อมูลคำขอ (ยกเว้น status)
 - 6.6 แก้ไขสถานะคำขอ
+- 6.7 ส่งหลักฐานการชำระเงินของการจอง
 ### 7.Course Reservation
 - 7.1 การจองคอร์ส
 - 7.2 ดูข้อมูลการจองทั้งหมดในคอร์ส
@@ -795,6 +796,20 @@ Example
 `200` Update correctly
 ```
     Return updated request object
+```
+`404` Request not exist
+## 6.7 ส่งหลักฐานการชำระเงินของการจอง
+### Permission : User ที่ login แล้ว
+### `PUT` /request/<request_id>/upload_payment
+### Request
+```
+    HTML Form:
+        'payment_pic' : image
+```
+### Response
+`200` Update correctly
+```
+    Return uploaded request
 ```
 `404` Request not exist
 ## 7. **Course Reservation**

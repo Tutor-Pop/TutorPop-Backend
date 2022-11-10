@@ -22,7 +22,7 @@ class get_create_request(APIView):
         serializer = RequestSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'result':serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({"result": serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
@@ -49,7 +49,7 @@ def get_del_update_request(request, req_id: int):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "GET":
         serializer = RequestSerializer(req)
-        return Response({'result':serializer.data})
+        return Response({"result": serializer.data})
     elif request.method == "DELETE":
         req.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -57,7 +57,7 @@ def get_del_update_request(request, req_id: int):
         serializer = RequestSerializer(req, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'result':serializer.data}, status=status.HTTP_200_OK)
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -71,3 +71,21 @@ def update_request_status(request, req_id: int):
     req.save()
     serializer = RequestSerializer(req)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["PUT"])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def upload_payment(request, req_id: int):
+    try:
+        req = OpenRequests.objects.get(request_id=req_id)
+    except OpenRequests.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == "PUT":
+        modified_data = request.data
+        modified_data["request_status"] = "PaymentPending"
+        print(modified_data)
+        serializer = RequestSerializer(req, data=modified_data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
