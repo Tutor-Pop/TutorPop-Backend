@@ -909,7 +909,7 @@ Example
 ## **8. Personal Management**
 ## 8.1 เรียกรายการจองทั้งหมดของตนเอง
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
-### `GET` /users/<user_id>/reservations
+### `GET` /accounts/<user_id>/reservations
 ### Response
 `200` Get succesfully
 ```
@@ -924,7 +924,7 @@ Example
 ```
 ## 8.2 เรียกรายการเรียนทั้งหมด(คอร์สที่จองและได้รับการยืนยันแล้ว)
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
-### `GET` /users/<user_id>/courses
+### `GET` /accounts/<user_id>/courses
 ### Response
 `200` Get successfully
 ```
@@ -939,7 +939,7 @@ Example
 ```
 ## 8.3 เรียกรายการสอนทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
-### `GET` /users/<user_id>/teachings
+### `GET` /accounts/<user_id>/teachings
 ### Response
 `200` Get sucessfully
 ```
@@ -954,7 +954,7 @@ Example
 ```
 ## 8.4 เรียกวันเวลาที่เรียนสอนทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
-### `GET` /users/<user_id>/times
+### `GET` /accounts/<user_id>/times
 ### Response
 `200` Get successfully
 ```
@@ -975,7 +975,7 @@ Example
 ```
 ## 8.5 เรียกรายการโรงเรียนที่เป็นสมาชิกทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin
-### `GET` /users/<user_id>/schools
+### `GET` /accounts/<user_id>/schools
 ### Response
 `200` Get successfully 
 ```
@@ -990,7 +990,7 @@ Example
 ```
 ## 8.6 เรียกรายการโรงเรียนที่เป็นเจ้าของทั้งหมด
 ### Permission : User ที่ loginแล้วเท่านั้นและเป็นเจ้าของ account นั้น หรือ System Admin 
-### `GET` /users/<user_id>/owners
+### `GET` /accounts/<user_id>/owners
 ### Response
 ```
     {
