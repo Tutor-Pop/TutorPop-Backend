@@ -5,8 +5,17 @@ from ..utility import JSONParser, JSONParserOne, passwordEncryption
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import Reservation, CourseTeacher, Courses, School, StudyTime, Teacher
+from ..models import (
+    Reservation,
+    CourseTeacher,
+    Courses,
+    School,
+    StudyTime,
+    Teacher,
+    Account,
+)
 from rest_framework import status
+from ..serializers import CourseSerializer, SchoolSerializer, AccountSerializer
 
 
 @api_view([GET])
@@ -78,3 +87,23 @@ def get_schools_owner(request, account_id: int):
         return Response({"count": count, "schools": schools}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Not Owner"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view([GET])
+def get_teacher_detail(request, user_id: int):
+    account = Account.objects.get(account_id=user_id)
+    accserial = AccountSerializer(account)
+    courses = Courses.objects.filter(courseteacher__account_id=user_id)
+    courseserial = CourseSerializer(courses, many=True)
+    modified_data = accserial.data
+    modified_data["courses"] = {
+        "count": len(courseserial.data),
+        "courses": courseserial.data,
+    }
+    schools = School.objects.filter(teacher__account_id=user_id)
+    schoolserial = SchoolSerializer(schools, many=True)
+    modified_data["schools"] = {
+        "count": len(schoolserial.data),
+        "schools": schoolserial.data,
+    }
+    return Response(modified_data, status=status.HTTP_200_OK)

@@ -132,8 +132,4 @@ class SchoolStatusSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):  # NOT DONE YET!
     class Meta:
         model = Account
-        fields = "__all__"
-
-    def create(self, validated_data):
-        account = Account.objects.create(**validated_data)
-        return account
+        fields = ("account_id", "firstname", "lastname", "email")
