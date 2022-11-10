@@ -20,6 +20,7 @@ urlpatterns = [
     path("login", auth.login),
     path("logout", auth.logout),
     path("verify", auth.get_authorization),
+    path("activate/<uidb64>/<token>", auth.activate, name="activate"),
     # login already
     # --- 1. Account ---#
     path("accounts", account.get_all_accounts),
