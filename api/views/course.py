@@ -133,6 +133,7 @@ def create_getall_course(request, school_id: int):
         print(request.data)
         # owner = Account.objects.get(account_id=request.data["owner_id"])
         modified_data = request.data
+        print(school.name)
         modified_data["school_name"] = school.name
         modified_data["school_id"] = school_id
         serializer = CourseSerializer(data=modified_data, partial=True)

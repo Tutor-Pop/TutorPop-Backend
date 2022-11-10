@@ -13,6 +13,11 @@ from rest_framework import status
 def get_my_reserve(request, account_id: int):
     account = Reservation.objects.filter(account_id=account_id)
     reservations = JSONParser(account)
+    for reserve in reservations:
+        cid = reserve["course_id_id"]
+        course = Courses.objects.get(course_id=cid)
+        sid = course.school_id.school_id
+        reserve["school_id"] = sid
     count = len(reservations)
     if count != 0:
         return Response(
