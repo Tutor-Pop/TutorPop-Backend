@@ -32,6 +32,10 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Courses
         fields = "__all__"
 
+    def create(self, validated_data):
+        validated_data["reserved_student"] = 0
+        return Courses.objects.create(**validated_data)
+
     def update(self, instance, validated_data):
         instance.course_name = validated_data.get("course_name", instance.course_name)
         instance.type = validated_data.get("type", instance.type)
@@ -58,8 +62,8 @@ class CourseSerializer(serializers.ModelSerializer):
         instance.payment_method_text = validated_data.get(
             "payment_method_text", instance.payment_method_text
         )
-        instance.payment_method_picture_url = validated_data.get(
-            "payment_method_picture_url", instance.payment_method_picture_url
+        instance.payment_method_pic = validated_data.get(
+            "payment_method_pic", instance.payment_method_pic
         )
         instance.save()
         return instance

@@ -126,14 +126,15 @@ def get_student(request, school_id: int, course_id: int):
 
 
 @api_view([POST, GET])
-@parser_classes([MultiPartParser, FormParser, JP])
 def create_getall_course(request, school_id: int):
     if request.method == POST:
         school = School.objects.get(school_id=school_id)
         room = SchoolRooms.objects.get(room_id=request.data["room_id"])
+        print(request.data)
         # owner = Account.objects.get(account_id=request.data["owner_id"])
         modified_data = request.data
         modified_data["school_name"] = school.name
+        modified_data["school_id"] = school_id
         serializer = CourseSerializer(data=modified_data, partial=True)
         if serializer.is_valid():
             # print(serializer.data)
@@ -153,7 +154,13 @@ def create_getall_course(request, school_id: int):
                 end_time=i["end_time"],
             )
         study_time.save()
-
+        for i in request.data["teachers"]:
+            try:
+                account = Account.objects.get(account_id=i)
+                courseteacher = CourseTeacher(account_id=account, course_id=course)
+                courseteacher.save()
+            except:
+                pass
         # for i in request.data["study_time_record"]:
         #    study_time_record = StudyTimeRecords(
         #        course_id=course,
@@ -185,3 +192,21 @@ def create_getall_course(request, school_id: int):
             {"count": len(serializer.data), "result": serializer.data},
             status=status.HTTP_200_OK,
         )
+
+
+@api_view([PUT])
+@parser_classes([MultiPartParser, FormParser, JP])
+def upload_method_pic(request, course_id: int, school_id: int):
+    try:
+        course = Courses.objects.get(course_id=course_id)
+    except Courses.DoesNotExist:
+        return Response(
+            {"message": "Course does not exists!"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    if request.method == "PUT":
+        serializer = CourseSerializer(course, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

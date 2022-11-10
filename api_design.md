@@ -18,6 +18,7 @@
 - 3.6 แสดงนักเรียนทั้งหมดที่สอนคอร์ส
 - 3.7 เพิ่มครูที่สอนในคอร์ส
 - 3.8 ลบครูที่สอนในคอร์ส
+- 3.9 อัพโหลดรูปช่องทางการชำระเงิน
 ### 4.School
 - 4.1 สร้าง School
 - 4.2 เรียกดู Single School
@@ -98,7 +99,7 @@
         "maximum_student" : number,
         "reserved_student" : number,
         "payment_method_text" : string,
-        "payment_method_picture_url" : string,
+        "payment_method_pic" : image,
         "is_deleted" : boolean
     }
 ```
@@ -342,9 +343,9 @@
         "course_price" : number,
         "maximum_student" : number,
         "payment_method_text" : string,
-        "payment_method_picture_url" : string
-        "study_time" : [<study time object>,...],
-        "study_time_record" : [<study time record object>,...]
+        "payment_method_pic" : image
+        "study_time" : [<study time object>, ...],
+        "teachers" : [<teacher_id> , ...]
     }
 ```
 ### Response
@@ -465,6 +466,20 @@ Example
 ```
     Return error message
 ```
+## 3.9 อัพโหลดรูปช่องทางการชำระเงิน
+### Permission : User ที่เป็นเจ้าของคอร์ส
+### `PUT`
+### Request
+```
+    HTML Form:
+        payment_method_pic : image
+```
+### Response
+`200` Upload complete
+```
+    return uploaded course object
+```
+
 ## **4. School**
 ## 4.1 สร้าง School 
 ### Permission : User ที่ login แล้วเท่านั้น หรือ System Admin

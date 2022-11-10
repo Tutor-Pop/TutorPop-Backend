@@ -39,6 +39,10 @@ urlpatterns = [
         "schools/<int:school_id>/courses/<int:course_id>/teachers",
         course.get_update_teachers,
     ),
+    path(
+        "schools/<int:school_id>/courses/<int:course_id>/upload",
+        course.upload_method_pic,
+    ),
     # --- 4. School ---#
     path("schools", school.create_school),
     path("schools/<int:school_id>", school.get_edit_delete_school),
