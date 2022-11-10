@@ -63,7 +63,7 @@ def get_add_delete_teacher(request, school_id: int):
             return Response({"teachers": result})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
     elif request.method == PUT:
         try:
             teachers = request.data["teachers"]
@@ -90,6 +90,7 @@ def get_add_delete_teacher(request, school_id: int):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view([PUT])
 def edit_status_school(request, school_id: int):
     try:
@@ -97,6 +98,19 @@ def edit_status_school(request, school_id: int):
         serializer = SchoolStatusSerializer(school, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response({'result':serializer.data}, status=status.HTTP_200_OK)
+        return Response({"result": serializer.data}, status=status.HTTP_200_OK)
     except:
-        return Response({'result':{}},status=status.HTTP_404_NOT_FOUND)
+        return Response({"result": {}}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view([GET])
+def get_all_others(request, school_id: int):
+    try:
+        school = School.objects.get(school_id=school_id)
+    except:
+        return Response({"result": {}}, status=status.HTTP_404_NOT_FOUND)
+    others = Account.objects.exclude(teacher__school_id=school_id).exclude(
+        school__school_id=school_id
+    )
+    result = JSONParser(others)
+    return Response({"others": result}, status=status.HTTP_200_OK)

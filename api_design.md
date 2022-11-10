@@ -28,6 +28,7 @@
 - 4.7 ลบครูในโรงเรียน
 - 4.8 แก้ไขสถานะโรงเรียน
 - 4.9 ดูคอร์สทั้งหมดในโรงเรียน
+- 4.10 ดูผู้ใช้คนอื่นที่ไม่ได้อยู่ในโรงเรียน
 ### 5.Room
 - 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 - 5.2 ดูห้องเรียนในโรงเรียน
@@ -605,12 +606,26 @@ Example
 `200` Get successfully
 ```
     {
-        count : number,
-        result : [
+        'count' : number,
+        'result' : [
             <course object>,
         ]
     }
 ```
+`404` School not exist
+## 4.10 เรียกดูผู้ใช้ที่ไม่ได้อยู่ในโรงเรียน
+### Permission : All User
+### `GET` /schools/<school_id>/others
+### Response
+`200` Get successfully
+```
+    {
+        'others' : [
+            <school_id>,
+        ]
+    }
+```
+`404` School not exist
 ## **5. Rooms**
 ## 5.1 เพิ่ม/สร้าง/แก้ไขห้องเรียนในโรงเรียน
 ### Permission : User ที่ loginแล้วและเป็นเจ้าของโรงเรียนนั้น หรือ System Admin
