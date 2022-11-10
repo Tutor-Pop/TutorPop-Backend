@@ -232,6 +232,7 @@ class Notification(models.Model):
     account_id = models.ForeignKey(
         Account, on_delete=models.CASCADE, db_column="account_id"
     )
+    title = models.CharField(max_length=100, null=True, default=None)
     message_noti = models.CharField(max_length=300, default=None)
     create_time = models.DateTimeField(blank=False, null=False, default=None)
     expire_date = models.DateField(blank=True, default=None)
