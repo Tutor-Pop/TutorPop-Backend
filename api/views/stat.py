@@ -14,7 +14,7 @@ def get_active_stat(request):
     crs = Courses.objects.filter(is_deleted=False).count()
     scs = School.objects.filter(status="OPEN").count()
     return Response(
-        {"accounts": accs, "Courses": crs, "Schools": scs}, status=status.HTTP_200_OK
+        {"accounts": accs, "courses": crs, "schools": scs}, status=status.HTTP_200_OK
     )
 
 
