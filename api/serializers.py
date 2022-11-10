@@ -132,4 +132,4 @@ class SchoolStatusSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):  # NOT DONE YET!
     class Meta:
         model = Account
-        fields = ("account_id", "firstname", "lastname", "email")
+        fields = ("account_id", "firstname", "lastname", "email", "profile_picture")

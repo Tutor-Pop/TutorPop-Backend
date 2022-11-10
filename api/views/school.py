@@ -8,7 +8,12 @@ from rest_framework.decorators import api_view, parser_classes
 from ..constants.method import GET, POST, PUT, DELETE
 from ..models import Account, PasswordHistory, School, Teacher
 from rest_framework import status
-from ..serializers import SchoolSerializer, SchoolStatusSerializer, CourseSerializer
+from ..serializers import (
+    SchoolSerializer,
+    SchoolStatusSerializer,
+    CourseSerializer,
+    AccountSerializer,
+)
 from rest_framework.generics import ListAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 
@@ -114,3 +119,26 @@ def get_all_others(request, school_id: int):
     )
     result = JSONParser(others)
     return Response({"others": result}, status=status.HTTP_200_OK)
+
+
+@api_view([GET])
+def get_school_details(request, school_id: int):
+    try:
+        school = School.objects.get(school_id=school_id)
+    except:
+        return Response({"result": {}}, status=status.HTTP_404_NOT_FOUND)
+    schoolserial = SchoolSerializer(school)
+    modified_data = schoolserial.data
+    accounts = Account.objects.filter(teacher__school_id=school_id)
+    accserial = AccountSerializer(accounts, many=True)
+    modified_data["all_teachers"] = {
+        "count": len(accserial.data),
+        "teachers": accserial.data,
+    }
+    courses = Courses.objects.filter(school_id=school_id)
+    courseserial = CourseSerializer(courses, many=True)
+    modified_data["all_courses"] = {
+        "count": len(courseserial.data),
+        "courses": courseserial.data,
+    }
+    return Response(modified_data, status=status.HTTP_200_OK)

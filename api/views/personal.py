@@ -96,13 +96,13 @@ def get_teacher_detail(request, user_id: int):
     courses = Courses.objects.filter(courseteacher__account_id=user_id)
     courseserial = CourseSerializer(courses, many=True)
     modified_data = accserial.data
-    modified_data["courses"] = {
+    modified_data["all_courses"] = {
         "count": len(courseserial.data),
         "courses": courseserial.data,
     }
     schools = School.objects.filter(teacher__account_id=user_id)
     schoolserial = SchoolSerializer(schools, many=True)
-    modified_data["schools"] = {
+    modified_data["all_schools"] = {
         "count": len(schoolserial.data),
         "schools": schoolserial.data,
     }
