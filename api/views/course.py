@@ -1,5 +1,5 @@
 from ..utility import JSONParser, JSONParserOne
-from ..serializers import CourseSerializer
+from ..serializers import CourseSerializer, SchoolSerializer, AccountSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes
 from ..constants.method import GET, POST, PUT, DELETE
@@ -211,3 +211,22 @@ def upload_method_pic(request, course_id: int, school_id: int):
             serializer.save()
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view([GET])
+def populate_all_course(request):
+    courses = Courses.objects.all()
+    serializer = CourseSerializer(courses, many=True)
+    for course in serializer.data:
+        sid = course["school_id"]
+        oid = course["owner_id"]
+        school = School.objects.get(school_id=sid)
+        owner = Account.objects.get(account_id=oid)
+        schoolserial = SchoolSerializer(school)
+        course["school_detail"] = schoolserial.data
+        ownerserial = AccountSerializer(owner)
+        course["owner_detail"] = ownerserial.data
+    return Response(
+        {"count": len(serializer.data), "result": serializer.data},
+        status=status.HTTP_200_OK,
+    )

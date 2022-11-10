@@ -43,6 +43,7 @@ urlpatterns = [
         "schools/<int:school_id>/courses/<int:course_id>/upload",
         course.upload_method_pic,
     ),
+    path("courses/populate", course.populate_all_course),
     # --- 4. School ---#
     path("schools", school.create_school),
     path("schools/<int:school_id>", school.get_edit_delete_school),
@@ -71,6 +72,7 @@ urlpatterns = [
     path("accounts/<int:account_id>/times", personal.get_times_ts),
     path("accounts/<int:account_id>/schools", personal.get_schools_member),
     path("accounts/<int:account_id>/owners", personal.get_schools_owner),
+    path("accounts/<int:user_id>/detail", personal.get_teacher_detail),
     # --- 10. Notification ---#
     path("messages", notification.create_notification),
     path("accounts/<int:account_id>/messages", notification.get_all_notification),
