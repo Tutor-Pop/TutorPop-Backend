@@ -11,6 +11,7 @@ from .views import (
     reservation,
     notification,
     personal,
+    stat,
 )
 
 urlpatterns = [
@@ -62,6 +63,8 @@ urlpatterns = [
     path('messages', notification.create_notification),
     path('accounts/<int:account_id>/messages', notification.get_all_notification),
     path('accounts/<int:account_id>/messages_nxp', notification.get_notexpire_notification),
+    #--- 11. Stats ---#
+    path('stats/active',stat.get_active_stat),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),

@@ -60,6 +60,8 @@
 - 10.1 สร้าง notification message
 - 10.2 เรียก notification message ทั้งหมดของ account หนึ่งๆ
 - 10.3 เรียก notification message เฉพาะที่ยังไม่ expire ของ account หนึ่งๆ
+### 11. Statistics
+- 11.1 เรียกดูข้อมูลจำนวน Accounts, Schools, Courses ที่ Active ในปัจจุบัน
 ## **1. Account object**
 ```
     {
@@ -1004,10 +1006,22 @@ Example
 ### Response
 `200`
 ```
+    {
     "count" : number,
     "messages" : {
         <notification>,
     }
 ```
-
-
+## **11. Statistics**
+## 11.1 เรียกดูข้อมูลจำนวน Accounts, Schools, Courses ที่ Active ในปัจจุบัน
+### Permission : All Accounts
+### `GET` /stats/active
+### Response
+`200`
+```
+    {
+        "accounts" : number,
+        "courses" : number,
+        "schools" : number
+    }
+``` 
