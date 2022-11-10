@@ -45,6 +45,7 @@ class Account(models.Model):
     is_deleted = models.BooleanField(default=False)
     token = models.CharField(max_length=256, null=True, default=None)
     token_expire = models.IntegerField(null=True, default=None)
+    created_date = models.DateTimeField(auto_now_add=True)
 
 
 class PasswordHistory(models.Model):
