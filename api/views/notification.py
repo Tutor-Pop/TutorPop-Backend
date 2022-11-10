@@ -14,6 +14,7 @@ def create_notification(request):
     account = Account.objects.get(account_id=request.data["account_id"])
     notification = Notification(
         account_id=account,
+        title=request.data["title"],
         message_noti=request.data["message_noti"],
         create_time=timezone.now(),
         expire_date=request.data["expire_date"],
