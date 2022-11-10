@@ -24,9 +24,9 @@ def create_notification(request):
 
 
 @api_view([GET])
-def get_all_notification(request, account_ID: int):
+def get_all_notification(request, account_id: int):
     now = datetime.datetime.now()
-    notificationData = JSONParser(Notification.objects.filter(account_id=account_ID))
+    notificationData = JSONParser(Notification.objects.filter(account_id=account_id))
     count = len(notificationData)
     countDict = {"count": count}
     return Response(
