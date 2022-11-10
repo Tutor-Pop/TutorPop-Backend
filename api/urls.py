@@ -65,6 +65,7 @@ urlpatterns = [
     path('accounts/<int:account_id>/messages_nxp', notification.get_notexpire_notification),
     #--- 11. Stats ---#
     path('stats/active',stat.get_active_stat),
+    path('stats/pendingreq',stat.get_pending_request),
     #--- Demo ---#
     #path('test', test.get_acounts),
     #path('test/<int:id>/edit', test.edit_account),

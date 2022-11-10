@@ -62,6 +62,7 @@
 - 10.3 เรียก notification message เฉพาะที่ยังไม่ expire ของ account หนึ่งๆ
 ### 11. Statistics
 - 11.1 เรียกดูข้อมูลจำนวน Accounts, Schools, Courses ที่ Active ในปัจจุบัน
+- 11.2 เรียกดูข้อมูลจำนวน School Open Request ที่ยังไม่เสร็จสิ้น
 ## **1. Account object**
 ```
     {
@@ -1023,5 +1024,15 @@ Example
         "accounts" : number,
         "courses" : number,
         "schools" : number
+    }
+``` 
+## 11.2 เรียกดูข้อมูลจำนวน School Open Request ที่ยังไม่เสร็จสิ้น
+### Permission : Admin Only
+### `GET` /stats/pendingreq
+### Response
+`200`
+```
+    {
+        "pending_req" : number
     }
 ``` 
