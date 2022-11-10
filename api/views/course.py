@@ -1,7 +1,7 @@
 from ..utility import JSONParser, JSONParserOne
 from ..serializers import CourseSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from ..constants.method import GET, POST, PUT, DELETE
 from ..models import (
     Account,
@@ -13,11 +13,13 @@ from ..models import (
     Courses,
     SchoolRooms,
     StudyTime,
-    StudyTimeRecords
+    StudyTimeRecords,
 )
 from rest_framework import status
 import datetime
 import django.db.utils
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser as JP
 
 
 @api_view([GET, PUT, DELETE])
@@ -36,7 +38,7 @@ def get_update_course(request, school_id: int, course_id: int):
             serializer = CourseSerializer(course, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+                return Response({"result": serializer.data}, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         elif request.method == DELETE:
@@ -71,8 +73,7 @@ def get_update_teachers(request, school_id: int, course_id: int):
             for i in request.data["teacher_id"]:
                 try:
                     account = Account.objects.get(account_id=i)
-                    courseteacher = CourseTeacher(
-                        account_id=account,course_id=course)
+                    courseteacher = CourseTeacher(account_id=account, course_id=course)
                     courseteacher.save()
                 except:
                     pass
@@ -125,54 +126,45 @@ def get_student(request, school_id: int, course_id: int):
 
 
 @api_view([POST, GET])
+@parser_classes([MultiPartParser, FormParser, JP])
 def create_getall_course(request, school_id: int):
     if request.method == POST:
         school = School.objects.get(school_id=school_id)
         room = SchoolRooms.objects.get(room_id=request.data["room_id"])
-        owner = Account.objects.get(account_id=request.data["owner_id"])
-        course = Courses(
-            school_id=school,
-            owner_id=owner,
-            course_name=request.data["course_name"],
-            type=request.data["type"],
-            course_description=request.data["course_description"],
-            reserve_open_date=request.data["reserve_open_date"],
-            reserve_close_date=request.data["reserve_close_date"],
-            start_date=request.data["start_date"],
-            end_date=request.data["end_date"],
-            course_period=request.data["course_period"],
-            course_price=request.data["course_price"],
-            maximum_student=request.data["maximum_student"],
-            reserved_student=0,
-            payment_method_text=request.data["payment_method_text"],
-            payment_method_picture_url=request.data["payment_method_picture_url"],
-        )
-        course.save()
-
+        # owner = Account.objects.get(account_id=request.data["owner_id"])
+        modified_data = request.data
+        modified_data["school_name"] = school.name
+        serializer = CourseSerializer(data=modified_data, partial=True)
+        if serializer.is_valid():
+            # print(serializer.data)
+            serializer.save()
+            course_id = serializer.data["course_id"]
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        course = Courses.objects.get(course_id=course_id)
         roomusage = RoomUsage(room_id=room, course_id=course)
         roomusage.save()
 
-        
         for i in request.data["study_time"]:
             study_time = StudyTime(
-                course_id = course,
-                day = i["day"],
-                start_time = i["start_time"],
-                end_time = i["end_time"]
+                course_id=course,
+                day=i["day"],
+                start_time=i["start_time"],
+                end_time=i["end_time"],
             )
-            study_time.save()
-    
-        for i in request.data['study_time_record']:
-            study_time_record = StudyTimeRecords(
-                course_id = course,
-                study_date = i["study_date"],
-                start_time = i["start_time"],
-                end_time = i["end_time"]
-            )
-            study_time_record.save()
+        study_time.save()
+
+        # for i in request.data["study_time_record"]:
+        #    study_time_record = StudyTimeRecords(
+        #        course_id=course,
+        #        study_date=i["study_date"],
+        #        start_time=i["start_time"],
+        #        end_time=i["end_time"],
+        #    )
+        #    study_time_record.save()
 
         return Response(
-            {"message": "Course created successfully", "result": JSONParserOne(course)},
+            {"message": "Course created successfully", "result": serializer.data},
             status=status.HTTP_201_CREATED,
         )
 

@@ -21,6 +21,10 @@ def upload_banner(instance, filename):
     return f"banners/{filename}"
 
 
+def upload_method(instance, filename):
+    return f"methods/{filename}"
+
+
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
@@ -92,6 +96,7 @@ class Courses(models.Model):
     school_id = models.ForeignKey(
         School, on_delete=models.CASCADE, db_column="school_id"
     )
+    school_name = models.CharField(max_length=100, default=None, null=True)
     owner_id = models.ForeignKey(
         Account, on_delete=models.CASCADE, db_column="owner_id"
     )
@@ -109,8 +114,8 @@ class Courses(models.Model):
     maximum_student = models.IntegerField(default=None)
     reserved_student = models.IntegerField(default=None)
     payment_method_text = models.CharField(blank=True, max_length=1000, default=None)
-    payment_method_picture_url = models.CharField(
-        blank=True, max_length=1000, default=None
+    payment_method_pic = models.ImageField(
+        upload_to=upload_method, default=None, blank=True, null=True
     )
     is_deleted = models.BooleanField(default=False)
 
