@@ -54,7 +54,7 @@ class api_school_search(ListAPIView):
 
     def get_queryset(self):
         queryset = School.objects.all()
-        status = self.request.query_params.get("status", "OPEN")
+        status = self.request.query_params.get("status", "Confirmed")
         sub_district = self.request.query_params.get("sub_district", "")
         district = self.request.query_params.get("district", "")
         province = self.request.query_params.get("province", "")
