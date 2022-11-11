@@ -42,15 +42,18 @@ def get_my_reserve(request, account_id: int):
         return Response({"message": "No reservation"}, status=status.HTTP_404_NOT_FOUND)
 
 
+# get courses that account study in
 @api_view([GET])
 def get_reserve(request, account_id: int):
-    account = Reservation.objects.filter(account_id=account_id, status="Confirmed")
-    courses = JSONParser(account)
-    count = len(courses)
-    if count != 0:
-        return Response({"count": count, "courses": courses}, status=status.HTTP_200_OK)
-    else:
-        return Response({"message": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    courses = Courses.objects.filter(
+        reservation__account_id=account_id, reservation__status="Confirmed"
+    )
+    serializer = CourseSerializer(courses)
+    count = len(serializer.data)
+
+    return Response(
+        {"count": count, "courses": serializer.data}, status=status.HTTP_200_OK
+    )
 
 
 @api_view([GET])
