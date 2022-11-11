@@ -29,6 +29,10 @@ def upload_profile(instance, filename):
     return f"profile/{filename}"
 
 
+def upload_poster(instance, filename):
+    return f"courses/{filename}"
+
+
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
@@ -123,6 +127,9 @@ class Courses(models.Model):
     payment_method_text = models.CharField(blank=True, max_length=1000, default=None)
     payment_method_pic = models.ImageField(
         upload_to=upload_method, default=None, blank=True, null=True
+    )
+    course_pic = models.ImageField(
+        upload_to=upload_poster, default=None, blank=True, null=True
     )
     is_deleted = models.BooleanField(default=False)
 
