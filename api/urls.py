@@ -67,6 +67,7 @@ urlpatterns = [
     path("reservations/<resv_id>/status", reservation.update_reservation_status),
     path("reservations/<int:resv_id>", reservation.get_del_reservation),
     path("reservations/<resv_id>/payment", reservation.UploadPayment.as_view()),
+    path("reservations/<int:account_id>/<int:course_id>/rev_id", reservation.get_revid),
     # --- 8. Personal ---#
     path("accounts/<int:account_id>/reservations", personal.get_my_reserve),
     path("accounts/<int:account_id>/courses", personal.get_reserve),

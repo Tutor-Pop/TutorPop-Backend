@@ -107,3 +107,10 @@ class UploadPayment(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view([GET])
+def get_revid(request, account_id: int, course_id: int):
+    rev = Reservation.objects.get(account_id=account_id, course_id=course_id)
+    revid = rev.id
+    return Response({"reservation_id": revid}, status=status.HTTP_200_OK)
