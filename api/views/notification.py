@@ -26,7 +26,7 @@ def create_notification(request):
 
 @api_view([GET])
 def get_all_notification(request, account_id: int):
-    now = datetime.datetime.now()
+    now = timezone.now()
     notificationData = JSONParser(Notification.objects.filter(account_id=account_id))
     count = len(notificationData)
     countDict = {"count": count}
@@ -38,14 +38,11 @@ def get_all_notification(request, account_id: int):
 
 @api_view([GET])
 def get_notexpire_notification(request, account_ID: int):
-    now = datetime.datetime.now()
-    current = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
-    current = datetime.datetime.strptime(current, "%Y-%m-%d")
     # print(type(current.date()))
     # print(datetime.date.today())
     notificationData = JSONParser(
         Notification.objects.filter(
-            account_id=account_ID, expire_date__gte=current.date()
+            account_id=account_ID, expire_date__gte=timezone.now().date()
         )
     )
     count = len(notificationData)

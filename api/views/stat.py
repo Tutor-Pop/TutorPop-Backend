@@ -6,7 +6,7 @@ from ..constants.method import GET, POST, PUT, DELETE
 from ..models import Courses, School, Account, OpenRequests
 from rest_framework import status
 from django.db.models import Q
-import datetime
+from django.utils import timezone
 
 # Item.objects.filter(Q(creator=owner) | Q(moderated=False)
 @api_view([GET])
@@ -28,7 +28,7 @@ def get_pending_request(request):
 
 @api_view([GET])
 def get_month_stat(request):
-    today = datetime.date.today()
+    today = timezone.now().date()
     current_month = today.month
     current_year = today.year
     acc = Account.objects.filter(

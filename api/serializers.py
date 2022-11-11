@@ -3,7 +3,7 @@ from statistics import mode
 from .models import Account, Courses, OpenRequests, Reservation, School
 from rest_framework import serializers
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class RequestSerializer(serializers.ModelSerializer):

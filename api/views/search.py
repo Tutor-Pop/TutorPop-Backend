@@ -9,6 +9,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from ..serializers import CourseSerializer, SchoolSerializer
+from django.utils import timezone
 
 
 class api_course_search(ListAPIView):
@@ -23,7 +24,7 @@ class api_course_search(ListAPIView):
         type = self.request.query_params.get("type", "")
         is_deleted = self.request.query_params.get("is_deleted", False)
         max_student = self.request.query_params.get("max_student", "")
-        start_date = self.request.query_params.get("start_date", date.today())
+        start_date = self.request.query_params.get("start_date", timezone.now().date())
         end_date = self.request.query_params.get("end_date", "")
         queryset = queryset.filter(
             course_price__gte=min_price,

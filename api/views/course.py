@@ -20,6 +20,7 @@ import datetime
 import django.db.utils
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.parsers import JSONParser as JP
+from django.utils import timezone
 
 
 @api_view([GET, PUT, DELETE])
@@ -168,7 +169,7 @@ def create_getall_course(request, school_id: int):
             )
 
         all_courses = Courses.objects.filter(
-            school_id=school_id, end_date__gt=datetime.date.today()
+            school_id=school_id, end_date__gt=timezone.now().date()
         )
         serializer = CourseSerializer(all_courses, many=True)
         return Response(
