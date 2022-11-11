@@ -133,7 +133,15 @@ class SchoolStatusSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ("account_id", "firstname", "lastname", "email", "profile_picture")
+        fields = (
+            "account_id",
+            "firstname",
+            "lastname",
+            "email",
+            "profile_picture",
+            "token_expire",
+            "token",
+        )
 
     def update(self, instance, validated_data):
         instance.firstname = validated_data.get("firstname", instance.firstname)
@@ -144,6 +152,10 @@ class AccountSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get("description", instance.description)
         instance.profile_picture = validated_data.get(
             "profile_picture", instance.profile_picture
+        )
+        instance.token = validated_data.get("token", instance.token)
+        instance.token_expire = validated_data.get(
+            "token_expire", instance.token_expire
         )
         instance.save()
         return instance
