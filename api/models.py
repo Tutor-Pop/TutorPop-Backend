@@ -143,7 +143,7 @@ class Reservation(models.Model):
         Account, on_delete=models.CASCADE, db_column="account_id"
     )
     payment_pic = models.ImageField(upload_to=upload_payment, default=None, null=True)
-    status = models.CharField(max_length=10, default=None)
+    status = models.CharField(max_length=30, default=None)
     expire_datetime = models.DateTimeField()
     reservation_datetime = models.DateTimeField()
 

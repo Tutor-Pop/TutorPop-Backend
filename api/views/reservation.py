@@ -6,7 +6,7 @@ from ..constants.method import GET, POST, PUT, DELETE
 from ..models import OpenRequests, Reservation, Courses
 from rest_framework import status
 from ..filters import RequestFilter
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 # reservations/<id>
 @api_view(["GET", "DELETE"])
@@ -73,7 +73,7 @@ class CreateReserve(APIView):
 
 
 class UploadPayment(APIView):
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def put(self, request, resv_id: int, format=None):
         try:
@@ -83,8 +83,11 @@ class UploadPayment(APIView):
                 {"message": "Reservation not found"}, status=status.HTTP_404_NOT_FOUND
             )
         print(request.data)
-        serializer = ReservationSerializer(resv, data=request.data, partial=True)
+        modified_data = request.data
+        modified_data["status"] = "WaitForConfirm"
+        serializer = ReservationSerializer(resv, data=modified_data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
