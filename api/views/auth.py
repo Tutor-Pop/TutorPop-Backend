@@ -15,6 +15,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from ..tokens import account_activation_token
+from ..serializers import AccountSerializer
 
 TOKEN_LIFETIME = 30 * 60  # (Second)
 
@@ -57,10 +58,13 @@ def login(request):
         account_dict = model_to_dict(account)
 
         if passwordEncryption(request.data["password"]) == account_dict["password"]:
+            # print("hi")
             account.token = uuid4().hex
             account.token_expire = int(time() + TOKEN_LIFETIME)
             account.save()
-            return Response(model_to_dict(account), status=status.HTTP_202_ACCEPTED)
+            serializer = AccountSerializer(account)
+            # print("hi")
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(
                 {"detail": "Incorrect password!"}, status=status.HTTP_406_NOT_ACCEPTABLE
@@ -115,16 +119,19 @@ def register(request):
             email=request.data["email"],
             year_of_birth=request.data["year_of_birth"],
             description=request.data["description"],
-            profile_picture="",
+            profile_picture=None,
             is_verified=False,
             is_deleted=False,
         )
         account.save()
+        # print("hi")
         passwordHistory = PasswordHistory(account_id=account, password=ePassword)
         passwordHistory.save()
         activateEmail(request, account, account.email)
+        # print("hi2")
+        serializer = AccountSerializer(account)
         return Response(
-            {"message": "Registration Completed!", "result": JSONParserOne(account)}
+            {"message": "Registration Completed!", "result": serializer.data}
         )
     except django.db.utils.IntegrityError:
         return Response({"message": "Email/Username already existed!", "result": {}})
