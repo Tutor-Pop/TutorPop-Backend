@@ -1,5 +1,11 @@
 from ..utility import JSONParser, JSONParserOne
-from ..serializers import CourseSerializer, SchoolSerializer, AccountSerializer
+from ..serializers import (
+    CourseSerializer,
+    SchoolSerializer,
+    AccountSerializer,
+    STimeSerializer,
+    AccountSerializer_noT,
+)
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes
 from ..constants.method import GET, POST, PUT, DELETE
@@ -57,7 +63,7 @@ def get_update_teachers(request, course_id: int):
         teacher = Account.objects.filter(courseteacher__course_id=course_id)
 
         if request.method == GET:
-            serializer = AccountSerializer(teacher, many=True)
+            serializer = AccountSerializer_noT(teacher, many=True)
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
 
         elif request.method == PUT:
@@ -99,7 +105,7 @@ def get_student(request, course_id: int):
         Courses.objects.get(course_id=course_id, is_deleted=False)
 
         student = Account.objects.filter(reservation__course_id=course_id)
-        serializer = AccountSerializer(student, many=True)
+        serializer = AccountSerializer_noT(student, many=True)
         return Response({"result": serializer.data}, status=status.HTTP_200_OK)
 
     except Courses.DoesNotExist:
@@ -207,7 +213,7 @@ def populate_all_course(request):
         owner = Account.objects.get(account_id=oid)
         schoolserial = SchoolSerializer(school)
         course["school_detail"] = schoolserial.data
-        ownerserial = AccountSerializer(owner)
+        ownerserial = AccountSerializer_noT(owner)
         course["owner_detail"] = ownerserial.data
     return Response(
         {"count": len(serializer.data), "result": serializer.data},
@@ -231,3 +237,29 @@ def upload_course_pic(request, course_id: int):
             serializer.save()
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view([GET])
+def course_detail(request, course_id: int):
+    courses = Courses.objects.get(course_id=course_id)
+    serializer = CourseSerializer(courses)
+    course = serializer.data
+    sid = course["school_id"]
+    oid = course["owner_id"]
+    school = School.objects.get(school_id=sid)
+    owner = Account.objects.get(account_id=oid)
+    schoolserial = SchoolSerializer(school)
+    course["school_detail"] = schoolserial.data
+    ownerserial = AccountSerializer_noT(owner)
+    course["owner_detail"] = ownerserial.data
+    times = StudyTime.objects.filter(course_id=course_id)
+    timeserial = STimeSerializer(times, many=True)
+    course["study_time"] = timeserial.data
+    teachers = Account.objects.filter(courseteacher__course_id=course_id)
+    tserial = AccountSerializer_noT(teachers, many=True)
+    course["teachers"] = tserial.data
+
+    return Response(
+        {"result": course},
+        status=status.HTTP_200_OK,
+    )

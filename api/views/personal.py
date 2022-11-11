@@ -20,6 +20,7 @@ from ..serializers import (
     SchoolSerializer,
     AccountSerializer,
     ReservationSerializer,
+    AccountSerializer_noT,
 )
 
 
@@ -97,7 +98,7 @@ def get_schools_owner(request, account_id: int):
 @api_view([GET])
 def get_teacher_detail(request, user_id: int):
     account = Account.objects.get(account_id=user_id)
-    accserial = AccountSerializer(account)
+    accserial = AccountSerializer_noT(account)
     courses = Courses.objects.filter(courseteacher__account_id=user_id)
     courseserial = CourseSerializer(courses, many=True)
     modified_data = accserial.data

@@ -13,6 +13,7 @@ from ..serializers import (
     SchoolStatusSerializer,
     CourseSerializer,
     AccountSerializer,
+    AccountSerializer_noT,
 )
 from rest_framework.generics import ListAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -130,7 +131,7 @@ def get_school_details(request, school_id: int):
     schoolserial = SchoolSerializer(school)
     modified_data = schoolserial.data
     accounts = Account.objects.filter(teacher__school_id=school_id)
-    accserial = AccountSerializer(accounts, many=True)
+    accserial = AccountSerializer_noT(accounts, many=True)
     modified_data["all_teachers"] = {
         "count": len(accserial.data),
         "teachers": accserial.data,

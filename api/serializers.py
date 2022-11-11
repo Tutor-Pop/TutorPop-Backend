@@ -1,6 +1,6 @@
 from dataclasses import field, fields
 from statistics import mode
-from .models import Account, Courses, OpenRequests, Reservation, School
+from .models import Account, Courses, OpenRequests, Reservation, School, StudyTime
 from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta, datetime
@@ -159,3 +159,32 @@ class AccountSerializer(serializers.ModelSerializer):
         )
         instance.save()
         return instance
+
+
+class STimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudyTime
+        fields = "__all__"
+
+
+class SchoolStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = "__all__"
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get("status", instance.status)
+        instance.save()
+        return instance
+
+
+class AccountSerializer_noT(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = (
+            "account_id",
+            "firstname",
+            "lastname",
+            "email",
+            "profile_picture",
+        )
