@@ -114,7 +114,7 @@ class SchoolSerializer(serializers.ModelSerializer):
         return instance
 
     def create(self, validated_data):
-        validated_data["status"] = "Pending"
+        validated_data["status"] = "DocsPending"
         reqSchool = School.objects.create(**validated_data)
         return reqSchool
 

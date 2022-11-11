@@ -68,7 +68,10 @@ def update_request_status(request, req_id: int):
     except OpenRequests.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     req.request_status = request.data["status"]
+    school = School.objects.get(school_id=req.school_id.school_id)
+    school.status = request.data["status"]
     req.save()
+    school.save()
     serializer = RequestSerializer(req)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -82,11 +85,14 @@ def upload_payment(request, req_id: int):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "PUT":
         modified_data = request.data
+        school = School.objects.get(school_id=req.school_id.school_id)
         modified_data["request_status"] = "PaymentPending"
         print(modified_data)
         serializer = RequestSerializer(req, data=modified_data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            school.status = "PaymentPending"
+            school.save()
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
