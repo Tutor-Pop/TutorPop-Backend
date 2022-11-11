@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import OpenRequests, Reservation
+from ..models import OpenRequests, Reservation, Courses
 from rest_framework import status
 from ..filters import RequestFilter
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -61,7 +61,14 @@ class CreateReserve(APIView):
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            course_id = serializer.data["course_id"]
+            course = Courses.objects.get(course_id=course_id)
+            course.reserved_student += 1
+            course.save()
+            return Response(
+                {"message": "Reservation Complete!", "Reservation": serializer.data},
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
