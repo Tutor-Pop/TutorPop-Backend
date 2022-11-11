@@ -143,7 +143,7 @@ def create_getall_course(request, school_id: int):
                 start_time=i["start_time"],
                 end_time=i["end_time"],
             )
-        study_time.save()
+            study_time.save()
         for i in request.data["teachers"]:
             try:
                 account = Account.objects.get(account_id=i)
