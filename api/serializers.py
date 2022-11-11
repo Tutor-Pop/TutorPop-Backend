@@ -78,7 +78,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["reservation_datetime"] = timezone.now()
         validated_data["status"] = "Pending"
-        validated_data["expire_datetime"] = timezone.now() + timedelta(1)
+        validated_data["expire_datetime"] = timezone.now() + timedelta(days=1)
         return Reservation.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

@@ -7,6 +7,9 @@ from ..models import OpenRequests, Reservation, Courses
 from rest_framework import status
 from ..filters import RequestFilter
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from django.utils import timezone
+from datetime import timedelta, datetime
+
 
 # reservations/<id>
 @api_view(["GET", "DELETE"])
@@ -54,15 +57,21 @@ def update_reservation_status(request, resv_id: int):
 
 
 class CreateReserve(APIView):
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def post(self, request, format=None):
-        # print(request.data)
+        print(request.data)
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            course_id = serializer.data["course_id"]
+            print("hi2")
+            course_id = request.data["course_id"]
             course = Courses.objects.get(course_id=course_id)
+            if course.reserved_student >= course.maximum_student:
+                return Response(
+                    {"message": "This course is full now."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            serializer.save()
             course.reserved_student += 1
             course.save()
             return Response(
