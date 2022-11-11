@@ -31,16 +31,14 @@ urlpatterns = [
     path("schools/search", search.api_school_search.as_view()),
     # --- 3. Course ---#
     path("schools/<int:school_id>/courses", course.create_getall_course),
-    path("schools/<int:school_id>/courses/<int:course_id>", course.get_update_course),
+    path("courses/<int:course_id>", course.get_update_course),
+    path("courses/<int:course_id>/students", course.get_student),
     path(
-        "schools/<int:school_id>/courses/<int:course_id>/students", course.get_student
-    ),
-    path(
-        "schools/<int:school_id>/courses/<int:course_id>/teachers",
+        "courses/<int:course_id>/teachers",
         course.get_update_teachers,
     ),
     path(
-        "schools/<int:school_id>/courses/<int:course_id>/upload_payment",
+        "courses/<int:course_id>/upload_payment",
         course.upload_method_pic,
     ),
     path("courses/populate", course.populate_all_course),

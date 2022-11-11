@@ -23,16 +23,13 @@ from rest_framework.parsers import JSONParser as JP
 
 
 @api_view([GET, PUT, DELETE])
-def get_update_course(request, school_id: int, course_id: int):
+def get_update_course(request, course_id: int):
     try:
-        school = School.objects.get(school_id=school_id)
-        course = Courses.objects.get(
-            course_id=course_id, school_id=school_id, is_deleted=False
-        )
+        course = Courses.objects.get(course_id=course_id, is_deleted=False)
 
         if request.method == GET:
-            result = JSONParserOne(course)
-            return Response({"result": result}, status=status.HTTP_200_OK)
+            serializer = CourseSerializer(course)
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
 
         elif request.method == PUT:
             serializer = CourseSerializer(course, data=request.data, partial=True)
@@ -50,24 +47,17 @@ def get_update_course(request, school_id: int, course_id: int):
         return Response(
             {"message": "Course doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
         )
-    except School.DoesNotExist:
-        return Response(
-            {"message": "School doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
-        )
 
 
 @api_view([GET, PUT, DELETE])
-def get_update_teachers(request, school_id: int, course_id: int):
+def get_update_teachers(request, course_id: int):
     try:
-        school = School.objects.get(school_id=school_id)
-        course = Courses.objects.get(
-            course_id=course_id, school_id=school_id, is_deleted=False
-        )
+        course = Courses.objects.get(course_id=course_id, is_deleted=False)
         teacher = Account.objects.filter(courseteacher__course_id=course_id)
 
         if request.method == GET:
-            result = JSONParser(teacher)
-            return Response({"result": result}, status=status.HTTP_200_OK)
+            serializer = AccountSerializer(teacher, many=True)
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
 
         elif request.method == PUT:
             for i in request.data["teacher_id"]:
@@ -100,28 +90,20 @@ def get_update_teachers(request, school_id: int, course_id: int):
         return Response(
             {"message": "Course doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
         )
-    except School.DoesNotExist:
-        return Response(
-            {"message": "School doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
-        )
 
 
 @api_view([GET])
-def get_student(request, school_id: int, course_id: int):
+def get_student(request, course_id: int):
     try:
-        School.objects.get(school_id=school_id)
-        Courses.objects.get(course_id=course_id, school_id=school_id, is_deleted=False)
+        Courses.objects.get(course_id=course_id, is_deleted=False)
 
         student = Account.objects.filter(reservation__course_id=course_id)
-        return Response({"result": JSONParser(student)}, status=status.HTTP_200_OK)
+        serializer = AccountSerializer(student, many=True)
+        return Response({"result": serializer.data}, status=status.HTTP_200_OK)
 
     except Courses.DoesNotExist:
         return Response(
             {"message": "Course doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
-        )
-    except School.DoesNotExist:
-        return Response(
-            {"message": "School doesn't not exists!"}, status=status.HTTP_404_NOT_FOUND
         )
 
 
@@ -197,7 +179,7 @@ def create_getall_course(request, school_id: int):
 
 @api_view([PUT])
 @parser_classes([MultiPartParser, FormParser, JP])
-def upload_method_pic(request, course_id: int, school_id: int):
+def upload_method_pic(request, course_id: int):
     try:
         course = Courses.objects.get(course_id=course_id)
     except Courses.DoesNotExist:
