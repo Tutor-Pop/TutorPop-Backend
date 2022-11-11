@@ -15,7 +15,12 @@ from ..models import (
     Account,
 )
 from rest_framework import status
-from ..serializers import CourseSerializer, SchoolSerializer, AccountSerializer
+from ..serializers import (
+    CourseSerializer,
+    SchoolSerializer,
+    AccountSerializer,
+    ReservationSerializer,
+)
 
 
 @api_view([GET])
@@ -107,3 +112,20 @@ def get_teacher_detail(request, user_id: int):
         "schools": schoolserial.data,
     }
     return Response(modified_data, status=status.HTTP_200_OK)
+
+
+@api_view([GET])
+def get_specific_reserve_course(request, reserve_id: int):
+    try:
+        reserve = Reservation.objects.get(id=reserve_id)
+        course = reserve.course_id
+        reserializer = ReservationSerializer(reserve)
+        coserializer = CourseSerializer(course)
+        return Response(
+            {"result": {"reservation": reserializer.data, "course": coserializer.data}},
+            status=status.HTTP_200_OK,
+        )
+    except Reservation.DoesNotExist:
+        return Response(
+            {"message": "Reservation does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )

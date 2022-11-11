@@ -73,6 +73,7 @@ urlpatterns = [
     path("accounts/<int:account_id>/schools", personal.get_schools_member),
     path("accounts/<int:account_id>/owners", personal.get_schools_owner),
     path("accounts/<int:user_id>/detail", personal.get_teacher_detail),
+    path("reservations/<int:reserve_id>/details", personal.get_specific_reserve_course),
     # --- 10. Notification ---#
     path("messages", notification.create_notification),
     path("accounts/<int:account_id>/messages", notification.get_all_notification),
