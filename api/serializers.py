@@ -65,6 +65,7 @@ class CourseSerializer(serializers.ModelSerializer):
         instance.payment_method_pic = validated_data.get(
             "payment_method_pic", instance.payment_method_pic
         )
+        instance.course_pic = validated_data.get("course_pic", instance.course_pic)
         instance.save()
         return instance
 

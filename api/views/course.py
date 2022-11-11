@@ -230,3 +230,21 @@ def populate_all_course(request):
         {"count": len(serializer.data), "result": serializer.data},
         status=status.HTTP_200_OK,
     )
+
+
+@api_view([PUT])
+@parser_classes([MultiPartParser, FormParser, JP])
+def upload_course_pic(request, course_id: int):
+    try:
+        course = Courses.objects.get(course_id=course_id)
+    except Courses.DoesNotExist:
+        return Response(
+            {"message": "Course does not exists!"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    if request.method == "PUT":
+        serializer = CourseSerializer(course, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"result": serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

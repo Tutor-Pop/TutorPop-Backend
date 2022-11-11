@@ -40,10 +40,11 @@ urlpatterns = [
         course.get_update_teachers,
     ),
     path(
-        "schools/<int:school_id>/courses/<int:course_id>/upload",
+        "schools/<int:school_id>/courses/<int:course_id>/upload_payment",
         course.upload_method_pic,
     ),
     path("courses/populate", course.populate_all_course),
+    path("courses/<int:course_id>/upload_poster", course.upload_course_pic),
     # --- 4. School ---#
     path("schools", school.create_school),
     path("schools/<int:school_id>", school.get_edit_delete_school),
