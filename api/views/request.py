@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import OpenRequests
+from ..models import OpenRequests, School
 from rest_framework import status
 from ..filters import RequestFilter
 from api import serializers
@@ -89,3 +89,10 @@ def upload_payment(request, req_id: int):
             serializer.save()
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view([GET])
+def get_reqid_from_schoolid(request, school_id: int):
+    req = OpenRequests.objects.get(school_id=school_id)
+    reqid = req.request_id
+    return Response({"request_id": reqid}, status=status.HTTP_200_OK)

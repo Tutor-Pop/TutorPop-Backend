@@ -60,6 +60,7 @@ urlpatterns = [
     path("requests/<int:req_id>", request.get_del_update_request),
     path("requests/<int:req_id>/status", request.update_request_status),
     path("requests/<int:req_id>/upload_payment", request.upload_payment),
+    path("requests/<int:school_id>/school_id", request.get_reqid_from_schoolid),
     # --- 7.Reservation --#
     path("reservations", reservation.CreateReserve.as_view()),
     path("courses/<course_id>/reservations", reservation.get_course_reservations),
