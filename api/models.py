@@ -25,6 +25,10 @@ def upload_method(instance, filename):
     return f"methods/{filename}"
 
 
+def upload_profile(instance, filename):
+    return f"profile/{filename}"
+
+
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
@@ -41,7 +45,9 @@ class Account(models.Model):
     year_of_birth = models.IntegerField(blank=True, default=None)
     description = models.CharField(max_length=50, blank=True, default=None)
     is_verified = models.BooleanField(default=False)
-    profile_picture = models.CharField(max_length=1000, blank=True, default=None)
+    profile_picture = models.ImageField(
+        upload_to=upload_profile, default=None, null=True
+    )
     is_deleted = models.BooleanField(default=False)
     token = models.CharField(max_length=256, null=True, default=None)
     token_expire = models.IntegerField(null=True, default=None)
