@@ -133,3 +133,41 @@ def get_specific_reserve_course(request, reserve_id: int):
         return Response(
             {"message": "Reservation does not exist"}, status=status.HTTP_404_NOT_FOUND
         )
+
+
+@api_view([GET])
+def get_all_reserve_course(request, account_id: int):
+    revs_pending = Reservation.objects.filter(account_id=account_id, status="Pending")
+    revs_waitpay = Reservation.objects.filter(
+        account_id=account_id, status="WaitForConfirm"
+    )
+    penser = ReservationSerializer(revs_pending, many=True)
+    pendata = penser.data
+    # print(pendata)
+    for rev in pendata:
+        cid = rev["course_id"]
+        course = Courses.objects.get(course_id=cid)
+        cs = CourseSerializer(course)
+        sid = course.school_id.school_id
+        school = School.objects.get(school_id=sid)
+        ss = SchoolSerializer(school)
+        rev["school_detail"] = ss.data
+        rev["course_detail"] = cs.data
+    conser = ReservationSerializer(revs_waitpay, many=True)
+    condata = conser.data
+    for rev in condata:
+        cid = rev["course_id"]
+        course = Courses.objects.get(course_id=cid)
+        cs = CourseSerializer(course)
+        sid = course.school_id.school_id
+        school = School.objects.get(school_id=sid)
+        ss = SchoolSerializer(school)
+        rev["school_detail"] = ss.data
+        rev["course_detail"] = cs.data
+    return Response(
+        {
+            "wait_for_payment": {"count": len(pendata), "result": pendata},
+            "wait_for_confirm": {"count": len(condata), "result": condata},
+        },
+        status=status.HTTP_200_OK,
+    )
