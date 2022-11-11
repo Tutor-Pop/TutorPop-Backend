@@ -79,7 +79,7 @@ class School(models.Model):
     district = models.CharField(max_length=100, default=None, blank=True, null=True)
     province = models.CharField(max_length=100, default=None, blank=True, null=True)
     postal_code = models.CharField(max_length=5, default=None, blank=True, null=True)
-    status = models.CharField(max_length=10, default=None, blank=True, null=True)
+    status = models.CharField(max_length=30, default=None, blank=True, null=True)
     logo_pic = models.ImageField(
         upload_to=upload_logo, default=None, blank=True, null=True
     )

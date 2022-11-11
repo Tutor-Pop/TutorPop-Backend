@@ -34,7 +34,7 @@ def activateEmail(request, user, to_email):
     )
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        print("Send successfully")
+        return True
 
 
 def activate(request, uidb64, token):
@@ -127,7 +127,12 @@ def register(request):
         # print("hi")
         passwordHistory = PasswordHistory(account_id=account, password=ePassword)
         passwordHistory.save()
-        activateEmail(request, account, account.email)
+        if not activateEmail(request, account, account.email):
+            account.delete()
+            return Response(
+                {"message": "Send mail failed"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
         # print("hi2")
         serializer = AccountSerializer(account)
         return Response(

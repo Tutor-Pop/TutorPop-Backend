@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import OpenRequests
+from ..models import OpenRequests, School
 from rest_framework import status
 from ..filters import RequestFilter
 from api import serializers
@@ -68,7 +68,10 @@ def update_request_status(request, req_id: int):
     except OpenRequests.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     req.request_status = request.data["status"]
+    school = School.objects.get(school_id=req.school_id.school_id)
+    school.status = request.data["status"]
     req.save()
+    school.save()
     serializer = RequestSerializer(req)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -82,10 +85,20 @@ def upload_payment(request, req_id: int):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "PUT":
         modified_data = request.data
+        school = School.objects.get(school_id=req.school_id.school_id)
         modified_data["request_status"] = "PaymentPending"
         print(modified_data)
         serializer = RequestSerializer(req, data=modified_data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            school.status = "PaymentPending"
+            school.save()
             return Response({"result": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view([GET])
+def get_reqid_from_schoolid(request, school_id: int):
+    req = OpenRequests.objects.get(school_id=school_id)
+    reqid = req.request_id
+    return Response({"request_id": reqid}, status=status.HTTP_200_OK)

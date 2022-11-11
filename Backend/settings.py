@@ -159,9 +159,9 @@ MEDIA_URL = "/media/"
 # Emailing settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_FROM = "tutorpop.jj@gmail.com"
-EMAIL_HOST_USER = "tutorpop.jj@gmail.com"
-EMAIL_HOST_PASSWORD = "bzplvuxuascqzaek"
+EMAIL_FROM = "tulkung123@gmail.com"
+EMAIL_HOST_USER = "tulkung123@gmail.com"
+EMAIL_HOST_PASSWORD = "ysludsuckdnfieqa"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
