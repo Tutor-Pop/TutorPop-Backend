@@ -129,7 +129,20 @@ class SchoolStatusSerializer(serializers.ModelSerializer):
         return instance
 
 
-class AccountSerializer(serializers.ModelSerializer):  # NOT DONE YET!
+class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ("account_id", "firstname", "lastname", "email", "profile_picture")
+
+    def update(self, instance, validated_data):
+        instance.firstname = validated_data.get("firstname", instance.firstname)
+        instance.lastname = validated_data.get("lastname", instance.lastname)
+        instance.year_of_birth = validated_data.get(
+            "year_of_birth", instance.year_of_birth
+        )
+        instance.description = validated_data.get("description", instance.description)
+        instance.profile_picture = validated_data.get(
+            "profile_picture", instance.profile_picture
+        )
+        instance.save()
+        return instance
