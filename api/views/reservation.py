@@ -32,7 +32,7 @@ def get_del_reservation(request, resv_id: int):
 
 @api_view(["GET"])
 def get_course_reservations(request, course_id: int):
-    all_resv = Reservation.objects.filter(course_id=course_id)
+    all_resv = Reservation.objects.filter(course_id=course_id, status="Confirmed")
     serializer = ReservationSerializer(all_resv, many=True)
     return Response(
         {"count": len(serializer.data), "reservations": serializer.data},
