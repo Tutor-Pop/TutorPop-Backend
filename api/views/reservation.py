@@ -61,6 +61,13 @@ class CreateReserve(APIView):
 
     def post(self, request, format=None):
         print(request.data)
+        cid = request.data["course_id"]
+        aid = request.data["account_id"]
+        if Reservation.objects.get(course_id=cid, account_id=aid):
+            return Response(
+                {"message": "This account already reserved this course"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             print("hi2")
