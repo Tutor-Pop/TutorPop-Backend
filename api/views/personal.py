@@ -48,7 +48,7 @@ def get_reserve(request, account_id: int):
     courses = Courses.objects.filter(
         reservation__account_id=account_id, reservation__status="Confirmed"
     )
-    serializer = CourseSerializer(courses)
+    serializer = CourseSerializer(courses, many=True)
     count = len(serializer.data)
 
     return Response(
