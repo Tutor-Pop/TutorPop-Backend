@@ -17,7 +17,7 @@ from django.http import HttpResponseRedirect
 from ..tokens import account_activation_token
 from ..serializers import AccountSerializer
 
-TOKEN_LIFETIME = 30 * 60  # (Second)
+TOKEN_LIFETIME = 6 * 30 * 60  # (Second)
 
 
 def activateEmail(request, user, to_email):
