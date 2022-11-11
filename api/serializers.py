@@ -141,6 +141,7 @@ class AccountSerializer(serializers.ModelSerializer):
             "profile_picture",
             "token_expire",
             "token",
+            "username"
         )
 
     def update(self, instance, validated_data):
