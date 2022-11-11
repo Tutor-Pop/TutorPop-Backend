@@ -84,6 +84,7 @@ urlpatterns = [
     # --- 11. Stats ---#
     path("stats/active", stat.get_active_stat),
     path("stats/pendingreq", stat.get_pending_request),
+    path("stats/thismonth", stat.get_month_stat)
     # --- Demo ---#
     # path('test', test.get_acounts),
     # path('test/<int:id>/edit', test.edit_account),
