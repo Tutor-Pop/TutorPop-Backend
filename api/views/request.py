@@ -28,7 +28,9 @@ class get_create_request(APIView):
     def get(self, request):
         filterset = RequestFilter(
             request.GET,
-            queryset=OpenRequests.objects.filter(request_status__icontains="Pending"),
+            queryset=OpenRequests.objects.exclude(requeast_status="Confirmed").exclude(
+                requeast_status="Rejected"
+            ),
         )
         if filterset.is_valid():
             queryset = filterset.qs
