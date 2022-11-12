@@ -28,8 +28,8 @@ class get_create_request(APIView):
     def get(self, request):
         filterset = RequestFilter(
             request.GET,
-            queryset=OpenRequests.objects.exclude(requeast_status="Confirmed").exclude(
-                requeast_status="Rejected"
+            queryset=OpenRequests.objects.exclude(request_status="Confirmed").exclude(
+                request_status="Rejected"
             ),
         )
         if filterset.is_valid():
