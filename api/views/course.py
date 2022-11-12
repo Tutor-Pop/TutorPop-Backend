@@ -145,12 +145,11 @@ def create_getall_course(request, school_id: int):
             )
             study_time.save()
         for i in request.data["teachers"]:
-            try:
-                account = Account.objects.get(account_id=i)
-                courseteacher = CourseTeacher(account_id=account, course_id=course)
-                courseteacher.save()
-            except:
-                pass
+            account = Account.objects.get(account_id=i)
+            courseteacher = CourseTeacher(account_id=account, course_id=course)
+            courseteacher.save()
+            print("i")
+
         # for i in request.data["study_time_record"]:
         #    study_time_record = StudyTimeRecords(
         #        course_id=course,
