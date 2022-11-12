@@ -26,7 +26,10 @@ class get_create_request(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        filterset = RequestFilter(request.GET, queryset=OpenRequests.objects.all())
+        filterset = RequestFilter(
+            request.GET,
+            queryset=OpenRequests.objects.filter(request_status__icontains="Pending"),
+        )
         if filterset.is_valid():
             queryset = filterset.qs
         serializer = RequestSerializer(queryset, many=True)
