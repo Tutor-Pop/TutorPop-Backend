@@ -28,12 +28,15 @@ def get_del_reservation(request, resv_id: int):
 
 
 # course/<course_id>/reservations
+# fdsffsdfds
 
 
 @api_view(["GET"])
 def get_course_reservations(request, course_id: int):
-    all_resv = Reservation.objects.filter(
-        course_id=course_id, status__icontains="Pending"
+    all_resv = (
+        Reservation.objects.filter(course_id=course_id)
+        .exclude(status="Reject")
+        .exclude(status="Expire")
     )
     serializer = ReservationSerializer(all_resv, many=True)
     revs = serializer.data
