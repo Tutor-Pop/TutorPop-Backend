@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import OpenRequests, Reservation, Courses
+from ..models import OpenRequests, Reservation, Courses, Account
 from rest_framework import status
 from ..filters import RequestFilter
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -32,10 +32,22 @@ def get_del_reservation(request, resv_id: int):
 
 @api_view(["GET"])
 def get_course_reservations(request, course_id: int):
-    all_resv = Reservation.objects.filter(course_id=course_id, status="Confirmed")
+    all_resv = (
+        Reservation.objects.filter(course_id=course_id)
+        .exclude(status="Reject")
+        .exclude(status="Expire")
+    )
     serializer = ReservationSerializer(all_resv, many=True)
+    revs = serializer.data
+    for rev in revs:
+        aid = rev["account_id"]
+        acc = Account.objects.get(account_id=aid)
+        uname = acc.username
+        email = acc.email
+        rev["username"] = uname
+        rev["email"] = email
     return Response(
-        {"count": len(serializer.data), "reservations": serializer.data},
+        {"count": len(revs), "reservations": revs},
         status=status.HTTP_200_OK,
     )
 
@@ -73,7 +85,7 @@ class CreateReserve(APIView):
             pass
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            print("hi2")
+            # print("hi2")
             course_id = request.data["course_id"]
             course = Courses.objects.get(course_id=course_id)
             if course.reserved_student >= course.maximum_student:
