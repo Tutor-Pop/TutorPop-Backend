@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from ..constants.method import GET, POST, PUT, DELETE
-from ..models import OpenRequests, School
+from ..models import OpenRequests, School, Account
 from rest_framework import status
 from ..filters import RequestFilter
 from api import serializers
@@ -30,8 +30,16 @@ class get_create_request(APIView):
         if filterset.is_valid():
             queryset = filterset.qs
         serializer = RequestSerializer(queryset, many=True)
+        reqs = serializer.data
+        for req in reqs:
+            sid = req["school_id"]
+            aid = req["account_id"]
+            sname = School.objects.get(school_id=sid).name
+            oname = Account.objects.get(account_id=aid).username
+            req["username"] = oname
+            req["school_name"] = sname
         return Response(
-            {"count": len(serializer.data), "requests": serializer.data},
+            {"count": len(reqs), "requests": reqs},
             status=status.HTTP_200_OK,
         )
 
