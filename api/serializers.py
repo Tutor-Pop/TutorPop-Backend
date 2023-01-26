@@ -184,6 +184,7 @@ class AccountSerializer_noT(serializers.ModelSerializer):
         model = Account
         fields = (
             "account_id",
+            "username",
             "firstname",
             "lastname",
             "email",
